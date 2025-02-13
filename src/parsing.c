@@ -6,11 +6,46 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/13 14:55:44 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:29:33 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
+
+int	read_and_parse_line(t_rt *rt, int fd)
+{
+	char *line;
+
+	line = get_next_line(fd);
+	if (!line)
+		return (1);
+		
+}
+
+
+int	open_file(t_rt *rt)
+{
+	int	fd;
+
+	fd = open(rt->filename, O_RDONLY);
+	if (fd == -1)
+	{
+		printf("File cannot be opened");
+		return (1);
+	}
+	if (read_and_parse_line(rt, fd))
+		return (1);
+	return (0);
+}
+
+/*
+int	validate_file(t_rt *rt)
+{
+	int	i;
+
+	i = 0;
+	
+} */
 
 /* Parse file
  - validate file extension

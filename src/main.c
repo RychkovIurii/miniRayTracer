@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/13 15:04:45 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/13 15:16:40 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,38 +57,6 @@ void ft_hook(void* param)
 
 // -----------------------------------------------------------------------------
 
-int32_t main(void)
-{
-	mlx_t* mlx;
-
-
-	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (!(image = mlx_new_image(mlx, 128, 128)))
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
-	{
-		mlx_close_window(mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	
-	mlx_loop_hook(mlx, ft_randomize, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
-
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
-	return (EXIT_SUCCESS);
-}
-/*
 int	validate_file_ext(t_rt *rt)
 {
 	const char	*filename;
@@ -115,6 +83,51 @@ void	initialize_structs(char **argv, t_rt *rt)
 	}
 }
 
+int32_t main(int argc, char **argv)
+{
+	mlx_t	*mlx;
+	t_rt	*rt;
+	
+	if (argc != 2)
+	{
+		printf("Invalid number of arguments\n");
+		exit(EXIT_FAILURE);
+	}
+	rt = ft_calloc(sizeof(t_rt), 1);
+	if (!rt)
+		exit(EXIT_FAILURE);
+	initialize_structs(argv, rt);
+	return (0);
+
+	
+	// Gotta error check this stuff
+	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	{
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (!(image = mlx_new_image(mlx, 128, 128)))
+	{
+		mlx_close_window(mlx);
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
+	{
+		mlx_close_window(mlx);
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	
+	mlx_loop_hook(mlx, ft_randomize, mlx);
+	mlx_loop_hook(mlx, ft_hook, mlx);
+
+	mlx_loop(mlx);
+	mlx_terminate(mlx);
+	return (EXIT_SUCCESS);
+}
+
+/*
 int	main(int argc, char **argv)
 {
 	t_rt	*rt;
@@ -135,27 +148,4 @@ int	main(int argc, char **argv)
 	//setup_window
 	//key_hook ??
 	//mlx_loop
-}
-
-
-
-int	open_file(t_rt *rt)
-{
-	int	fd;
-
-	fd = open(rt->filename, O_RDONLY);
-	if (fd == -1)
-	{
-		printf("File cannot be opened");
-		return (1);
-	}
-	
-}
-
-int	validate_file(t_rt *rt)
-{
-	int	i;
-
-	i = 0;
-	
-} */
+}  */
