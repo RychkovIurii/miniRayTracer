@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
+#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/13 14:13:08 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/13 14:58:15 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 

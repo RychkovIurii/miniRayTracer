@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/13 14:34:39 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:58:46 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@
 # include <stdlib.h>
 # include <stdbool.h>
 # include <MLX42/MLX42.h>
+# include "libft.h"
+
+#define M_PI 3.14159265358979323846  // how accurate should this be?
+#define EPSILON 0.00001
 
 #define WIDTH 512
 #define HEIGHT 512
@@ -29,14 +33,6 @@
 # include <math.h>
 # include <fcntl.h>
 # include <stdint.h>
-
-//# include "MLX42.h"
-//# include "libft.h"
-
-#define M_PI 3.14159265358979323846  // how accurate should this be?
-#define EPSILON 0.00001
-#define WIDTH 512
-#define HEIGHT 512
 
 typedef struct	s_rt
 {
@@ -154,12 +150,5 @@ typedef struct	s_intersections
 	t_intersection	*list;
 }	t_intersections;
 
-
-char	*ft_strrchr(const char *s, int c);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	*ft_memset(void *b, int c, size_t len);
-void	*ft_calloc(size_t count, size_t size);
-
-#endif
 
 #endif

@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/13 10:26:57 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/13 14:55:44 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/mini_rt.h"
+#include "../include/miniRT.h"
 
 /* Parse file
  - validate file extension
