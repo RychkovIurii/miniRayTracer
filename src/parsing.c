@@ -6,22 +6,23 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/13 15:29:33 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/13 20:35:55 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/miniRT.h"
 
-int	read_and_parse_line(t_rt *rt, int fd)
+int	read_file(t_rt *rt, int fd)
 {
 	char *line;
 
-	line = get_next_line(fd);
-	if (!line)
-		return (1);
-		
+	while(1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			return (1);
+	}	
 }
-
 
 int	open_file(t_rt *rt)
 {
