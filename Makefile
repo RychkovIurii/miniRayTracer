@@ -6,16 +6,17 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/13 14:58:15 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/14 15:10:45 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 
-SRCS = main.c
+SRCS = main.c parsing.c utils.c
 SRC_DIR = ./src
+OBJ_DIR = ./obj
 
-OBJS = $(addprefix $(SRC_DIR)/, $(SRCS:.c=.o))
+OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
 MLX_DIR = ./MLX42
 
@@ -49,15 +50,18 @@ $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS)
 	@echo "Compiling: $<"
+
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJS)
 	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJ_DIR)
 	@rm -rf $(MLX_DIR)/build
 	@$(MAKE) -C $(LIBFT_DIR) clean
 
