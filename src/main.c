@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/14 13:40:51 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/16 21:34:20 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ int32_t main(int argc, char **argv)
 	if (!rt)
 		exit(EXIT_FAILURE);
 	initialize_structs(argv, rt);
-	parse_file(rt);
+	if (parse_file(rt))
+		exit(EXIT_FAILURE);
 
 	// Gotta error check this stuff
 	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))

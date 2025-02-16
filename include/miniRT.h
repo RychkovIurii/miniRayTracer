@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/14 15:06:25 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/16 21:35:55 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ typedef struct	s_intersections
 	t_intersection	*list;
 }	t_intersections;
 
-void	parse_file(t_rt *rt);
+int		parse_file(t_rt *rt);
 void	free_elements(char **elements);
 void	print_elements(char **elements);
 
