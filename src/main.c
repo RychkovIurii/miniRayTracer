@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/16 21:34:20 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/17 20:17:34 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,6 @@ void	initialize_structs(char **argv, t_rt *rt)
 		exit(EXIT_FAILURE);
 	}
 }
-
 
 int32_t main(int argc, char **argv)
 {

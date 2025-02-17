@@ -1,68 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parsing.c                                          :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/16 22:17:51 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/17 17:24:26 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
-
-void	trim_extra_spaces(char *line)
-{
-	int	i;
-	int	j;
-	int	flag;
-
-	i = 0;
-	j = 0;
-	flag = 0;
-	while (line[i])
-	{
-		if (line[i] != ' ')
-		{
-			line[j++] = line[i];
-			flag = 0;
-		}
-		else if (line[i] == ' ' && flag == 0)
-		{
-			line[j++] = line[i];
-			flag = 1;
-		}
-		i++;
-	}
-	line[j] = '\0';
-	//should trailing space be removed??
-}
-
-int	validate_element_data(char **element_data, t_rt *rt)
-{
-	int	i;
-
-	if (check_identifier(element_data[0][0], rt))
-		return (1);
-	if (check_values()
-	return (0);
-}
-
-int	count_lines_in_file(int fd)
-{
-	int	line_count;
-	char	*line;
-
-	line_count = 0;
-	while ((line = get_next_line(fd)))
-	{
-		if (line[0] != '\0' && ft_strlen(line) > 0  && line[0] != '\n')
-			line_count++;
-		free(line);
-	}
-	return (line_count);
-}
+#include "../../include/miniRT.h"
 
 char	**read_file(t_rt rt, int fd)
 {
@@ -87,7 +35,7 @@ char	**read_file(t_rt rt, int fd)
 	i = 0;
 	while ((line = get_next_line(fd)))
 	{
-		if (line[i] != '\0' && ft_strlen(line) > 0 && line[0] != '\n')
+		if (line[0] != '\0' && ft_strlen(line) > 0 && line[0] != '\n')
 			lines[i++] = line;
 		else
 			free(line);
@@ -101,37 +49,46 @@ int	parse_file(t_rt *rt)
 {
 	int		fd;
 	char	**lines;
-	char	**element_data;
+	char	**element;
 	int		i;
+	char	*trimmed;
 
 	fd = open(rt->filename, O_RDONLY);
 	if (fd == -1)
 	{
-		printf("Error opening file\n");
+		print_error("Could not open file");
 		return (1);
 	}
 	lines = read_file(*rt, fd);
+	if (!lines)
+		return (1);
 	i = 0;
 	while (lines[i])
 	{
-		trim_extra_spaces(lines[i]);
-		printf("Line %s", lines[i]);
-		element_data = ft_split(lines[i], ' ');
-		if (!element_data)
+		trimmed = trim_extra_spaces(lines[i]);
+		if (!trimmed)
+		{
+			free_array(lines);
+			return (1);
+		}
+		element = ft_split(trimmed, ' ');
+		if (!element)
 		{
 			printf("Failed to split line into elements\n");
-			break ;
+			free_array(lines);
+			return (1);
 		}
-		print_elements(element_data);
-		if (!validate_elements(element_data, rt))
+		//print_elements(element);
+		if (!parse_element(element, rt))
 		{
-			free_elements(element_data);
+			free_array(lines);
+			free_array(element);
 			return (1);
 		}	
-		free_elements(element_data); 
+		free_array(element); 
 		i++;
 	}
-	free_elements(lines);
+	free_array(lines);
 	return (0);
 }
 

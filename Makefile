@@ -6,17 +6,23 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/14 15:10:45 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/17 19:11:02 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 
-SRCS = main.c parsing.c utils.c
+SRCS = main.c\
+		parser/parser.c\
+		parser/parser_utils.c\
+		parser/parse_element.c\
+		parser/parse_element_utils.c\
+		utils.c
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 
-OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+OBJ_DIRS = $(sort $(dir $(OBJS)))
 
 MLX_DIR = ./MLX42
 
@@ -50,15 +56,15 @@ $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
+$(NAME): $(OBJ_DIRS) $(OBJS)
+	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
+
+$(OBJ_DIRS):
+	@mkdir -p $@
+	
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c	
 	$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS)
 	@echo "Compiling: $<"
-
-$(OBJ_DIR):
-	@mkdir -p $(OBJ_DIR)
-
-$(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJ_DIR)
