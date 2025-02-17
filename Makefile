@@ -6,13 +6,13 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/13 14:13:08 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/17 18:42:26 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 
-SRCS = main.c
+SRCS = main.c color.c intersection.c matrix.c ray.c scene.c tuple.c vector.c
 SRC_DIR = ./src
 
 OBJS = $(addprefix $(SRC_DIR)/, $(SRCS:.c=.o))
@@ -35,7 +35,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -g #-Wall -Wextra -Werror
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)

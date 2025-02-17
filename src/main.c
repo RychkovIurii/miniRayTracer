@@ -11,25 +11,30 @@ static mlx_image_t* image;
 
 int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
 {
-    return (r << 24 | g << 16 | b << 8 | a);
+	return (r << 24 | g << 16 | b << 8 | a);
 }
 
-void ft_randomize(void* param)
+void ft_render_scene(void* param)
 {
-	(void)param;
-	for (uint32_t i = 0; i < image->width; ++i)
+	t_scene *scene = (t_scene *)param;
+	t_canvas *canvas = render(scene->camera, scene);
+
+	for (int y = 0; y < scene->camera.vsize; ++y)
 	{
-		for (uint32_t y = 0; y < image->height; ++y)
+		for (int x = 0; x < scene->camera.hsize; ++x)
 		{
-			uint32_t color = ft_pixel(
-				rand() % 0xFF, // R
-				rand() % 0xFF, // G
-				rand() % 0xFF, // B
-				rand() % 0xFF  // A
+			t_tuple color = pixel_at(canvas, x, y);
+			int mlx_color = ft_pixel(
+				round_value((int)(color.x * 255), 0, 255),
+				round_value((int)(color.y * 255), 0, 255),
+				round_value((int)(color.z * 255), 0, 255),
+				255
 			);
-			mlx_put_pixel(image, i, y, color);
+			mlx_put_pixel(scene->image, x, y, mlx_color);
 		}
 	}
+
+	free_canvas(canvas);
 }
 
 void ft_hook(void* param)
@@ -48,35 +53,90 @@ void ft_hook(void* param)
 		image->instances[0].x += 5;
 }
 
-// -----------------------------------------------------------------------------
+t_camera init_camera(double x, double y, double z, t_tuple forward, double fov) {
+	t_camera camera;
+
+	//If forward is collinear with (0,1,0), the cross() product in view_transform() may fail.
+	//Solution: Ensure forward is never (0,1,0) or (0,-1,0).
+
+	// Camera position
+	t_tuple from = point(x, y, z);
+
+	// Default up vector (assuming world up is (0,1,0))
+	t_tuple up = vector(0.0, 1.0, 0.0);
+
+	// Assign field of view
+	camera.field_of_view = fov;
+
+	// Compute the view transformation matrix
+	camera.transform = view_transform(from, add_tuple(from, forward), up);
+
+	return camera;
+}
+
+t_light init_light(t_tuple position, t_tuple color, double brightness)
+{
+	t_light light;
+
+	light.position = position;
+	light.intensity = multiply_tuple_scalar(color, brightness);
+
+	return light;
+}
 
 int32_t main(void)
 {
-	mlx_t* mlx;
+	t_scene scene;
+
+	// Initialize the scene
+	scene.shapes = (t_shape **)calloc(3, sizeof(t_shape *));
+
+	scene.ambient_lightning.ambient = 0.2;
+	scene.ambient_lightning.color = create_color(255/255.0, 255/255.0, 255/255.0);
+
+	t_shape *sphere = (t_shape *)calloc(1, sizeof(t_shape));
+	sphere->type = SHAPE_SPHERE;
+	sphere->center = point(0, 0, 20.6);
+	sphere->radius = 6.2;
+	sphere->material = material(create_color(10.0/255.0, 0.0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.9, 0.0, 0.0, PATTERN_NONE);
+	scene.shapes[0] = sphere;
+
+	t_shape *floor = (t_shape *)calloc(1, sizeof(t_shape));
+	floor->type = SHAPE_PLANE;
+	floor->center = point(0, 0, -10.0);
+	floor->transform = translation_matrix(0, -10, 0);
+	floor->material = material(create_color(0/255.0, 0/255.0, 225.0/255.0), scene.ambient_lightning.ambient, 0.9, 0.0, 0.0, PATTERN_NONE);
+	scene.shapes[1] = floor;
+
+	scene.camera = init_camera(-50.0, 0.0, 20.0, vector(0.0, 0.0, 1.0), 70.0);
+	scene.camera.hsize = HEIGHT;
+	scene.camera.vsize = WIDTH;
+
+	scene.light = init_light(point(-40.0, 50.0, 0.0), create_color(1.0, 1.0, 1.0), 0.6);
 
 	// Gotta error check this stuff
-	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
+	if (!(scene.mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (!(image = mlx_new_image(mlx, 128, 128)))
+	if (!(scene.image = mlx_new_image(scene.mlx, WIDTH, HEIGHT)))
 	{
-		mlx_close_window(mlx);
+		mlx_close_window(scene.mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
-	if (mlx_image_to_window(mlx, image, 0, 0) == -1)
+	if (mlx_image_to_window(scene.mlx, scene.image, 0, 0) == -1)
 	{
-		mlx_close_window(mlx);
+		mlx_close_window(scene.mlx);
 		puts(mlx_strerror(mlx_errno));
 		return(EXIT_FAILURE);
 	}
 	
-	mlx_loop_hook(mlx, ft_randomize, mlx);
-	mlx_loop_hook(mlx, ft_hook, mlx);
+	mlx_loop_hook(scene.mlx, ft_render_scene, &scene);
+	//mlx_loop_hook(scene.mlx, ft_hook, scene.mlx);
 
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop(scene.mlx);
+	mlx_terminate(scene.mlx);
 	return (EXIT_SUCCESS);
 }
