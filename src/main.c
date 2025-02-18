@@ -171,5 +171,8 @@ int32_t main(void)
 
 	mlx_loop(scene.mlx);
 	mlx_terminate(scene.mlx);
+	free(scene.shapes[0]);
+	free(scene.shapes[1]);
+	free(scene.shapes);
 	return (EXIT_SUCCESS);
 }
