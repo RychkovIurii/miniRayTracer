@@ -140,6 +140,7 @@ int32_t main(void)
 	floor->transform = translation_matrix(0, -10, 0.0);
 	floor->material = material(create_color(0.0/255.0, 0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.8, 0.4, 100.0, PATTERN_CHECKER);
 	floor->material.pattern = checker_pattern(create_color(255.0/255.0, 255.0/255.0, 255.0/255.0), create_color(0.0/255.0, 0.0/255.0, 0.0/255.0));
+	floor->material.pattern.transform = scaling_matrix(10, 10, 10);
 	//floor->material.reflective = 0.2;
 	scene.shapes[1] = floor;
 

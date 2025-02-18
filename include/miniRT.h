@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 13:27:46 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/18 14:37:47 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <math.h>
 # include "structs.h"
 
-# define WIDTH 200
-# define HEIGHT 100
+# define WIDTH 300
+# define HEIGHT 150
 # define EPSILON	0.0001f
 # define DEFAULT_REMAINING 5
 
