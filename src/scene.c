@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 18:32:06 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:17:50 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,4 +199,54 @@ t_canvas *render(t_camera camera, t_scene *world)
 		}
 	}
 	return (image);
+}
+
+t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize) {
+	t_camera camera;
+	double		half_view;
+	double		aspect;
+
+	//If forward is collinear with (0,1,0), the cross() product in view_transform() may fail.
+	//Solution: Ensure forward is never (0,1,0) or (0,-1,0).
+
+	// Camera position
+	t_tuple from = point(x, y, z);
+
+	// Default up vector (assuming world up is (0,1,0))
+	t_tuple up = vector(0.0, -1.0, 0.0);
+
+	// Assign field of view
+	camera.hsize = hsize;
+	camera.vsize = vsize;
+	camera.field_of_view = fov;
+	camera.transform = identity_matrix(4);
+
+	half_view = tan(camera.field_of_view / 2);
+	aspect = (double)camera.hsize / (double)camera.vsize;
+	if (aspect >= 1)
+	{
+		camera.half_width = half_view;
+		camera.half_height = half_view / aspect;
+	}
+	else
+	{
+		camera.half_width = half_view * aspect;
+		camera.half_height = half_view;
+	}
+	camera.pixel_size = (camera.half_width * 2) / camera.hsize;
+
+	// Compute the view transformation matrix
+	camera.transform = view_transform(from, add_tuple(from, forward), up);
+
+	return camera;
+}
+
+t_light init_light(t_tuple position, t_tuple color, double brightness)
+{
+	t_light light;
+
+	light.position = position;
+	light.intensity = multiply_tuple_scalar(color, brightness);
+
+	return light;
 }

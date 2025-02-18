@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 14:37:47 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:29:30 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <math.h>
 # include "structs.h"
 
-# define WIDTH 300
-# define HEIGHT 150
+# define WIDTH 200
+# define HEIGHT 100
 # define EPSILON	0.0001f
 # define DEFAULT_REMAINING 5
 
@@ -111,6 +111,8 @@ t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up);
 void write_pixel(t_canvas *canvas, int x, int y, t_tuple color);
 t_ray ray_for_pixel(t_camera camera, int px, int py);
 t_canvas *render(t_camera camera, t_scene *world);
+t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize);
+t_light init_light(t_tuple position, t_tuple color, double brightness);
 
 
 /** Color **/
@@ -126,5 +128,9 @@ t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_interse
 t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
 int is_shadowed(t_scene world, t_tuple point);
 t_pattern		checker_pattern(t_tuple a, t_tuple b);
+
+/** Mlx **/
+void ft_render_scene(void* param);
+void ft_hook(void* param);
 
 #endif

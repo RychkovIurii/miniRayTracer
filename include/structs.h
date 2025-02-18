@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 15:08:54 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/18 18:06:59 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ typedef struct s_shape {
 	t_shape_type	type;
 	t_tuple			center;
 	double			radius;
+	t_tuple			normalized_3d_vector;
+	
 }					t_shape;
 
 typedef struct s_intersection

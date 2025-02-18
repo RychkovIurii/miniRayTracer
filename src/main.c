@@ -1,124 +1,86 @@
-// -----------------------------------------------------------------------------
-// Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
-// See README in the root project for more information.
-// -----------------------------------------------------------------------------
-
-/* 
-Common materials and their refractive indices:
-
-Vacuum: 1
-Air: 1.00029
-Water: 1.333
-Glass: 1.52
-Diamond: 2.417
- */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
+/*   Updated: 2025/02/18 18:28:13 by irychkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "miniRT.h"
 
-static mlx_image_t* image;
-
-// -----------------------------------------------------------------------------
-
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
 {
-	return (r << 24 | g << 16 | b << 8 | a);
+	t_matrix	rotation_matrix;
+	double	cosine;
+	double	sine;
+	double	one_min_cos;
+
+	cosine = cos(r_angle);
+	sine = sin(r_angle);
+	one_min_cos = 1 - cosine;
+	rotation_matrix = create_matrix(4);
+	rotation_matrix.matrix[0][0] = r_ax.x * r_ax.x * one_min_cos + cosine;
+	rotation_matrix.matrix[0][1] = r_ax.x * r_ax.y * one_min_cos - r_ax.z * sine;
+	rotation_matrix.matrix[0][2] = r_ax.x * r_ax.z * one_min_cos + r_ax.y * sine;
+	rotation_matrix.matrix[1][0] = r_ax.x * r_ax.y * one_min_cos + r_ax.z * sine;
+	rotation_matrix.matrix[1][1] = r_ax.y * r_ax.y * one_min_cos + cosine;
+	rotation_matrix.matrix[1][2] = r_ax.y * r_ax.z * one_min_cos - r_ax.x * sine;
+	rotation_matrix.matrix[2][0] = r_ax.x * r_ax.z * one_min_cos - r_ax.y * sine;
+	rotation_matrix.matrix[2][1] = r_ax.y * r_ax.z * one_min_cos + r_ax.x * sine;
+	rotation_matrix.matrix[2][2] = r_ax.z * r_ax.z * one_min_cos + cosine;
+	rotation_matrix.matrix[3][3] = 1;
+	return (rotation_matrix);
 }
 
-void ft_render_scene(void* param)
+t_matrix	get_transform_matrix(t_shape *shape)
 {
-	t_scene *scene = (t_scene *)param;
-	t_canvas *canvas = render(scene->camera, scene);
+	t_tuple	y_axis;
+	t_tuple	rot_axis;
+	double	rot_angle;	
+	double	len;
 
-	for (int y = 0; y < scene->camera.vsize; ++y)
+	len = magnitude(shape->normalized_3d_vector);
+	if (len < EPSILON)
+		return (identity_matrix(4));
+	ft_bzero(&y_axis, sizeof(t_tuple));
+	y_axis.y = 1;
+	y_axis = normalize(y_axis);
+	shape->normalized_3d_vector = normalize(shape->normalized_3d_vector);
+	rot_axis = cross(y_axis, shape->normalized_3d_vector);
+	rot_axis = normalize(rot_axis);
+	rot_angle = acos(dot(y_axis, shape->normalized_3d_vector));
+	return(rotation_matrix_sub(rot_axis, rot_angle));
+}
+
+void	set_matrices(t_scene *scene)
+{
+	int i;
+
+	i = 0;
+	while (scene->shapes[i] != NULL)
 	{
-		for (int x = 0; x < scene->camera.hsize; ++x)
+		if (scene->shapes[i]->type == SHAPE_SPHERE)
 		{
-			t_tuple color = pixel_at(canvas, x, y);
-			int mlx_color = ft_pixel(
-				round_value((int)(color.x * 255), 0, 255),
-				round_value((int)(color.y * 255), 0, 255),
-				round_value((int)(color.z * 255), 0, 255),
-				255
-			);
-			mlx_put_pixel(scene->image, x, y, mlx_color);
+			scene->shapes[i]->transform = identity_matrix(4);
 		}
+		else if (scene->shapes[i]->type == SHAPE_PLANE)
+		{
+			scene->shapes[i]->transform = get_transform_matrix(scene->shapes[i]);
+		}
+		i++;
 	}
-
-	free_canvas(canvas);
 }
 
-void ft_hook(void* param)
-{
-	mlx_t* mlx = param;
-
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-	if (mlx_is_key_down(mlx, MLX_KEY_UP))
-		image->instances[0].y -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		image->instances[0].y += 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		image->instances[0].x -= 5;
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		image->instances[0].x += 5;
-}
-
-t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize) {
-	t_camera camera;
-	double		half_view;
-	double		aspect;
-
-	//If forward is collinear with (0,1,0), the cross() product in view_transform() may fail.
-	//Solution: Ensure forward is never (0,1,0) or (0,-1,0).
-
-	// Camera position
-	t_tuple from = point(x, y, z);
-
-	// Default up vector (assuming world up is (0,1,0))
-	t_tuple up = vector(0.0, -1.0, 0.0);
-
-	// Assign field of view
-	camera.hsize = hsize;
-	camera.vsize = vsize;
-	camera.field_of_view = fov;
-	camera.transform = identity_matrix(4);
-
-	half_view = tan(camera.field_of_view / 2);
-	aspect = (double)camera.hsize / (double)camera.vsize;
-	if (aspect >= 1)
-	{
-		camera.half_width = half_view;
-		camera.half_height = half_view / aspect;
-	}
-	else
-	{
-		camera.half_width = half_view * aspect;
-		camera.half_height = half_view;
-	}
-	camera.pixel_size = (camera.half_width * 2) / camera.hsize;
-
-	// Compute the view transformation matrix
-	camera.transform = view_transform(from, add_tuple(from, forward), up);
-
-	return camera;
-}
-
-t_light init_light(t_tuple position, t_tuple color, double brightness)
-{
-	t_light light;
-
-	light.position = position;
-	light.intensity = multiply_tuple_scalar(color, brightness);
-
-	return light;
-}
-
-int32_t main(void)
+int main(void)
 {
 	t_scene scene;
 
 	// Initialize the scene
-	scene.shapes = (t_shape **)calloc(3, sizeof(t_shape *));
+	scene.shapes = (t_shape **)calloc(4, sizeof(t_shape *));
 
 	scene.ambient_lightning.ambient = 0.2;
 	scene.ambient_lightning.color = create_color(255/255.0, 255/255.0, 255/255.0);
@@ -128,25 +90,41 @@ int32_t main(void)
 	sphere->center = point(0, 5.0, -10.0);
 	sphere->radius = 2.5;
 	sphere->transform = identity_matrix(4);
-	sphere->material = material(create_color(0.49, 0.051, 0.051), scene.ambient_lightning.ambient, 0.8, 0.4, 150.0, PATTERN_NONE);
-	//sphere->material.reflective = 0.1;
-	/* sphere->material.transparency = 0.3;
-	sphere->material.refractive_index = 1.5; */
+	sphere->material = material(create_color(1.0, 0.8, 0.0), scene.ambient_lightning.ambient, 0.3, 1.0, 300.0, PATTERN_NONE);
+	/* sphere->material.reflective = 0.9;
+	sphere->material.transparency = 0.0;
+	sphere->material.refractive_index = 1.0; */
 	scene.shapes[0] = sphere;
 
 	t_shape *floor = (t_shape *)calloc(1, sizeof(t_shape));
 	floor->type = SHAPE_PLANE;
 	floor->center = point(0, 0, 0);
-	floor->transform = translation_matrix(0, -10, 0.0);
+	floor->normalized_3d_vector = vector(0, 1, 0);
+	floor->transform = translation_matrix(0, -10, 0.0); //if we a getting point x,y,z coordinates of a point in the plane: 0.0,6.0,-10.0 It's same as floor->transform = translation_matrix(0, 6.0, -10.0);
 	floor->material = material(create_color(0.0/255.0, 0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.8, 0.4, 100.0, PATTERN_CHECKER);
 	floor->material.pattern = checker_pattern(create_color(255.0/255.0, 255.0/255.0, 255.0/255.0), create_color(0.0/255.0, 0.0/255.0, 0.0/255.0));
 	floor->material.pattern.transform = scaling_matrix(10, 10, 10);
-	//floor->material.reflective = 0.2;
+	/* floor->material.reflective = 0.2;
+	floor->material.transparency = 0.0;
+	floor->material.refractive_index = 1.0; */
 	scene.shapes[1] = floor;
 
-	scene.camera = init_camera(0.0, 5.0, 20.0, vector(0.0, 0.0, -1.0), 100.0, WIDTH, HEIGHT);
+	t_shape *floor1 = (t_shape *)calloc(1, sizeof(t_shape));
+	floor1->type = SHAPE_PLANE;
+	floor1->center = point(0, 0, 0);
+	floor1->normalized_3d_vector = vector(0, 1, 0);
+	floor1->transform = translation_matrix(0, 12.0, 20.0); //if we a getting point x,y,z coordinates of a point in the plane: 0.0,6.0,-10.0 It's same as floor->transform = translation_matrix(0, 6.0, -10.0);
+	floor1->material = material(create_color(0.0/255.0, 0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.8, 0.4, 100.0, PATTERN_CHECKER);
+	floor1->material.pattern = checker_pattern(create_color(255.0/255.0, 0.0/255.0, 0.0/255.0), create_color(255.0/255.0, 255.0/255.0, 255.0/255.0));
+	floor1->material.pattern.transform = scaling_matrix(10, 10, 10);
+	/* floor1->material.reflective = 0.2;
+	floor1->material.transparency = 0.0;
+	floor1->material.refractive_index = 1.0; */
+	scene.shapes[2] = floor1;
 
-	scene.light = init_light(point(-20.0, 1.0, 0.0), create_color(1.0, 1.0, 1.0), 0.7);
+	scene.camera = init_camera(0.0, 6.0, 20.0, vector(0.0, 0.0, -1.0), 100.0, WIDTH, HEIGHT);
+
+	scene.light = init_light(point(-15.0, 5.0, 5.0), create_color(1.0, 1.0, 1.0), 0.9);
 
 	// Gotta error check this stuff
 	if (!(scene.mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true)))
@@ -168,7 +146,7 @@ int32_t main(void)
 	}
 	
 	mlx_loop_hook(scene.mlx, ft_render_scene, &scene);
-	//mlx_loop_hook(scene.mlx, ft_hook, scene.mlx);
+	mlx_loop_hook(scene.mlx, ft_hook, scene.mlx);
 
 	mlx_loop(scene.mlx);
 	mlx_terminate(scene.mlx);
