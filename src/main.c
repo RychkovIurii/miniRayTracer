@@ -53,8 +53,10 @@ void ft_hook(void* param)
 		image->instances[0].x += 5;
 }
 
-t_camera init_camera(double x, double y, double z, t_tuple forward, double fov) {
+t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize) {
 	t_camera camera;
+	double		half_view;
+	double		aspect;
 
 	//If forward is collinear with (0,1,0), the cross() product in view_transform() may fail.
 	//Solution: Ensure forward is never (0,1,0) or (0,-1,0).
@@ -66,7 +68,24 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov) 
 	t_tuple up = vector(0.0, 1.0, 0.0);
 
 	// Assign field of view
+	camera.hsize = hsize;
+	camera.vsize = vsize;
 	camera.field_of_view = fov;
+	camera.transform = identity_matrix(4);
+
+	half_view = tan(camera.field_of_view / 2);
+	aspect = (double)camera.hsize / (double)camera.vsize;
+	if (aspect >= 1)
+	{
+		camera.half_width = half_view;
+		camera.half_height = half_view / aspect;
+	}
+	else
+	{
+		camera.half_width = half_view * aspect;
+		camera.half_height = half_view;
+	}
+	camera.pixel_size = (camera.half_width * 2) / camera.hsize;
 
 	// Compute the view transformation matrix
 	camera.transform = view_transform(from, add_tuple(from, forward), up);
@@ -108,9 +127,7 @@ int32_t main(void)
 	floor->material = material(create_color(0/255.0, 0/255.0, 225.0/255.0), scene.ambient_lightning.ambient, 0.9, 0.0, 0.0, PATTERN_NONE);
 	scene.shapes[1] = floor;
 
-	scene.camera = init_camera(-50.0, 0.0, 20.0, vector(0.0, 0.0, 1.0), 70.0);
-	scene.camera.hsize = HEIGHT;
-	scene.camera.vsize = WIDTH;
+	scene.camera = init_camera(-50.0, 0.0, 20.0, vector(0.0, 0.0, 1.0), 70.0, WIDTH, HEIGHT);
 
 	scene.light = init_light(point(-40.0, 50.0, 0.0), create_color(1.0, 1.0, 1.0), 0.6);
 
