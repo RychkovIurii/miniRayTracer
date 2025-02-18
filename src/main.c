@@ -3,6 +3,16 @@
 // See README in the root project for more information.
 // -----------------------------------------------------------------------------
 
+/* 
+Common materials and their refractive indices:
+
+Vacuum: 1
+Air: 1.00029
+Water: 1.333
+Glass: 1.52
+Diamond: 2.417
+ */
+
 #include "miniRT.h"
 
 static mlx_image_t* image;
@@ -65,7 +75,7 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, 
 	t_tuple from = point(x, y, z);
 
 	// Default up vector (assuming world up is (0,1,0))
-	t_tuple up = vector(0.0, 1.0, 0.0);
+	t_tuple up = vector(0.0, -1.0, 0.0);
 
 	// Assign field of view
 	camera.hsize = hsize;
@@ -115,21 +125,27 @@ int32_t main(void)
 
 	t_shape *sphere = (t_shape *)calloc(1, sizeof(t_shape));
 	sphere->type = SHAPE_SPHERE;
-	sphere->center = point(0, 0, 20.6);
-	sphere->radius = 6.2;
-	sphere->material = material(create_color(10.0/255.0, 0.0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.9, 0.0, 0.0, PATTERN_NONE);
+	sphere->center = point(0, 5.0, -10.0);
+	sphere->radius = 2.5;
+	sphere->transform = identity_matrix(4);
+	sphere->material = material(create_color(0.49, 0.051, 0.051), scene.ambient_lightning.ambient, 0.8, 0.4, 150.0, PATTERN_NONE);
+	//sphere->material.reflective = 0.1;
+	/* sphere->material.transparency = 0.3;
+	sphere->material.refractive_index = 1.5; */
 	scene.shapes[0] = sphere;
 
 	t_shape *floor = (t_shape *)calloc(1, sizeof(t_shape));
 	floor->type = SHAPE_PLANE;
-	floor->center = point(0, 0, -10.0);
-	floor->transform = translation_matrix(0, -10, 0);
-	floor->material = material(create_color(0/255.0, 0/255.0, 225.0/255.0), scene.ambient_lightning.ambient, 0.9, 0.0, 0.0, PATTERN_NONE);
+	floor->center = point(0, 0, 0);
+	floor->transform = translation_matrix(0, -10, 0.0);
+	floor->material = material(create_color(0.0/255.0, 0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.8, 0.4, 100.0, PATTERN_CHECKER);
+	floor->material.pattern = checker_pattern(create_color(255.0/255.0, 255.0/255.0, 255.0/255.0), create_color(0.0/255.0, 0.0/255.0, 0.0/255.0));
+	//floor->material.reflective = 0.2;
 	scene.shapes[1] = floor;
 
-	scene.camera = init_camera(-50.0, 0.0, 20.0, vector(0.0, 0.0, 1.0), 70.0, WIDTH, HEIGHT);
+	scene.camera = init_camera(0.0, 5.0, 20.0, vector(0.0, 0.0, -1.0), 100.0, WIDTH, HEIGHT);
 
-	scene.light = init_light(point(-40.0, 50.0, 0.0), create_color(1.0, 1.0, 1.0), 0.6);
+	scene.light = init_light(point(-20.0, 1.0, 0.0), create_color(1.0, 1.0, 1.0), 0.7);
 
 	// Gotta error check this stuff
 	if (!(scene.mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true)))

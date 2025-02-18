@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 10:04:36 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:27:46 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,5 +125,6 @@ double schlick(t_intersection comps);
 t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
 t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
 int is_shadowed(t_scene world, t_tuple point);
+t_pattern		checker_pattern(t_tuple a, t_tuple b);
 
 #endif
