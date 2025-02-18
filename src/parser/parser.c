@@ -6,27 +6,26 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/17 17:24:26 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:12:44 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
 
-char	**read_file(t_rt rt, int fd)
+char	**read_file(t_rt *rt, int fd)
 {
-	int		line_count;
 	char	**lines;
 	char	*line;
 	int		i;
 	
-	line_count = count_lines_in_file(fd);
+	rt->element_count = count_lines_in_file(fd);
 	close(fd);
-	if (line_count <= 0)
+	if (rt->element_count <= 0)
 		return (NULL);
-	lines = malloc(sizeof(char *) * (line_count + 1));
+	lines = malloc(sizeof(char *) * (rt->element_count + 1));
 	if (!lines)
 		return (NULL);
-	fd = open(rt.filename, O_RDONLY);
+	fd = open(rt->filename, O_RDONLY);
 	if (fd < 0)
 	{
 		free(lines);
@@ -59,7 +58,7 @@ int	parse_file(t_rt *rt)
 		print_error("Could not open file");
 		return (1);
 	}
-	lines = read_file(*rt, fd);
+	lines = read_file(rt, fd);
 	if (!lines)
 		return (1);
 	i = 0;
@@ -69,20 +68,28 @@ int	parse_file(t_rt *rt)
 		if (!trimmed)
 		{
 			free_array(lines);
+			free_rt(rt);
 			return (1);
 		}
 		element = ft_split(trimmed, ' ');
 		if (!element)
 		{
-			printf("Failed to split line into elements\n");
+			printf("Failed to split line into tokens\n");
 			free_array(lines);
+			free_rt(rt);
 			return (1);
 		}
-		//print_elements(element);
-		if (!parse_element(element, rt))
+		print_elements(element);
+		if (init_scene_structs(rt))
+		{
+			free_rt(rt);
+			return (1);
+		}
+		if (parse_element(element, rt))
 		{
 			free_array(lines);
 			free_array(element);
+			free_rt(rt);
 			return (1);
 		}	
 		free_array(element); 

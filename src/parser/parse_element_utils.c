@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:09:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/17 19:51:50 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:29:23 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,75 +25,110 @@ int	validate_argument_count(char **array, int count)
 		i++;
 	}
 	if (arg_count != count)
-	{
-		print_error("Invalid number of arguments in element");
 		return (1);
-	}
 	return (0);
 }
 
-int	validate_colors(char **colors)
+double	validate_ratio(char *str)
+{
+	double	ratio;
+	
+	ratio = ft_atof(str);
+	if (ratio < 0.0 || ratio > 1.0)
+		return (-1);
+	return (ratio);
+}
+
+char **validate_color(char *str)
 {
 	int		color_value;
+	char	**color_strings;
 	int		i;
 	
-	if (validate_argument_count(colors, 3))
-		return (1);
+	color_strings = ft_split(str, ',');
+	if (!color_strings)
+		return (NULL);
+	if (validate_argument_count(color_strings, 3))
+	{
+		free_array(color_strings);
+		return (NULL);
+	}
 	i = 0;
 	while (i < 3)
 	{
-		color_value = custom_atoi(colors[i]);
+		color_value = custom_atoi(color_strings[i]);
 		if (color_value < 0 || color_value > 255)
 		{
-			free_array(colors);
-			print_error("Invalid color value");
-			return (1);
+			free_array(color_strings);
+			return (NULL);
 		}
 		i++;
 	}
-	return (0);
+	return (color_strings);
 }
 
-int	validate_coordinates(char **coordinates)
+char	**validate_coordinates(char *str)
 {
-	double	coord;
+	double	coordinate;
+	char	**coord_strings;
 	int		i;
 
-	if (validate_argument_count(coordinates, 3))
-		return (1);
+	coord_strings = ft_split(str, ',');
+	if (!coord_strings)
+		return (NULL);
+	if (validate_argument_count(coord_strings, 3))
+	{
+		free_array(coord_strings);
+		return (NULL);
+	}
 	i = 0;
 	while (i < 3)
 	{
-		coord = ft_atof(coordinates[i]);
-		if (coord < DBL_MIN || coord > DBL_MAX)
+		coordinate = ft_atof(coord_strings[i]);
+		if (coordinate < -DBL_MAX || coordinate > DBL_MAX)  // which boundaries to set??
 		{
-			free_array(coordinates);
-			print_error("Invalid coordinate value");
-			return (1);
+			free_array(coord_strings);
+			return (NULL);
 		}
 		i++;
 	}
-	return (0);
+	return (coord_strings);
 }
 
-int	validate_vector(char **orient_vector)
+char	**validate_vector(char *str)
 {
-	double	value;
+	double	vector_element;
+	char	**vector_strings;
 	int		i;
 
-	if (validate_argument_count(orient_vector, 3))
-		return (1);
+	vector_strings = ft_split(str, ',');
+	if (!vector_strings)
+		return (NULL);
+	if (validate_argument_count(vector_strings, 3))
+	{
+		free_array(vector_strings);
+		return (NULL);
+	}
 	i = 0;
 	while (i < 3)
 	{
-		value = ft_atof(orient_vector[i]);
-		if (value < -1.0 || value > 1.0)
+		vector_element = ft_atof(vector_strings[i]);
+		if (vector_element < -1.0 || vector_element > 1.0)
 		{
-			free_array(orient_vector);
-			print_error("Invalid orientation vector value");
-			return (1);
+			free_array(vector_strings);
+			return (NULL);
 		}
 		i++;
 	}
-	return (0);
+	return (vector_strings);
+}
+
+int	validate_dimension(char *str)
+{
+	double	dimension;
+	
+	dimension = ft_atof(str);
+	if (dimension < EPSILON)  // should there be a max limit??
+		return (-1);
+	return (dimension);
 }

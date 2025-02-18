@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/17 19:11:02 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/18 17:29:10 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ SRCS = main.c\
 		parser/parser_utils.c\
 		parser/parse_element.c\
 		parser/parse_element_utils.c\
+		parser/parse_shapes.c\
 		utils.c
 SRC_DIR = ./src
 OBJ_DIR = ./obj
@@ -42,7 +43,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)

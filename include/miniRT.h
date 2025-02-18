@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 20:26:05 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/18 19:44:51 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ typedef struct	s_light
 {
 	t_tuple	position;
 	t_tuple	intensity;
+	double	brightness;
+	t_tuple	color;
 }	t_light;
 
 typedef struct	s_camera
@@ -85,7 +87,6 @@ typedef enum e_type
 {
 	SPHERE,
 	PLANE,
-	//CUBE,
 	CYLINDER,
 	CONE,
 }	t_type;
@@ -96,17 +97,21 @@ typedef struct	s_shape
 	t_material	material;
 	t_type		type;
 	t_tuple		center;
+	t_tuple		point_on_plane;
+	t_tuple		normal;
 	double		radius;
 	double		min;
 	double		max;
+	double		cylinder_height;
 	bool		closed;
 }	t_shape;
 
 typedef struct	s_scene
 {
 	t_shape		*shapes;
-	t_camera	*camera;
-	t_light		*light;
+	int			shape_count;
+	t_camera	camera;
+	t_light		light;
 	t_ambient	ambient;
 	int			num_objects;
 	int			max_objects;;
@@ -119,6 +124,7 @@ typedef struct	s_rt
 	t_scene		*scene;
 	char		*filename;
 	char		**elements;
+	int			element_count;
 }	t_rt;
 
 typedef struct	s_ray
@@ -160,10 +166,17 @@ void	free_array(char **array);
 void	print_elements(char **elements);
 int		custom_atoi(char *str);
 int		validate_argument_count(char **array, int count);
-int		validate_colors(char **colors);
-int		validate_coordinates(char **coordinates);
-int		validate_vector(char **orient_vector);
-int		allocate_and_init_scene(t_rt *rt);
-int		allocate_and_init_camera(t_rt *rt);
+char	**validate_color(char *str);
+char	**validate_coordinates(char *str);
+char	**validate_vector(char *str);
+double	validate_ratio(char *str);
+int		validate_dimension(char *str);
+int		init_scene_structs(t_rt *rt);
+int		parse_sphere(char **element, t_rt *rt);
+int		parse_plane(char **element, t_rt *rt);
+int		parse_cylinder(char **element, t_rt *rt);
+double	convert_color(char *str);
+void	free_rt(t_rt *rt);
+int		error(char *message, int ret);
 
 #endif
