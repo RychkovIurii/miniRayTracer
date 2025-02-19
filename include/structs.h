@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 11:38:49 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 19:07:25 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ typedef struct	s_tuple
 
 typedef struct	s_matrix
 {
-	int		size;
+	int		size;  /* Removed size field since 4x4 is fixed */
 	double	matrix[4][4];
 }			t_matrix;
 
@@ -49,39 +49,38 @@ typedef struct	s_material
 	double		diffuse;
 	double		specular;
 	double		shininess;
-	t_pattern	pattern;
-	int			has_pattern;
 	double		reflective;
 	double		transparency;
 	double		refractive_index;
+	t_pattern	pattern;
+	int			has_pattern;
 }			t_material;
 
 typedef enum { SHAPE_SPHERE, SHAPE_PLANE } t_shape_type;
 
 typedef struct s_shape {
 	t_matrix		transform;
-	t_material		material;
-	t_shape_type	type;
 	t_tuple			center;
-	double			radius;
+	t_material		material;
 	t_tuple			scale;
 	t_tuple			normalized_3d_vector;
-	
+	double			radius;
+	t_shape_type	type;
 }					t_shape;
 
 typedef struct s_intersection
 {
 	double		t;
-	t_shape		*object;
+	double		n1;
+	double		n2;
 	t_tuple		point;
 	t_tuple 	over_point; // for reflection
 	t_tuple 	under_point; // for refraction
 	t_tuple		eyev; // vector
 	t_tuple		normalv; // vector
+	t_shape		*object;
 	int			inside;
 	t_tuple		reflectv; // vector
-	double		n1;
-	double		n2;
 }				t_intersection;
 
 typedef struct	s_intersects // array of intersections
@@ -107,10 +106,10 @@ typedef struct s_camera
 	int			hsize;
 	int			vsize;
 	double		field_of_view;
-	t_matrix	transform;
 	double		pixel_size;
 	double		half_width;
 	double		half_height;
+	t_matrix	transform;
 }				t_camera;
 
 typedef struct	s_canvas
@@ -127,7 +126,7 @@ typedef struct s_scene
 	t_ambient_lightning	ambient_lightning;
 	t_camera			camera;
 	t_light				light;
-	t_shape				**shapes;
+	t_shape				**shapes; // The pointer-based array t_shape **shapes is retained but should be converted to a t_shape shapes[MAX_SHAPES] if a fixed number is known.
 }				t_scene;
 
 #endif
