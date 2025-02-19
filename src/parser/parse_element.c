@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:58:50 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/18 19:45:41 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:46:53 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	parse_ambient(char **element, t_rt *rt)
 {
 	double	ambient;
 	char	**colors;
-
+	
+	if (rt->scene->ambient.id != 0)
+		return (error("Too many ambient lights in file", 1));
 	if (validate_argument_count(element, 3))
 		return (error("Invalid number of arguments for ambient", 1));
 	ambient = validate_ratio(element[1]);
@@ -29,6 +31,7 @@ int	parse_ambient(char **element, t_rt *rt)
 	rt->scene->ambient.color.x = 255.0/custom_atoi(colors[0]);
 	rt->scene->ambient.color.y = 255.0/custom_atoi(colors[1]);
 	rt->scene->ambient.color.z = 255.0/custom_atoi(colors[2]);
+	rt->scene->ambient.id = 1;
 	free_array(colors);
 	printf("Ambient ratio: %f, colors: %f, %f, %f\n", rt->scene->ambient.ratio, rt->scene->ambient.color.x, rt->scene->ambient.color.y, rt->scene->ambient.color.z);
 	return (0);
@@ -40,6 +43,8 @@ int	parse_camera(char **element, t_rt *rt)
 	char	**normal;
 	int		fov;
 
+	if (rt->scene->camera.id != 0)
+		return (error("Too many cameras in file", 1));
 	if (validate_argument_count(element, 4))
 		return (error("Invalid number of arguments for camera", 1));
 	coordinates = validate_coordinates(element[1]);
@@ -62,6 +67,7 @@ int	parse_camera(char **element, t_rt *rt)
 	if (fov < 0 || fov > 180)
 		return (error("Invalid field of view for camera", 1));
 	rt->scene->camera.field_of_view = fov;
+	rt->scene->camera.id = 1;
 	printf("Camera fow: %f\n", rt->scene->camera.field_of_view);
 	return (0);
 }
@@ -72,6 +78,8 @@ int	parse_light(char **element, t_rt *rt)
 	char	**colors;
 	double	brightness;
 	
+	if (rt->scene->light.id != 0)
+		return (error("Too many lights in file", 1));
 	if (validate_argument_count(element, 4))
 		return (error("Invalid number of arguments for light", 1));
 	coordinates = validate_coordinates(element[1]);
@@ -93,6 +101,7 @@ int	parse_light(char **element, t_rt *rt)
 	rt->scene->light.color.x = 255.0/custom_atoi(colors[0]);
 	rt->scene->light.color.y = 255.0/custom_atoi(colors[1]);
 	rt->scene->light.color.z = 255.0/custom_atoi(colors[2]);
+	rt->scene->light.id = 1;
 	free_array(colors);
 	printf("Light color: %f, %f, %f\n", rt->scene->light.color.x, rt->scene->light.color.y, rt->scene->light.color.z);
 	return (0);
@@ -100,17 +109,17 @@ int	parse_light(char **element, t_rt *rt)
 
 int	parse_element(char **element, t_rt *rt)
 {
-	if (ft_strncmp(element[0], "A", 1) == 0 && element[0][1] == '\0')
+	if (ft_strcmp(element[0], "A") == 0)
 		return(parse_ambient(element, rt));
-	else if (ft_strncmp(element[0], "C", 1) == 0 && element[0][1] == '\0')
+	else if (ft_strcmp(element[0], "C") == 0)
 		return (parse_camera(element, rt));
-	else if (ft_strncmp(element[0], "L", 1) == 0 && element[0][1] == '\0')
+	else if (ft_strcmp(element[0], "L") == 0)
 		return (parse_light(element, rt));
-	else if (ft_strncmp(element[0], "sp", 2) == 0 && element[0][2] == '\0')
+	else if (ft_strcmp(element[0], "sp") == 0)
 		return (parse_sphere(element, rt));
-	else if (ft_strncmp(element[0], "pl", 2) == 0 && element[0][2] == '\0')
+	else if (ft_strcmp(element[0], "pl") == 0)
 		return (parse_plane(element, rt));
-	else if (ft_strncmp(element[0], "cy", 2) == 0 && element[0][2] == '\0')
+	else if (ft_strcmp(element[0], "cy") == 0)
 		return(parse_cylinder(element, rt));
 	else
 	{
@@ -119,8 +128,3 @@ int	parse_element(char **element, t_rt *rt)
 	}
 	return (0);
 }
-
-// validate number of arguments in element
-// validate argument values
-// validate rgb 
-// validate ambient ratio

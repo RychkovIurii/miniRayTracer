@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:04:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/18 19:10:45 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:31:40 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,4 +75,17 @@ void	free_rt(t_rt *rt)
 		free(rt->scene);
 	}
 	free(rt);
+}
+
+int	ft_strcmp(char const *s1, char const *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && (s1[i] == s2[i]))
+		i++;
+	if (s1[i] == s2[i])
+		return (0);
+	else
+		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }

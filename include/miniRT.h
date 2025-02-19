@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 19:44:51 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:45:35 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct	s_ambient
 {
 	double	ratio;
 	t_tuple	color;
+	int		id;
 }	t_ambient;
 
 typedef struct	s_light
@@ -60,6 +61,7 @@ typedef struct	s_light
 	t_tuple	intensity;
 	double	brightness;
 	t_tuple	color;
+	int		id;
 }	t_light;
 
 typedef struct	s_camera
@@ -72,6 +74,7 @@ typedef struct	s_camera
 	t_matrix	transform;
 	t_tuple		view_point;
 	t_tuple		normal;
+	int			id;
 }	t_camera;
 
 typedef struct	s_material
@@ -175,8 +178,8 @@ int		init_scene_structs(t_rt *rt);
 int		parse_sphere(char **element, t_rt *rt);
 int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);
-double	convert_color(char *str);
 void	free_rt(t_rt *rt);
 int		error(char *message, int ret);
+int		ft_strcmp(char const *s1, char const *s2);
 
 #endif

@@ -6,11 +6,32 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/18 19:12:44 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:53:08 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+
+int	invalid_file_content(t_rt *rt)
+{
+	if (rt->scene->camera.id == 0)
+	{
+		printf("Camera id: %d\n", rt->scene->camera.id);
+		return (error("Camera missing from file", 1));
+	}
+	if (rt->scene->ambient.id == 0 && rt->scene->light.id == 0)
+		return (error("Light source missing from file", 1));
+	if (rt->scene->ambient.id != 0 && rt->scene->light.id == 0 
+		&& rt->scene->ambient.ratio == 0)
+		return (error("At least one non-zero light source is required", 1));
+	if (rt->scene->light.id != 0 && rt->scene->ambient.id == 0 
+		&& rt->scene->light.brightness == 0)
+		return (error("At least one non-zero light source is required", 1));
+	if (rt->scene->ambient.id != 0 && rt->scene->light.id != 0
+		&& rt->scene->ambient.ratio == 0 && rt->scene->light.brightness == 0)
+		return (error("At least one non-zero light source is required", 1));
+	return (0);
+}
 
 char	**read_file(t_rt *rt, int fd)
 {
@@ -62,6 +83,11 @@ int	parse_file(t_rt *rt)
 	if (!lines)
 		return (1);
 	i = 0;
+	if (init_scene_structs(rt))
+	{
+		free_rt(rt);
+		return (1);
+	}
 	while (lines[i])
 	{
 		trimmed = trim_extra_spaces(lines[i]);
@@ -79,58 +105,22 @@ int	parse_file(t_rt *rt)
 			free_rt(rt);
 			return (1);
 		}
-		print_elements(element);
-		if (init_scene_structs(rt))
-		{
-			free_rt(rt);
-			return (1);
-		}
+		//print_elements(element);
 		if (parse_element(element, rt))
 		{
 			free_array(lines);
 			free_array(element);
 			free_rt(rt);
 			return (1);
-		}	
+		}
 		free_array(element); 
 		i++;
+	}
+	if (invalid_file_content(rt))
+	{
+		free_rt(rt);
+		return (1);
 	}
 	free_array(lines);
 	return (0);
 }
-
-/* Parse file
- - validate file extension
- - check access and permissions
- - open file
- - read file with get_next_line
-*/
-
-/* Parse ambient
- - ratio
- - color
- - add to scene
-*/
-
-/* Parse camera
- - coordinates of view point
- - orientation vector
- - field of view
- - add to scene
-*/
-
-/* Parse light
- - coordination of light point
- - brightness ration
- - RGB color
- - add to scene
-*/
-
-/* Parse objects
-- create shape
-- sphere
-- plane
-- cylinder
-- cone?
-- add to scene
-*/

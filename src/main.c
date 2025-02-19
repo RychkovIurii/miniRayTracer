@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/17 20:17:34 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:23:51 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,25 +127,3 @@ int32_t main(int argc, char **argv)
 	return (EXIT_SUCCESS);
 }
 
-/*
-int	main(int argc, char **argv)
-{
-	t_rt	*rt;
-
-	if (argc != 2)
-	{
-		printf("Invalid number of arguments\n");
-		exit(EXIT_FAILURE);
-	}
-	rt = ft_calloc(sizeof(t_rt), 1);
-	if (!rt)
-		exit(EXIT_FAILURE);
-	initialize_structs(argv, rt);
-	return (0);
-		
-	//validate file
-	//init_scene
-	//setup_window
-	//key_hook ??
-	//mlx_loop
-}  */
