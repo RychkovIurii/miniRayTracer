@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:44:26 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 12:44:46 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 22:31:03 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ magnitude of the vector.
 @returns the square root of the sum of the squares of the vector's components. */
 double	magnitude(t_tuple v)
 {
-	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w));
 }
 
 /* Normalizing a vector is the process of turning a vector into a unit vector.
@@ -31,6 +31,8 @@ t_tuple	normalize(t_tuple v)
 	t_tuple norm;
 
 	mag = magnitude(v);
+	if (fabs(mag) < EPSILON)
+		return vector(0, 0, 0);
 	norm.x = v.x / mag;
 	norm.y = v.y / mag;
 	norm.z = v.z / mag;
@@ -75,13 +77,7 @@ t_tuple	cross(t_tuple a, t_tuple b)
 t_tuple reflect(t_tuple in, t_tuple normal)
 {
 	t_tuple result;
-	t_tuple n;
-	t_tuple n2;
-	t_tuple n3;
 
-	n = multiply_tuple_scalar(normal, 2);
-	n2 = multiply_tuple_scalar(n, dot(in, normal));
-	n3 = substract_tuple(in, n2);
-	result = n3;
+	result = substract_tuple(in, multiply_tuple_scalar(normal, 2 * dot(in, normal)));
 	return (result);
 }
