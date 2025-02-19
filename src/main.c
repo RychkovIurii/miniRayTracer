@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 16:15:43 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:47:36 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@ void print_material(t_material material)
     printf("Diffuse: %f\n", material.diffuse);
     printf("Specular: %f\n", material.specular);
     printf("Shininess: %f\n", material.shininess);
-    printf("Pattern: %d\n", material.pattern); // Assuming pattern is an enum or integer
-    printf("Pattern: %d\n", material.reflective);
-	printf("Pattern: %d\n", material.transparency);
-	printf("Pattern: %d\n", material.refractive_index);
+    printf("has_pattern: %d\n", material.has_pattern); // Assuming pattern is an enum or integer
+    printf("reflective: %f\n", material.reflective);
+	printf("transparency: %f\n", material.transparency);
+	printf("refractive_index: %f\n", material.refractive_index);
 	printf("\n");
 }
 
@@ -44,9 +44,9 @@ void print_shape(const t_shape *shape)
 	
 	print_material(shape->material);
 	printf("Transformation Matrix:\n");
-	for (int i = 0; i < shape->transform.size; i++)
+	for (int i = 0; i < 4; i++)
 	{
-		for (int j = 0; j < shape->transform.size; j++)
+		for (int j = 0; j < 4; j++)
 		{
 			printf("%f ", shape->transform.matrix[i][j]);
 		}
@@ -79,7 +79,7 @@ t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
 	cosine = cos(r_angle);
 	sine = sin(r_angle);
 	one_min_cos = 1 - cosine;
-	rotation_matrix = create_matrix(4);
+	ft_bzero(&rotation_matrix, sizeof(t_matrix));
 	rotation_matrix.matrix[0][0] = r_ax.x * r_ax.x * one_min_cos + cosine;
 	rotation_matrix.matrix[0][1] = r_ax.x * r_ax.y * one_min_cos - r_ax.z * sine;
 	rotation_matrix.matrix[0][2] = r_ax.x * r_ax.z * one_min_cos + r_ax.y * sine;
@@ -109,16 +109,16 @@ t_matrix	get_rotation_matrix(t_shape *shape)
 
 	len = magnitude(shape->normalized_3d_vector);
 	if (len < EPSILON)
-		return (identity_matrix(4));
+		return (identity_matrix());
 	shape->normalized_3d_vector = normalize(shape->normalized_3d_vector);
 	y_axis = vector(0, 1, 0);
 	y_axis = normalize(y_axis);
 	if (fabs(dot(y_axis, shape->normalized_3d_vector) - 1.0) < EPSILON)
-		return (identity_matrix(4));
+		return (identity_matrix());
 	rot_axis = cross(y_axis, shape->normalized_3d_vector);
 	printf("Cross Product (Rotation Axis): (%f, %f, %f)\n", rot_axis.x, rot_axis.y, rot_axis.z);
 	if (magnitude(rot_axis) < EPSILON)
-		return (identity_matrix(4));
+		return (identity_matrix());
 	rot_axis = normalize(rot_axis);
 	rot_angle = acos(fmax(-1.0, fmin(1.0, dot(y_axis, shape->normalized_3d_vector))));
 	printf("Rotation Axis: (%f, %f, %f), Angle: %f\n", rot_axis.x, rot_axis.y, rot_axis.z, rot_angle);
@@ -148,7 +148,7 @@ void	set_matrices(t_scene *scene)
 	{
 		if (scene->shapes[i]->type == SHAPE_SPHERE)
 		{
-			scene->shapes[i]->transform = identity_matrix(4);
+			scene->shapes[i]->transform = identity_matrix();
 		}
 		else if (scene->shapes[i]->type == SHAPE_PLANE)
 		{
@@ -172,9 +172,9 @@ int main(void)
 
 	t_shape *sphere = (t_shape *)calloc(1, sizeof(t_shape));
 	sphere->type = SHAPE_SPHERE;
-	sphere->center = point(0, 6.0, 0.0);
+	sphere->center = point(0, 6.0, -20.0);
 	sphere->radius = 2.5;
-	sphere->transform = identity_matrix(4);
+	sphere->transform = identity_matrix();
 	sphere->material = material(create_color(1.0, 0.8, 0.0), scene.ambient_lightning.ambient, 0.3, 1.0, 300.0, PATTERN_NONE);
 	/* sphere->material.reflective = 0.9;
 	sphere->material.transparency = 0.0;
@@ -209,9 +209,9 @@ int main(void)
 	wall->material.refractive_index = 1.0; */
 	scene.shapes[2] = wall;
 
-	scene.camera = init_camera(0.0, 6.0, -10.0, vector(0.0, 0.0, 1.0), 100.0, WIDTH, HEIGHT);
+	scene.camera = init_camera(0.0, 6.0, 15.0, vector(0.0, 0.0, -1.0), 100.0, WIDTH, HEIGHT);
 
-	scene.light = init_light(point(0, 5.0, 30.0), create_color(1.0, 1.0, 1.0), 0.9);
+	scene.light = init_light(point(0, 30.0, 30.0), create_color(1.0, 1.0, 1.0), 0.9);
 
 	set_matrices(&scene);
 

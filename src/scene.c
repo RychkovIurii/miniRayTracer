@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 17:17:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:00:28 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ t_shape create_shape(t_shape_type type)
 {
 	t_shape	shape;
 
-	shape.transform = identity_matrix(4);
+	shape.transform = identity_matrix();
 	shape.material = default_material();
 	shape.type = type;
 	shape.center = point(0, 0, 0);
@@ -135,7 +135,8 @@ t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 	t_tuple left = cross(forward, upn);
 	t_tuple true_up = cross(left, forward);
 
-	t_matrix orientation = create_matrix(4);
+	t_matrix orientation;
+	ft_bzero(&orientation, sizeof(t_matrix));
 	orientation.matrix[0][0] = left.x;
 	orientation.matrix[0][1] = left.y;
 	orientation.matrix[0][2] = left.z;
@@ -219,7 +220,7 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, 
 	camera.hsize = hsize;
 	camera.vsize = vsize;
 	camera.field_of_view = fov;
-	camera.transform = identity_matrix(4);
+	camera.transform = identity_matrix();
 
 	half_view = tan(camera.field_of_view / 2);
 	aspect = (double)camera.hsize / (double)camera.vsize;

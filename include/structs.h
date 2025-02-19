@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 19:07:25 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:33:11 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,13 @@ typedef struct	s_tuple
 	double	w;
 }	t_tuple;
 
+typedef struct s_matrix3x3
+{
+	double matrix[3][3];
+} t_matrix3x3;
+
 typedef struct	s_matrix
 {
-	int		size;  /* Removed size field since 4x4 is fixed */
 	double	matrix[4][4];
 }			t_matrix;
 
@@ -61,9 +65,9 @@ typedef enum { SHAPE_SPHERE, SHAPE_PLANE } t_shape_type;
 typedef struct s_shape {
 	t_matrix		transform;
 	t_tuple			center;
-	t_material		material;
 	t_tuple			scale;
 	t_tuple			normalized_3d_vector;
+	t_material		material;
 	double			radius;
 	t_shape_type	type;
 }					t_shape;

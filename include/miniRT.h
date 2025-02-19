@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 18:29:30 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 22:16:41 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 # include <math.h>
 # include "structs.h"
 
-# define WIDTH 200
-# define HEIGHT 100
+# define WIDTH 300
+# define HEIGHT 150
 # define EPSILON	0.0001f
 # define DEFAULT_REMAINING 5
 
@@ -59,8 +59,7 @@ t_tuple reflect(t_tuple in, t_tuple normal);
 
 /** Matrix **/
 
-t_matrix	create_matrix(int size);
-t_matrix	identity_matrix(int size);
+t_matrix	identity_matrix(void);
 int			is_matrices_equal(t_matrix a, t_matrix b);
 t_tuple		multiply_matrix_by_tuple(t_matrix a, t_tuple b);
 t_matrix	multiply_matrices(t_matrix a, t_matrix b);
@@ -71,7 +70,8 @@ t_matrix	rotation_x_matrix(double radian);
 t_matrix	rotation_y_matrix(double radian);
 t_matrix	rotation_z_matrix(double radian);
 t_matrix	shearing_matrix(double xy, double xz, double yx, double yz, double zx, double zy);
-t_matrix	submatrix(t_matrix a, int row, int column);
+t_matrix3x3	submatrix(t_matrix a, int row, int column);
+double		determinant3x3(t_matrix3x3 m);
 double		minor_matrix(t_matrix a, int row, int column);
 double		cofactor_matrix(t_matrix a, int row, int column);
 double		determinant(t_matrix a);

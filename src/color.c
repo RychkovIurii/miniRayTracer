@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 13:45:18 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:08:36 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_pattern		stripe_pattern(t_tuple a, t_tuple b)
 
 	pattern.color_a = a;
 	pattern.color_b = b;
-	pattern.transform = identity_matrix(4);
+	pattern.transform = identity_matrix();
 	return (pattern);
 }
 
@@ -41,7 +41,7 @@ t_pattern		gradient_pattern(t_tuple a, t_tuple b)
 
 	pattern.color_a = a;
 	pattern.color_b = b;
-	pattern.transform = identity_matrix(4);
+	pattern.transform = identity_matrix();
 	return (pattern);
 }
 
@@ -61,7 +61,7 @@ t_pattern		ring_pattern(t_tuple a, t_tuple b)
 
 	pattern.color_a = a;
 	pattern.color_b = b;
-	pattern.transform = identity_matrix(4);
+	pattern.transform = identity_matrix();
 	return (pattern);
 }
 
@@ -80,7 +80,7 @@ t_pattern		checker_pattern(t_tuple a, t_tuple b)
 
 	pattern.color_a = a;
 	pattern.color_b = b;
-	pattern.transform = identity_matrix(4);
+	pattern.transform = identity_matrix();
 	return (pattern);
 }
 
