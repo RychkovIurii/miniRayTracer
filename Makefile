@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/18 17:52:41 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/19 19:25:05 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -O3 -march=native #-flto #-Wall -Wextra -Werror
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -flto #-Wall -Wextra -Werror
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)
