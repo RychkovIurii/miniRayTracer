@@ -6,26 +6,11 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 20:08:36 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 00:29:04 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-void set_pattern_transform(t_pattern *pattern, t_matrix transform)
-{
-	pattern->transform = transform;
-}
-
-t_pattern		stripe_pattern(t_tuple a, t_tuple b)
-{
-	t_pattern	pattern;
-
-	pattern.color_a = a;
-	pattern.color_b = b;
-	pattern.transform = identity_matrix();
-	return (pattern);
-}
 
 t_tuple	stripe_at(t_pattern pattern, t_tuple point)
 {
@@ -33,16 +18,6 @@ t_tuple	stripe_at(t_pattern pattern, t_tuple point)
 		return (pattern.color_a);
 	else
 		return (pattern.color_b);
-}
-
-t_pattern		gradient_pattern(t_tuple a, t_tuple b)
-{
-	t_pattern	pattern;
-
-	pattern.color_a = a;
-	pattern.color_b = b;
-	pattern.transform = identity_matrix();
-	return (pattern);
 }
 
 t_tuple		gradient_at(t_pattern pattern, t_tuple point)
@@ -55,26 +30,16 @@ t_tuple		gradient_at(t_pattern pattern, t_tuple point)
 	return (add_tuple(pattern.color_a, multiply_tuple_scalar(distance, fraction)));
 }
 
-t_pattern		ring_pattern(t_tuple a, t_tuple b)
-{
-	t_pattern	pattern;
-
-	pattern.color_a = a;
-	pattern.color_b = b;
-	pattern.transform = identity_matrix();
-	return (pattern);
-}
-
 t_tuple		ring_at(t_pattern pattern, t_tuple point)
 {
-	int floored_distance = (int)floor(sqrt(point.x * point.x + point.z * point.z));
+	int floored_distance = (int)floor(hypot(point.x, point.z));
 	if (floored_distance % 2 == 0)
 		return (pattern.color_a);
 	else
 		return (pattern.color_b);
 }
 
-t_pattern		checker_pattern(t_tuple a, t_tuple b)
+t_pattern		set_pattern(t_tuple a, t_tuple b)
 {
 	t_pattern	pattern;
 
@@ -154,27 +119,28 @@ t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple posi
 	return (add_tuple(add_tuple(ambient, diffuse), specular));
 }
 
-void	bubble_sort_intersections(t_intersection *array, int count)
+void insertion_sort_intersections(t_intersection *array, int count)
 {
-	t_intersection temp;
+	t_intersection key;
 	int i;
 	int j;
-
-	i = 0;
-	j = 0;
+	
+	i = 1;
 	while (i < count)
 	{
-		j = 0;
-		while (j < count - 1)
+		key = array[i];
+		j = i - 1;
+		if (array[j].t <= key.t)
 		{
-			if (array[j].t > array[j + 1].t)
-			{
-				temp = array[j];
-				array[j] = array[j + 1];
-				array[j + 1] = temp;
-			}
-			j++;
+			i++;
+			continue;
 		}
+		while (j >= 0 && array[j].t > key.t)
+		{
+			array[j + 1] = array[j];
+			j--;
+		}
+		array[j + 1] = key;
 		i++;
 	}
 }
@@ -187,36 +153,51 @@ t_intersects intersect_scene(t_scene *world, t_ray ray)
 	t_intersection *xs_array;
 	t_intersects temp;
 	int total_intersections = 0;
+	int i;
+	int index;
 	temp_array = NULL;
 
 	// Allocate memory for intersections dynamically (in case there are more than 2 intersections)
 	xs_array = NULL;
 
-	// Intersect all spheres in the world
-	int i = 0;
-	while(world->shapes[i] != NULL)
+	// First pass: Count total intersections
+	i = 0;
+	while (world->shapes[i] != NULL)
 	{
 		temp = intersect(world->shapes[i], ray);
-		temp_array = temp.array;
-		
-		// If there are any intersections, resize the array and copy them
-		if (temp.count > 0) {
-			// Resize the xs_array to hold all intersections
-			xs_array = realloc(xs_array, sizeof(t_intersection) * (total_intersections + temp.count));
-			// Copy new intersections to the xs_array
-			for (int j = 0; j < temp.count; j++) {
-				xs_array[total_intersections + j] = temp_array[j];
-			}
-			total_intersections += temp.count;
+		total_intersections += temp.count;
+		free_intersects(&temp);
+		i++;
+	}
+
+	// Allocate memory once
+	if (total_intersections > 0)
+	{
+		xs_array = malloc(sizeof(t_intersection) * total_intersections);
+		if (!xs_array)
+		{
+			xs.count = 0;
+			xs.array = NULL;
+			return xs;
+		}
+	}
+
+	// Second pass: Store all intersections
+	index = 0;
+	i = 0;
+	while (world->shapes[i] != NULL)
+	{
+		temp = intersect(world->shapes[i], ray);
+		if (temp.count > 0)
+		{
+			ft_memcpy(xs_array + index, temp.array, sizeof(t_intersection) * temp.count);
+			index += temp.count;
 		}
 		free_intersects(&temp);
 		i++;
 	}
 
-	// If there are any intersections, sort them
-	if (total_intersections > 0) {
-		bubble_sort_intersections(xs_array, total_intersections);
-	}
+	insertion_sort_intersections(xs_array, total_intersections);
 	xs.count = total_intersections;
 	xs.array = xs_array;
 	return (xs);

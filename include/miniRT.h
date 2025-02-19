@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 22:16:41 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 23:44:28 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,6 @@ t_tuple	substract_tuple(t_tuple a, t_tuple b);
 t_tuple	negate_tuple(t_tuple a);
 t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
 t_tuple	divide_tuple(t_tuple a, double scalar);
-int	is_tuples_equal(t_tuple a, t_tuple b);
-int	is_point(t_tuple a);
-int	is_vector(t_tuple a);
 
 
 /** Vector **/
@@ -119,7 +116,7 @@ t_light init_light(t_tuple position, t_tuple color, double brightness);
 
 t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
 t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
-void	bubble_sort_intersections(t_intersection *array, int count);
+void	insertion_sort_intersections(t_intersection *array, int count);
 t_intersects intersect_scene(t_scene *world, t_ray ray);
 t_tuple reflected_color(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
 t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
@@ -127,7 +124,7 @@ double schlick(t_intersection comps);
 t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
 t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
 int is_shadowed(t_scene world, t_tuple point);
-t_pattern		checker_pattern(t_tuple a, t_tuple b);
+t_pattern		set_pattern(t_tuple a, t_tuple b);
 
 /** Mlx **/
 void ft_render_scene(void* param);

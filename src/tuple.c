@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:38:19 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 12:53:04 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 22:39:05 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,36 +173,11 @@ t_tuple	divide_tuple(t_tuple a, double scalar)
 {
 	t_tuple	tuple;
 
+	if (fabs(scalar) < EPSILON)
+		return (create_tuple(0, 0, 0, 0));
 	tuple.x = a.x / scalar;
 	tuple.y = a.y / scalar;
 	tuple.z = a.z / scalar;
 	tuple.w = a.w / scalar;
 	return (tuple);
-}
-
-/* Functions to validate tuples.
-@param a, b: tuples to compare.
-@returns 1 if the tuples are equal, 0 otherwise. */
-int	is_tuples_equal(t_tuple a, t_tuple b)
-{
-	if (fabs(a.x - b.x) < EPSILON && fabs(a.y - b.y) < EPSILON &&
-		fabs(a.z - b.z) < EPSILON && fabs(a.w - b.w) < EPSILON)
-		return (1);
-	return (0);
-}
-
-/*Validatates if the tuple is a point.
-@param a: tuple to validate.
-@returns 1 if the tuple is a point, 0 otherwise. */
-int	is_point(t_tuple a)
-{
-	return (a.w == 1.0);
-}
-
-/*Validatates if the tuple is a vector.
-@param a: tuple to validate.
-@returns 1 if the tuple is a vector, 0 otherwise. */
-int	is_vector(t_tuple a)
-{
-	return (a.w == 0.0);
 }

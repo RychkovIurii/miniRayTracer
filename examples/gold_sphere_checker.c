@@ -23,7 +23,7 @@
 	floor->plane_normal = vector(0, 1, 0);
 	floor->transform = translation_matrix(0, -10, 0.0); //if we a getting point x,y,z coordinates of a point in the plane: 0.0,6.0,-10.0 It's same as floor->transform = translation_matrix(0, 6.0, -10.0);
 	floor->material = material(create_color(0.0/255.0, 0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.8, 0.4, 100.0, PATTERN_CHECKER);
-	floor->material.pattern = checker_pattern(create_color(255.0/255.0, 255.0/255.0, 255.0/255.0), create_color(0.0/255.0, 0.0/255.0, 0.0/255.0));
+	floor->material.pattern = set_pattern(create_color(255.0/255.0, 255.0/255.0, 255.0/255.0), create_color(0.0/255.0, 0.0/255.0, 0.0/255.0));
 	floor->material.pattern.transform = scaling_matrix(10, 10, 10);
 	floor->material.reflective = 0.2;
 	floor->material.transparency = 0.0;
@@ -36,7 +36,7 @@
 	floor1->plane_normal = vector(0, 1, 0);
 	floor1->transform = translation_matrix(0, 12.0, 0.0); //if we a getting point x,y,z coordinates of a point in the plane: 0.0,6.0,-10.0 It's same as floor->transform = translation_matrix(0, 6.0, -10.0);
 	floor1->material = material(create_color(0.0/255.0, 0/255.0, 255.0/255.0), scene.ambient_lightning.ambient, 0.8, 0.4, 100.0, PATTERN_CHECKER);
-	floor1->material.pattern = checker_pattern(create_color(255.0/255.0, 0.0/255.0, 0.0/255.0), create_color(255.0/255.0, 255.0/255.0, 255.0/255.0));
+	floor1->material.pattern = set_pattern(create_color(255.0/255.0, 0.0/255.0, 0.0/255.0), create_color(255.0/255.0, 255.0/255.0, 255.0/255.0));
 	floor1->material.pattern.transform = scaling_matrix(10, 10, 10);
 	floor1->material.reflective = 0.2;
 	floor1->material.transparency = 0.0;

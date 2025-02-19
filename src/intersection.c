@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 17:11:57 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 00:06:24 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,22 +232,22 @@ t_intersects local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
 	double		b;
 	double		c;
 	double		discriminant;
+	double		sqrt_d;
 
+	ft_bzero(&result, sizeof(t_intersects));
 	sphere_to_ray = substract_tuple(transformed_ray.origin, sphere->center);
 	a = dot(transformed_ray.direction, transformed_ray.direction);
 	b = 2 * dot(transformed_ray.direction, sphere_to_ray);
 	c = dot(sphere_to_ray, sphere_to_ray) - sphere->radius * sphere->radius;
 	discriminant = b * b - 4 * a * c;
-	if (discriminant < 0) {
-		result.count = 0;
-		result.array = NULL;
+	if (discriminant < 0)
 		return result;
-	}
+	sqrt_d = sqrt(discriminant);
 	result.count = 2;
-	result.array = (t_intersection *)calloc(2, sizeof(t_intersection));
-	result.array[0].t = (-b - sqrt(discriminant)) / (2 * a);
+	result.array = malloc(sizeof(t_intersection) * 2);
+	result.array[0].t = (-b - sqrt_d) / (2 * a);
 	result.array[0].object = sphere;
-	result.array[1].t = (-b + sqrt(discriminant)) / (2 * a);
+	result.array[1].t = (-b + sqrt_d) / (2 * a);
 	result.array[1].object = sphere;
 
 	return result;
@@ -257,14 +257,12 @@ t_intersects local_intersect_plane(t_shape *plane, t_ray transformed_ray)
 {
 	t_intersects result;
 
+	ft_bzero(&result, sizeof(t_intersects));
 	if (fabs(transformed_ray.direction.y) < EPSILON)
-	{
-		result.count = 0;
-		result.array = NULL;
+
 		return result;
-	}
 	result.count = 1;
-	result.array = (t_intersection *)calloc(1, sizeof(t_intersection));
+	result.array = malloc(sizeof(t_intersection));
 	result.array[0].t = -transformed_ray.origin.y / transformed_ray.direction.y;
 	result.array[0].object = plane;
 	return (result);
