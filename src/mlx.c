@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:10:48 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:44:11 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,28 +62,24 @@ void ft_render_scene(void* param)
 
 void ft_hook(void* param)
 {
-	mlx_t* mlx = param;
+	t_scene *scene = (t_scene *)param;
 
-	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
-		mlx_close_window(mlx);
-/* 	if (mlx_is_key_down(mlx, MLX_KEY_UP))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(scene->mlx);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 3, 0));
-		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, -0.2, 0));
 	}
-	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_DOWN))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, -3, 0));
-		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0.2, 0));
 	}
-	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-3, 0, 0));
-		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-0.2, 0, 0));
 	}
-	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(3, 0, 0));
-		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
-	} */
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0.2, 0, 0));
+	}
 }

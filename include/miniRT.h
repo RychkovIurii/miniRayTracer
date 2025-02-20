@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:25:43 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:14:39 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ double		cofactor_matrix(t_matrix a, int row, int column);
 double		determinant(t_matrix a);
 int			is_invertible(t_matrix a);
 t_matrix	inverse_matrix(t_matrix a);
+void	set_matrices(t_scene *scene);
 
 
 /** Intersection **/
@@ -179,5 +180,8 @@ int	round_value(int value, int min, int max);
 /** Utils **/
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
+
+/** Debug **/
+void print_shapes(t_scene *scene);
 
 #endif

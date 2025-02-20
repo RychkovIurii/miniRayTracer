@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/20 17:29:54 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/20 22:29:28 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ SRCS = main.c\
 		color.c\
 		intersection.c\
 		matrix.c\
+		matrix2.c\
 		ray.c\
 		scene.c\
 		tuple.c\
