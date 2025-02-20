@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 00:06:24 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:40:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ typedef struct s_list
 
 void free_intersects(t_intersects *xs)
 {
+	/* if (!xs || !xs->array)
+		return; */
 	if (xs->array)
 		free(xs->array);
 	xs->array = NULL;
@@ -106,19 +108,6 @@ void	ft_lstremove(t_list **lst, void *content)
 	}
 }
 
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*temp;
-
-	temp = (unsigned char *)s;
-	while (n > 0)
-	{
-		*temp = 0;
-		n--;
-		temp++;
-	}
-}
-
 t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs)
 {
     t_intersection comps;
@@ -199,29 +188,16 @@ t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects 
 
 t_intersection	*hit(t_intersects intersections)
 {
-	t_intersection	*hit;
-	int				i;
+	int	i;
 
-	hit = NULL;
 	i = 0;
-
 	while (i < intersections.count)
 	{
-		/* if (intersections.array[i].t > 0)
-		{
-			if (hit == NULL)
-				hit = &intersections.array[i];
-			else if (intersections.array[i].t < hit->t)
-				hit = &intersections.array[i];
-		} */
-		if (intersections.array[i].t > 0) //because we sort it in world_intersect we return the first positive t
-		{
-			hit = &intersections.array[i];
-			break;
-		}
+		if (intersections.array[i].t > EPSILON)
+			return (&intersections.array[i]);
 		i++;
 	}
-	return (hit);
+	return (NULL);
 }
 
 t_intersects local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)

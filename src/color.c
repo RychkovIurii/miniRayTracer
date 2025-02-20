@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 00:29:04 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:20:50 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,29 +204,21 @@ t_intersects intersect_scene(t_scene *world, t_ray ray)
 }
 
 
-t_tuple reflected_color(t_scene *world, t_intersection comps, int remaining, t_intersects *xs)
+t_tuple reflected_color(t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	color;
-	t_ray	reflected_ray;
 	t_tuple	reflect_color;
 
-	(void)xs;
 	if (remaining <= 0)
 		return (create_color(0, 0, 0));
 	if (comps.object->material.reflective <= EPSILON)
 		return (create_color(0, 0, 0));
-	reflected_ray = create_ray(comps.over_point, comps.reflectv);
-/* 	if (remaining < DEFAULT_REMAINING)
-	{
-		free(xs->array);
-		xs->array = NULL;
-	} */
-	color = color_at(world, reflected_ray, remaining - 1);
+	color = color_at(world, create_ray(comps.over_point, comps.reflectv), remaining - 1);
 	reflect_color = multiply_tuple_scalar(color, comps.object->material.reflective);
 	return (reflect_color);
 }
 
-t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining, t_intersects *xs)
+t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	refract_color;
 	t_ray	refracted_ray;
@@ -236,10 +228,7 @@ t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining, t_i
 	double	cos_t;
 	t_tuple	direction;
 
-	(void)xs;
-	if (remaining <= 0)
-		return (create_color(0, 0, 0));
-	if (comps.object->material.transparency < EPSILON)
+	if (remaining <= 0 || comps.object->material.transparency < EPSILON)
 		return (create_color(0, 0, 0));
 	n_ratio = comps.n1 / comps.n2;
 	cos_i = dot(comps.eyev, comps.normalv);
@@ -248,11 +237,11 @@ t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining, t_i
 		return (create_color(0, 0, 0));
 	cos_t = sqrt(1.0 - sin2_t);
 	direction = substract_tuple(multiply_tuple_scalar(comps.normalv, n_ratio * cos_i - cos_t), multiply_tuple_scalar(comps.eyev, n_ratio));
-	/* if (comps.inside) */
-    refracted_ray = create_ray(comps.under_point, direction);
-    /* else
-        refracted_ray = create_ray(comps.over_point, direction); */
-    refract_color = color_at(world, refracted_ray, remaining - 1);
+	if (comps.inside)
+		refracted_ray = create_ray(comps.under_point, direction);
+	else
+		refracted_ray = create_ray(comps.over_point, direction);
+	refract_color = color_at(world, refracted_ray, remaining - 1);
 	return (multiply_tuple_scalar(refract_color, comps.object->material.transparency));
 }
  /* 
@@ -268,7 +257,6 @@ double schlick(t_intersection comps)
 	double	cos;
 	double	n_ratio;
 	double	sin2_t;
-	double	cos_t;
 	double	r0;
 
 	cos = dot(comps.eyev, comps.normalv);
@@ -278,10 +266,10 @@ double schlick(t_intersection comps)
 		sin2_t = n_ratio * n_ratio * (1 - cos * cos);
 		if (sin2_t > 1.0)
 			return (1.0);
-		cos_t = sqrt(1.0 - sin2_t);
-		cos = cos_t;
+		cos = sqrt(1.0 - sin2_t);
 	}
-	r0 = pow((comps.n1 - comps.n2) / (comps.n1 + comps.n2), 2);
+	r0 = (comps.n1 - comps.n2) / (comps.n1 + comps.n2);
+	r0 = r0 * r0;
 	return (r0 + (1 - r0) * pow(1 - cos, 5));
 }
 
@@ -303,8 +291,8 @@ t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_interse
 
 	shadowed = is_shadowed(*world, comps.over_point);
 	surface = lighting(comps.object->material, *comps.object, world->light, comps.over_point, comps.eyev, comps.normalv, shadowed);
-	reflected = reflected_color(world, comps, remaining, xs);
-	refracted = refracted_color(world, comps, remaining, xs);
+	reflected = reflected_color(world, comps, remaining);
+	refracted = refracted_color(world, comps, remaining);
 	// If the material is both reflective and transparent, use Schlick's approximation.
 	if (comps.object->material.transparency > EPSILON && comps.object->material.reflective > EPSILON)
 	{
@@ -314,13 +302,9 @@ t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_interse
 						multiply_tuple_scalar(refracted, 1.0 - reflectance)));
 	}
 	else if (comps.object->material.transparency > EPSILON)
-	{
-		color = add_tuple(surface, add_tuple(refracted, reflected));
-	}
+		color = add_tuple(surface, refracted);
 	else
-	{
 		color = add_tuple(surface, reflected);
-	}
 	return (color);
 }
 
@@ -332,17 +316,20 @@ t_tuple	color_at(t_scene *world, t_ray ray, int remaining)
 	t_tuple			color;
 
 	xs = intersect_scene(world, ray);
+	if (xs.count == 0)
+	{
+		free(xs.array);
+		return create_color(0, 0, 0);
+	}
 	hits = hit(xs);
 	if (hits == NULL)
 	{
 		free(xs.array);
-		xs.array = NULL;
 		return (create_color(0, 0, 0));
 	}
 	comps = prepare_computations(*hits, ray, &xs);
 	color = shade_hit(world, comps, remaining, &xs);
 	free(xs.array);
-	xs.array = NULL;
 	return (color);
 }
 
@@ -356,15 +343,20 @@ int is_shadowed(t_scene world, t_tuple point)
 	t_intersection	*hit_obj;
 
 	v = substract_tuple(world.light.position, point);
-	distance = magnitude(v);
 	r = create_ray(point, normalize(v));
 	xs = intersect_scene(&world, r);
+	if (xs.count == 0)
+	{
+		free(xs.array);
+		return 0;
+	}
 	hit_obj = hit(xs);
+	distance = magnitude(v);
 	if (hit_obj && hit_obj->t < distance)
 	{
-		free_intersects(&xs);
+		free(xs.array);//free_intersects(&xs);
 		return (1);
 	}
-	free_intersects(&xs);
+	free(xs.array);//free_intersects(&xs);
 	return (0);
 }

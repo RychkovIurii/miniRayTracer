@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 20:33:11 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:16:40 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,11 +99,11 @@ typedef struct	s_light
 	t_tuple	intensity; // color
 }			t_light;
 
-typedef struct s_ambient_lightning
+typedef struct s_ambient
 {
-	double	ambient;
+	double	ratio;
 	t_tuple	color;
-}			t_ambient_lightning;
+}			t_ambient;
 
 typedef struct s_camera
 {
@@ -127,7 +127,7 @@ typedef struct s_scene
 {
 	mlx_t				*mlx;
 	mlx_image_t			*image;
-	t_ambient_lightning	ambient_lightning;
+	t_ambient			ambient;
 	t_camera			camera;
 	t_light				light;
 	t_shape				**shapes; // The pointer-based array t_shape **shapes is retained but should be converted to a t_shape shapes[MAX_SHAPES] if a fixed number is known.

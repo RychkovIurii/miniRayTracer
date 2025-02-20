@@ -6,13 +6,33 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/18 17:18:11 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:10:48 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-int32_t ft_pixel(int32_t r, int32_t g, int32_t b, int32_t a)
+/* This function clamps a value to a given range. */
+int	round_value(int value, int min, int max)
+{
+	if (value < min)
+		return (min);
+	if (value > max)
+		return (max);
+	return (value);
+}
+
+/* This function returns the color of the pixel at the given coordinates. */
+t_tuple	pixel_at(t_canvas *canvas, int x, int y)
+{
+	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
+	{
+		return (canvas->pixels[y][x]);
+	}
+	return (create_color(0, 0, 0)); // Return black if out of bounds
+}
+
+int ft_pixel(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -46,12 +66,24 @@ void ft_hook(void* param)
 
 	if (mlx_is_key_down(mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(mlx);
-	/* if (mlx_is_key_down(mlx, MLX_KEY_UP))
-		image->instances[0].y -= 5;
+/* 	if (mlx_is_key_down(mlx, MLX_KEY_UP))
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 3, 0));
+		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+	}
 	if (mlx_is_key_down(mlx, MLX_KEY_DOWN))
-		image->instances[0].y += 5;
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, -3, 0));
+		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+	}
 	if (mlx_is_key_down(mlx, MLX_KEY_LEFT))
-		image->instances[0].x -= 5;
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-3, 0, 0));
+		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+	}
 	if (mlx_is_key_down(mlx, MLX_KEY_RIGHT))
-		image->instances[0].x += 5; */
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(3, 0, 0));
+		scene->camera.inverse_transform = inverse_matrix(scene->camera.transform);
+	} */
 }
