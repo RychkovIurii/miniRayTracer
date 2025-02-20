@@ -6,13 +6,13 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 13:17:29 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:36:19 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
 
-void	print_parsed_content(t_rt *rt)
+/*void	print_parsed_content(t_rt *rt)
 {
 	printf("***Ambient***\n");
 	printf("Ambient ratio: %f\n", rt->scene->ambient.ratio);
@@ -54,7 +54,7 @@ void	print_parsed_content(t_rt *rt)
 		}
 		i++;
 	}
-}
+} */
 
 char	**allocate_lines(int count)
 {
@@ -158,6 +158,6 @@ int	parse_file(t_rt *rt)
 		free_rt(rt);
 		return (1);
 	}
-	print_parsed_content(rt);
+	//print_parsed_content(rt);
 	return (0);
 }

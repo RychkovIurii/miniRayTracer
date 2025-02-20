@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 15:06:14 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:25:42 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ typedef struct s_camera
 	t_tuple		normal;
 }				t_camera;
 
-typedef enum { SHAPE_SPHERE, SHAPE_PLANE, CYLINDER, CONE } t_shape_type;
+typedef enum { SHAPE_SPHERE, SHAPE_PLANE, SHAPE_CYLINDER, SHAPE_CONE } t_shape_type;
 
 typedef struct	s_shape
 {
@@ -132,16 +132,6 @@ typedef struct	s_canvas
 	t_tuple		**pixels;
 }				t_canvas;
 
-typedef struct	s_rt
-{
-	//mlx_t	*mlx;
-	//t_image	*image;
-	char		*filename;
-	char		**elements;
-	int			element_count;
-	t_scene		*scene;
-}	t_rt;
-
 typedef struct s_scene
 {
 	int				shape_count;
@@ -152,7 +142,17 @@ typedef struct s_scene
 	t_ambient			ambient;
 	t_camera			camera;
 	t_light				light;
-	t_shape				**shapes; // Switch to *shapes
+	t_shape				*shapes; // Switch to *shapes
 }				t_scene;
+
+typedef struct	s_rt
+{
+	//mlx_t	*mlx;
+	//t_image	*image;
+	char		*filename;
+	char		**elements;
+	int			element_count;
+	t_scene		*scene;
+}	t_rt;
 
 #endif

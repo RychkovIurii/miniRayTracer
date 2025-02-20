@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:04:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/19 10:31:40 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:06:29 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/miniRT.h"
+#include "miniRT.h"
 
 void	free_array(char **array)
 {
@@ -39,14 +39,14 @@ void print_elements(char **elements)
 
 int	init_scene_structs(t_rt *rt)
 {
-	rt->scene = calloc(1, sizeof(t_scene));
+	rt->scene = ft_calloc(1, sizeof(t_scene));
 	if (!rt->scene)
 	{
 		print_error("Failed to allocate t_scene");
 		return (1);
 	}
 	rt->scene->shape_count = 0;
-	rt->scene->shapes = calloc(rt->element_count - 2, sizeof(t_shape));
+	rt->scene->shapes = ft_calloc(rt->element_count - 2, sizeof(t_shape));
 	if (!rt->scene->shapes)
 	{
 		print_error("Failed to allocate shapes array");

@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 15:10:31 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:11:33 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,6 @@ int	validate_file_ext(t_rt *rt)
 
 void	initialize_structs(char **argv, t_rt *rt)
 {
-	ft_memset(rt, 0, sizeof(t_rt));
 	rt->filename = argv[1];
 	if (validate_file_ext(rt))
 	{
@@ -191,18 +190,35 @@ int32_t main(int argc, char **argv)
 	mlx_t	*mlx;
 	t_rt	*rt;
 	
+
 	if (argc != 2)
 	{
 		printf("Invalid number of arguments\n");
 		return(EXIT_FAILURE);
 	}
-	rt = ft_calloc(sizeof(t_rt), 1);
+	rt = ft_calloc(1, sizeof(t_rt));
 	if (!rt)
 		return(EXIT_FAILURE);
 	initialize_structs(argv, rt);
 	if (parse_file(rt))
 		return(EXIT_FAILURE);
 	// Gotta error check this stuff
+	rt->scene->mlx = mlx;
+	
+	rt->scene->camera = init_camera(
+		rt->scene->camera.view_point.x,
+		rt->scene->camera.view_point.y,
+		rt->scene->camera.view_point.z,
+		rt->scene->camera.normal,
+		rt->scene->camera.field_of_view,
+		WIDTH, HEIGHT);
+
+	rt->scene->light = init_light(
+		rt->scene->light.position,
+		rt->scene->light.color,
+		rt->scene->light.brightness);
+
+		
 	if (!(rt->scene->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true)))
 	{
 		puts(mlx_strerror(mlx_errno));
@@ -224,9 +240,8 @@ int32_t main(int argc, char **argv)
 	mlx_loop_hook(rt->scene->mlx, ft_render_scene, rt->scene);
 	//mlx_loop_hook(scene.mlx, ft_hook, scene.mlx);
 
-	mlx_loop(mlx);
-	mlx_terminate(mlx);
+	mlx_loop(rt->scene->mlx);
+	mlx_terminate(rt->scene->mlx);
 	free_rt(rt);
 	return (EXIT_SUCCESS);
 }
-
