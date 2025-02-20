@@ -3,19 +3,39 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
+#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/17 18:42:26 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/20 14:47:56 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 
-SRCS = main.c color.c intersection.c matrix.c ray.c scene.c tuple.c vector.c
-SRC_DIR = ./src
+SRCS = main.c\
+		parser/parser.c\
+		parser/parser_utils.c\
+		parser/parse_element.c\
+		parser/parse_element_utils.c\
+		parser/parse_shapes.c\
+		parser/add_shapes.c\
+		parser/validations.c\
+		parser/conversions.c\
+		parser/trim_line.c\
+		utils.c\
+		color.c\
+		intersection.c\
+		matrix.c\
+		ray.c\
+		scene.c\
+		tuple.c\
+		vector.c
 
-OBJS = $(addprefix $(SRC_DIR)/, $(SRCS:.c=.o))
+SRC_DIR = ./src
+OBJ_DIR = ./obj
+
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
+OBJ_DIRS = $(sort $(dir $(OBJS)))
 
 MLX_DIR = ./MLX42
 
@@ -49,15 +69,18 @@ $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR)
 
-%.o: %.c
+$(NAME): $(OBJ_DIRS) $(OBJS)
+	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
+
+$(OBJ_DIRS):
+	@mkdir -p $@
+	
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c	
 	$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS)
 	@echo "Compiling: $<"
 
-$(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
-
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJ_DIR)
 	@rm -rf $(MLX_DIR)/build
 	@$(MAKE) -C $(LIBFT_DIR) clean
 

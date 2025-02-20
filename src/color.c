@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 13:45:18 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:33:41 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,9 +194,9 @@ t_intersects intersect_scene(t_scene *world, t_ray ray)
 
 	// Intersect all spheres in the world
 	int i = 0;
-	while(world->shapes[i] != NULL)
+	while(i < world->shape_count)
 	{
-		temp = intersect(world->shapes[i], ray);
+		temp = intersect(&world->shapes[i], ray);
 		temp_array = temp.array;
 		
 		// If there are any intersections, resize the array and copy them

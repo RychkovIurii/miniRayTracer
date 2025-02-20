@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 18:41:16 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:35:17 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-typedef struct s_list
-{
-	void			*content;
-	struct s_list	*next;
-}	t_list;
 
 void free_intersects(t_intersects *xs)
 {
@@ -24,43 +18,6 @@ void free_intersects(t_intersects *xs)
 		free(xs->array);
 	xs->array = NULL;
 	xs->count = 0;
-}
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*ptr;
-
-	ptr = (t_list *)malloc(sizeof(t_list));
-	if (!ptr)
-		return (NULL);
-	ptr->content = content;
-	ptr->next = NULL;
-	return (ptr);
-}
-
-t_list	*ft_lstlast(t_list *lst)
-{
-	t_list	*ptr;
-
-	ptr = lst;
-	while (ptr != NULL && ptr->next != NULL)
-		ptr = ptr->next;
-	return (ptr);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*last;
-
-	if (lst == NULL || new == NULL)
-		return ;
-	if (*lst == NULL)
-		*lst = new;
-	else
-	{
-		last = ft_lstlast(*lst);
-		last->next = new;
-	}
 }
 
 void	ft_lstclear_safe(t_list **lst)
@@ -103,19 +60,6 @@ void	ft_lstremove(t_list **lst, void *content)
 		}
 		prev = ptr;
 		ptr = ptr->next;
-	}
-}
-
-void	ft_bzero(void *s, size_t n)
-{
-	unsigned char	*temp;
-
-	temp = (unsigned char *)s;
-	while (n > 0)
-	{
-		*temp = 0;
-		n--;
-		temp++;
 	}
 }
 

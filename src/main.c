@@ -1,7 +1,14 @@
-// -----------------------------------------------------------------------------
-// Codam Coding College, Amsterdam @ 2022-2023 by W2Wizard.
-// See README in the root project for more information.
-// -----------------------------------------------------------------------------
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
+/*   Updated: 2025/02/20 16:11:33 by henbuska         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 /* 
 Common materials and their refractive indices:
@@ -113,9 +120,32 @@ t_light init_light(t_tuple position, t_tuple color, double brightness)
 	return light;
 }
 
-int32_t main(void)
+int	validate_file_ext(t_rt *rt)
 {
-	t_scene scene;
+	const char	*filename;
+	const char	*dot;
+
+	filename = rt->filename;
+	dot = ft_strrchr(filename, '.');
+	if(!dot)
+		return(1);
+	if (ft_strncmp(dot, ".rt\0", 4))
+		return (1);
+	return (0);
+}
+
+void	initialize_structs(char **argv, t_rt *rt)
+{
+	rt->filename = argv[1];
+	if (validate_file_ext(rt))
+	{
+		printf("Invalid file extension\n");
+		free(rt);
+		exit(EXIT_FAILURE);
+	}
+}
+
+	/* t_scene scene;
 
 	// Initialize the scene
 	scene.shapes = (t_shape **)calloc(3, sizeof(t_shape *));
@@ -130,8 +160,8 @@ int32_t main(void)
 	sphere->transform = identity_matrix(4);
 	sphere->material = material(create_color(0.49, 0.051, 0.051), scene.ambient_lightning.ambient, 0.8, 0.4, 150.0, PATTERN_NONE);
 	//sphere->material.reflective = 0.1;
-	/* sphere->material.transparency = 0.3;
-	sphere->material.refractive_index = 1.5; */
+	//sphere->material.transparency = 0.3;
+	//sphere->material.refractive_index = 1.5;
 	scene.shapes[0] = sphere;
 
 	t_shape *floor = (t_shape *)calloc(1, sizeof(t_shape));
@@ -146,34 +176,72 @@ int32_t main(void)
 
 	scene.camera = init_camera(0.0, 5.0, 20.0, vector(0.0, 0.0, -1.0), 100.0, WIDTH, HEIGHT);
 
-	scene.light = init_light(point(-20.0, 1.0, 0.0), create_color(1.0, 1.0, 1.0), 0.7);
-
-	// Gotta error check this stuff
-	if (!(scene.mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true)))
-	{
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (!(scene.image = mlx_new_image(scene.mlx, WIDTH, HEIGHT)))
-	{
-		mlx_close_window(scene.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
-	if (mlx_image_to_window(scene.mlx, scene.image, 0, 0) == -1)
-	{
-		mlx_close_window(scene.mlx);
-		puts(mlx_strerror(mlx_errno));
-		return(EXIT_FAILURE);
-	}
+	scene.light = init_light(point(-20.0, 1.0, 0.0), create_color(1.0, 1.0, 1.0), 0.7); 
 	
-	mlx_loop_hook(scene.mlx, ft_render_scene, &scene);
-	//mlx_loop_hook(scene.mlx, ft_hook, scene.mlx);
-
+	
 	mlx_loop(scene.mlx);
 	mlx_terminate(scene.mlx);
 	free(scene.shapes[0]);
 	free(scene.shapes[1]);
-	free(scene.shapes);
+	free(scene.shapes);*/
+
+int32_t main(int argc, char **argv)
+{
+	mlx_t	*mlx;
+	t_rt	*rt;
+	
+
+	if (argc != 2)
+	{
+		printf("Invalid number of arguments\n");
+		return(EXIT_FAILURE);
+	}
+	rt = ft_calloc(1, sizeof(t_rt));
+	if (!rt)
+		return(EXIT_FAILURE);
+	initialize_structs(argv, rt);
+	if (parse_file(rt))
+		return(EXIT_FAILURE);
+	// Gotta error check this stuff
+	rt->scene->mlx = mlx;
+	
+	rt->scene->camera = init_camera(
+		rt->scene->camera.view_point.x,
+		rt->scene->camera.view_point.y,
+		rt->scene->camera.view_point.z,
+		rt->scene->camera.normal,
+		rt->scene->camera.field_of_view,
+		WIDTH, HEIGHT);
+
+	rt->scene->light = init_light(
+		rt->scene->light.position,
+		rt->scene->light.color,
+		rt->scene->light.brightness);
+
+		
+	if (!(rt->scene->mlx = mlx_init(WIDTH, HEIGHT, "miniRT", true)))
+	{
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (!(rt->scene->image = mlx_new_image(rt->scene->mlx, WIDTH, HEIGHT)))
+	{
+		mlx_close_window(rt->scene->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	if (mlx_image_to_window(rt->scene->mlx, rt->scene->image, 0, 0) == -1)
+	{
+		mlx_close_window(rt->scene->mlx);
+		puts(mlx_strerror(mlx_errno));
+		return(EXIT_FAILURE);
+	}
+	
+	mlx_loop_hook(rt->scene->mlx, ft_render_scene, rt->scene);
+	//mlx_loop_hook(scene.mlx, ft_hook, scene.mlx);
+
+	mlx_loop(rt->scene->mlx);
+	mlx_terminate(rt->scene->mlx);
+	free_rt(rt);
 	return (EXIT_SUCCESS);
 }
