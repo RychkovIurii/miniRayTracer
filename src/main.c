@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 18:21:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/19 16:23:51 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 14:27:02 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,15 +91,14 @@ int32_t main(int argc, char **argv)
 	if (argc != 2)
 	{
 		printf("Invalid number of arguments\n");
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	}
 	rt = ft_calloc(sizeof(t_rt), 1);
 	if (!rt)
-		exit(EXIT_FAILURE);
+		return(EXIT_FAILURE);
 	initialize_structs(argv, rt);
 	if (parse_file(rt))
-		exit(EXIT_FAILURE);
-
+		return(EXIT_FAILURE);
 	// Gotta error check this stuff
 	if (!(mlx = mlx_init(WIDTH, HEIGHT, "MLX42", true)))
 	{
@@ -124,6 +123,7 @@ int32_t main(int argc, char **argv)
 
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
+	free_rt(rt);
 	return (EXIT_SUCCESS);
 }
 

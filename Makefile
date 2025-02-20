@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/18 17:29:10 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/20 11:51:17 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,10 @@ SRCS = main.c\
 		parser/parse_element.c\
 		parser/parse_element_utils.c\
 		parser/parse_shapes.c\
+		parser/add_shapes.c\
+		parser/validations.c\
+		parser/conversions.c\
+		parser/trim_line.c\
 		utils.c
 SRC_DIR = ./src
 OBJ_DIR = ./obj
