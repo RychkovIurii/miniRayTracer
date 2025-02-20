@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/20 11:51:17 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/20 14:47:56 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,15 @@ SRCS = main.c\
 		parser/validations.c\
 		parser/conversions.c\
 		parser/trim_line.c\
-		utils.c
+		utils.c\
+		color.c\
+		intersection.c\
+		matrix.c\
+		ray.c\
+		scene.c\
+		tuple.c\
+		vector.c
+
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 
@@ -47,7 +55,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -g #-Wall -Wextra -Werror
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)

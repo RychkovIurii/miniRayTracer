@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 14:18:00 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 15:06:14 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,14 +56,6 @@ typedef struct	s_material
 	t_pattern	pattern;
 }			t_material;
 
-typedef enum e_type
-{
-	SPHERE,
-	PLANE,
-	CYLINDER,
-	CONE,
-}	t_type;
-
 typedef struct	s_light
 {
 	double	brightness;
@@ -94,12 +86,7 @@ typedef struct s_camera
 	t_tuple		normal;
 }				t_camera;
 
-typedef struct	s_canvas
-{
-	int			width;
-	int			height;
-	t_tuple		**pixels;
-}				t_canvas;
+typedef enum { SHAPE_SPHERE, SHAPE_PLANE, CYLINDER, CONE } t_shape_type;
 
 typedef struct	s_shape
 {
@@ -113,8 +100,47 @@ typedef struct	s_shape
 	t_tuple		normal;
 	t_matrix	transform;
 	t_material	material;
-	t_type		type;
+	t_shape_type		type;
 }	t_shape;
+
+typedef struct s_intersection
+{
+	double		t;
+	t_shape		*object;
+	t_tuple		point;
+	t_tuple 	over_point; // for reflection
+	t_tuple 	under_point; // for refraction
+	t_tuple		eyev; // vector
+	t_tuple		normalv; // vector
+	int			inside;
+	t_tuple		reflectv; // vector
+	double		n1;
+	double		n2;
+}				t_intersection;
+
+typedef struct	s_intersects // array of intersections
+{
+	int				count;
+	t_intersection	*array;
+}					t_intersects;
+
+
+typedef struct	s_canvas
+{
+	int			width;
+	int			height;
+	t_tuple		**pixels;
+}				t_canvas;
+
+typedef struct	s_rt
+{
+	//mlx_t	*mlx;
+	//t_image	*image;
+	char		*filename;
+	char		**elements;
+	int			element_count;
+	t_scene		*scene;
+}	t_rt;
 
 typedef struct s_scene
 {
@@ -126,18 +152,7 @@ typedef struct s_scene
 	t_ambient			ambient;
 	t_camera			camera;
 	t_light				light;
-	t_shape				*shapes;
-	
+	t_shape				**shapes; // Switch to *shapes
 }				t_scene;
-
-typedef struct	s_rt
-{
-	//mlx_t	*mlx;
-	//t_image	*image;
-	char		*filename;
-	char		**elements;
-	int			element_count;
-	t_scene		*scene;
-}	t_rt;
 
 #endif
