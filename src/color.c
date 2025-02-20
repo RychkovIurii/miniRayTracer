@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 13:20:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:59:05 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ t_intersects intersect_scene(t_scene *world, t_ray ray)
 
 	// First pass: Count total intersections
 	i = 0;
-	while (world->shapes[i] != NULL)
+	while (i < world->shape_count)
 	{
 		temp = intersect(world->shapes[i], ray);
 		total_intersections += temp.count;
@@ -185,7 +185,7 @@ t_intersects intersect_scene(t_scene *world, t_ray ray)
 	// Second pass: Store all intersections
 	index = 0;
 	i = 0;
-	while (world->shapes[i] != NULL)
+	while (i < world->shape_count)
 	{
 		temp = intersect(world->shapes[i], ray);
 		if (temp.count > 0)

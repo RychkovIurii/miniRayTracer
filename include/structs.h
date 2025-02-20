@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:16:40 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:38:11 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ typedef struct	s_pattern
 
 typedef struct	s_material
 {
-	t_tuple		color;
 	double		ambient;
 	double		diffuse;
 	double		specular;
@@ -56,21 +55,58 @@ typedef struct	s_material
 	double		reflective;
 	double		transparency;
 	double		refractive_index;
-	t_pattern	pattern;
 	int			has_pattern;
+	t_tuple		color;
+	t_pattern	pattern;
 }			t_material;
 
-typedef enum { SHAPE_SPHERE, SHAPE_PLANE } t_shape_type;
+typedef struct	s_light
+{
+	double	brightness;
+	t_tuple	position;
+	t_tuple	intensity;
+	t_tuple	color;
+	int		id;
+}	t_light;
 
-typedef struct s_shape {
-	t_matrix		transform;
-	t_tuple			center;
-	t_tuple			scale;
-	t_tuple			normalized_3d_vector;
-	t_material		material;
-	double			radius;
-	t_shape_type	type;
-}					t_shape;
+typedef struct	s_ambient
+{
+	double	ratio;
+	t_tuple	color;
+	int		id;
+}	t_ambient;
+
+typedef struct s_camera
+{
+	double		pixel_size;
+	double		half_width;
+	double		half_height;
+	double		field_of_view;
+	int			hsize;
+	int			vsize;
+	int			id;
+	t_matrix	transform;
+	t_tuple		view_point;
+	t_tuple		normal;
+}				t_camera;
+
+typedef enum { SHAPE_SPHERE, SHAPE_PLANE, SHAPE_CYLINDER, SHAPE_CONE } t_shape_type;
+
+typedef struct	s_shape
+{
+	double		radius;
+	double		min;
+	double		max;
+	double		cylinder_height;
+	bool		closed;
+	t_tuple		scale;
+	t_tuple		center;
+	t_tuple		point_on_plane;
+	t_tuple		normal;
+	t_matrix	transform;
+	t_material	material;
+	t_shape_type		type;
+}	t_shape;
 
 typedef struct s_intersection
 {
@@ -93,28 +129,6 @@ typedef struct	s_intersects // array of intersections
 	t_intersection	*array;
 }					t_intersects;
 
-typedef struct	s_light
-{
-	t_tuple	position; // point
-	t_tuple	intensity; // color
-}			t_light;
-
-typedef struct s_ambient
-{
-	double	ratio;
-	t_tuple	color;
-}			t_ambient;
-
-typedef struct s_camera
-{
-	int			hsize;
-	int			vsize;
-	double		field_of_view;
-	double		pixel_size;
-	double		half_width;
-	double		half_height;
-	t_matrix	transform;
-}				t_camera;
 
 typedef struct	s_canvas
 {
@@ -125,12 +139,25 @@ typedef struct	s_canvas
 
 typedef struct s_scene
 {
+	int				shape_count;
+	int				num_objects;
+	//int			max_objects;;
 	mlx_t				*mlx;
 	mlx_image_t			*image;
 	t_ambient			ambient;
 	t_camera			camera;
 	t_light				light;
-	t_shape				**shapes; // The pointer-based array t_shape **shapes is retained but should be converted to a t_shape shapes[MAX_SHAPES] if a fixed number is known.
+	t_shape				*shapes; // Switch to *shapes
 }				t_scene;
+
+typedef struct	s_rt
+{
+	//mlx_t	*mlx;
+	//t_image	*image;
+	char		*filename;
+	char		**elements;
+	int			element_count;
+	t_scene		*scene;
+}	t_rt;
 
 #endif
