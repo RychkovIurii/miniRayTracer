@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 13:03:09 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:12:15 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	round_value(int value, int min, int max)
 }
 
 /* This function returns the color of the pixel at the given coordinates. */
-t_tuple	pixel_at(t_canvas *canvas, int x, int y)
+/*t_tuple	pixel_at(t_canvas *canvas, int x, int y)
 {
 	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
 	{
@@ -31,7 +31,7 @@ t_tuple	pixel_at(t_canvas *canvas, int x, int y)
 	}
 	return (create_color(0, 0, 0)); // Return black if out of bounds
 }
-
+ */
 int ft_pixel(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
@@ -40,13 +40,13 @@ int ft_pixel(int r, int g, int b, int a)
 void ft_render_scene(void* param)
 {
 	t_scene *scene = (t_scene *)param;
-	t_canvas *canvas = render(scene->camera, scene);
+	render(scene->camera, scene);
 
 	for (int y = 0; y < scene->camera.vsize; ++y)
 	{
 		for (int x = 0; x < scene->camera.hsize; ++x)
 		{
-			t_tuple color = pixel_at(canvas, x, y);
+			t_tuple color = scene->pixels[y][x];
 			int mlx_color = ft_pixel(
 				round_value((int)(color.x * 255), 0, 255),
 				round_value((int)(color.y * 255), 0, 255),
@@ -56,8 +56,6 @@ void ft_render_scene(void* param)
 			mlx_put_pixel(scene->image, x, y, mlx_color);
 		}
 	}
-
-	free_canvas(canvas);
 }
 
 void ft_hook(void* param)

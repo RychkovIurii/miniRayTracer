@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 13:01:10 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:16:05 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,6 +150,7 @@ typedef struct s_scene
 	t_light			light;
 	t_shape			*shapes;
 	int 			needs_render;
+	t_tuple			**pixels;
 }				t_scene;
 
 typedef struct	s_rt
