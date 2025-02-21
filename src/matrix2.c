@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:06:52 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:47:43 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,10 @@ void	set_matrices(t_scene *scene)
 		else if (scene->shapes[i].type == SHAPE_PLANE)
 		{
 			scene->shapes[i].transform = combine_all_transforms(&scene->shapes[i]);
+		}
+		else if (scene->shapes[i].type == SHAPE_CYLINDER)
+		{
+			scene->shapes[i].transform = identity_matrix();
 		}
 		i++;
 	}

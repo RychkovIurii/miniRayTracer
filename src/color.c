@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:01:46 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:38:39 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ t_intersects intersect_scene(t_scene *world, t_ray ray)
 		free_intersects(&temp);
 		i++;
 	}
-
+	//printf("Total intersections: %d\n", total_intersections);
 	// Allocate memory once
 	if (total_intersections > 0)
 	{

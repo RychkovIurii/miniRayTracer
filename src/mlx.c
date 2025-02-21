@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:44:11 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:50:19 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,18 +68,34 @@ void ft_hook(void* param)
 		mlx_close_window(scene->mlx);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, -0.2, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, -0.4, 0));
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_DOWN))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0.2, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0.8, 0));
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-0.2, 0, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-0.8, 0, 0));
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0.2, 0, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0.8, 0, 0));
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, rotation_y_matrix(0.2));
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, rotation_y_matrix(-0.2));
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_S))
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, -0.8));
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_W))
+	{
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, 0.8));
 	}
 }
