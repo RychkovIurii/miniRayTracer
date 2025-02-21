@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:38:11 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:01:10 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ typedef struct s_camera
 	int			vsize;
 	int			id;
 	t_matrix	transform;
+	t_matrix	transform_inv;
 	t_tuple		view_point;
 	t_tuple		normal;
 }				t_camera;
@@ -142,12 +143,13 @@ typedef struct s_scene
 	int				shape_count;
 	int				num_objects;
 	//int			max_objects;;
-	mlx_t				*mlx;
-	mlx_image_t			*image;
-	t_ambient			ambient;
-	t_camera			camera;
-	t_light				light;
-	t_shape				*shapes; // Switch to *shapes
+	mlx_t			*mlx;
+	mlx_image_t		*image;
+	t_ambient		ambient;
+	t_camera		camera;
+	t_light			light;
+	t_shape			*shapes;
+	int 			needs_render;
 }				t_scene;
 
 typedef struct	s_rt

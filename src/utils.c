@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:04:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 16:06:29 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:00:51 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ int	init_scene_structs(t_rt *rt)
 		return (1);
 	}
 	rt->scene->shape_count = 0;
+	rt->scene->needs_render = 1;
 	rt->scene->shapes = ft_calloc(rt->element_count - 2, sizeof(t_shape));
 	if (!rt->scene->shapes)
 	{

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:23:31 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:14:32 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ int main(int argc, char **argv)
 		return(EXIT_FAILURE);
 	}
 	
-	mlx_loop_hook(rt->scene->mlx, ft_render_scene, rt->scene);
 	mlx_loop_hook(rt->scene->mlx, ft_hook, rt->scene);
 
 	mlx_loop(rt->scene->mlx);
