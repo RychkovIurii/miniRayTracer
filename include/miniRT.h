@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 14:49:49 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 22:14:39 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,6 @@ t_tuple	substract_tuple(t_tuple a, t_tuple b);
 t_tuple	negate_tuple(t_tuple a);
 t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
 t_tuple	divide_tuple(t_tuple a, double scalar);
-int	is_tuples_equal(t_tuple a, t_tuple b);
-int	is_point(t_tuple a);
-int	is_vector(t_tuple a);
 
 
 /** Vector **/
@@ -103,8 +100,7 @@ t_tuple reflect(t_tuple in, t_tuple normal);
 
 /** Matrix **/
 
-t_matrix	create_matrix(int size);
-t_matrix	identity_matrix(int size);
+t_matrix	identity_matrix(void);
 int			is_matrices_equal(t_matrix a, t_matrix b);
 t_tuple		multiply_matrix_by_tuple(t_matrix a, t_tuple b);
 t_matrix	multiply_matrices(t_matrix a, t_matrix b);
@@ -115,17 +111,18 @@ t_matrix	rotation_x_matrix(double radian);
 t_matrix	rotation_y_matrix(double radian);
 t_matrix	rotation_z_matrix(double radian);
 t_matrix	shearing_matrix(double xy, double xz, double yx, double yz, double zx, double zy);
-t_matrix	submatrix(t_matrix a, int row, int column);
+t_matrix3x3	submatrix(t_matrix a, int row, int column);
+double		determinant3x3(t_matrix3x3 m);
 double		minor_matrix(t_matrix a, int row, int column);
 double		cofactor_matrix(t_matrix a, int row, int column);
 double		determinant(t_matrix a);
 int			is_invertible(t_matrix a);
 t_matrix	inverse_matrix(t_matrix a);
+void	set_matrices(t_scene *scene);
 
 
 /** Intersection **/
 
-void			ft_bzero(void *s, size_t n);
 void free_intersects(t_intersects *xs);
 t_intersection 	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
 t_intersection	*hit(t_intersects intersections);
@@ -140,9 +137,7 @@ t_tuple	normal_at(t_shape *shape, t_tuple world_point);
 t_ray		create_ray(t_tuple origin, t_tuple direction);
 t_tuple		get_ray_position(t_ray ray, double t);
 t_ray		transform_ray(t_ray ray, t_matrix matrix);
-t_tuple	pixel_at(t_canvas *canvas, int x, int y);
-void	free_canvas(t_canvas *canvas);
-int	round_value(int value, int min, int max);
+
 
 /** Scene **/
 
@@ -152,23 +147,41 @@ t_canvas	*create_canvas(int width, int height);
 t_material default_material();
 t_shape create_shape(t_shape_type type);
 t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up);
-void write_pixel(t_canvas *canvas, int x, int y, t_tuple color);
 t_ray ray_for_pixel(t_camera camera, int px, int py);
 t_canvas *render(t_camera camera, t_scene *world);
+t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize);
+t_light init_light(t_tuple position, t_tuple color, double brightness);
+void	free_canvas(t_canvas *canvas);
 
 
 /** Color **/
 
 t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
 t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
-void	bubble_sort_intersections(t_intersection *array, int count);
+void	insertion_sort_intersections(t_intersection *array, int count);
 t_intersects intersect_scene(t_scene *world, t_ray ray);
-t_tuple reflected_color(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
-t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
+t_tuple reflected_color(t_scene *world, t_intersection comps, int remaining);
+t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining);
 double schlick(t_intersection comps);
 t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
 t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
 int is_shadowed(t_scene world, t_tuple point);
-t_pattern		checker_pattern(t_tuple a, t_tuple b);
+t_pattern		set_pattern(t_tuple a, t_tuple b);
+
+
+/** Mlx **/
+
+void ft_render_scene(void* param);
+void ft_hook(void* param);
+t_tuple	pixel_at(t_canvas *canvas, int x, int y);
+int	round_value(int value, int min, int max);
+
+
+/** Utils **/
+void	ft_bzero(void *s, size_t n);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+
+/** Debug **/
+void print_shapes(t_scene *scene);
 
 #endif

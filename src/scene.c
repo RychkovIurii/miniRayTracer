@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 18:32:06 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:10:10 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,6 @@ t_canvas	*create_canvas(int width, int height)
 	return (canvas);
 }
 
-/* This function returns the color of the pixel at the given coordinates. */
-t_tuple	pixel_at(t_canvas *canvas, int x, int y)
-{
-	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
-	{
-		return (canvas->pixels[y][x]);
-	}
-	return (create_color(0, 0, 0)); // Return black if out of bounds
-}
-
 /* This function frees the memory allocated for the canvas. */
 void	free_canvas(t_canvas *canvas)
 {
@@ -91,16 +81,6 @@ void	free_canvas(t_canvas *canvas)
 	}
 	free(canvas->pixels);
 	free(canvas);
-}
-
-/* This function clamps a value to a given range. */
-int	round_value(int value, int min, int max)
-{
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
 }
 
 t_material default_material()
@@ -120,7 +100,7 @@ t_shape create_shape(t_shape_type type)
 {
 	t_shape	shape;
 
-	shape.transform = identity_matrix(4);
+	shape.transform = identity_matrix();
 	shape.material = default_material();
 	shape.type = type;
 	shape.center = point(0, 0, 0);
@@ -131,11 +111,19 @@ t_shape create_shape(t_shape_type type)
 t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
 	t_tuple forward = normalize(substract_tuple(to, from));
+	if (fabs(dot(forward, up)) >= (1.0 - EPSILON))
+	{
+		if (fabs(forward.y) >= (1.0 - EPSILON))
+			up = vector(1, 0, 0); // If forward is vertical, use (1,0,0)
+		else
+			up = vector(0, 1, 0); // Otherwise, use (0,1,0)
+	}
 	t_tuple upn = normalize(up);
 	t_tuple left = cross(forward, upn);
 	t_tuple true_up = cross(left, forward);
 
-	t_matrix orientation = create_matrix(4);
+	t_matrix orientation;
+	ft_bzero(&orientation, sizeof(t_matrix));
 	orientation.matrix[0][0] = left.x;
 	orientation.matrix[0][1] = left.y;
 	orientation.matrix[0][2] = left.z;
@@ -158,13 +146,13 @@ t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 }
 
 /* This function writes a color to the pixel at the given coordinates. */
-void write_pixel(t_canvas *canvas, int x, int y, t_tuple color)
+/* void write_pixel(t_canvas *canvas, int x, int y, t_tuple color)
 {
 	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
 	{
 		canvas->pixels[y][x] = color;
 	}
-}
+} */
 
 
 t_ray ray_for_pixel(t_camera camera, int px, int py)
@@ -175,10 +163,9 @@ t_ray ray_for_pixel(t_camera camera, int px, int py)
 	double world_x = camera.half_width - xoffset;
 	double world_y = camera.half_height - yoffset;
 
+
 	t_tuple pixel = multiply_matrix_by_tuple(inverse_matrix(camera.transform), point(world_x, world_y, -1));
-	//printf("Pixel: %f %f %f\n", pixel.x, pixel.y, pixel.z);
 	t_tuple origin = multiply_matrix_by_tuple(inverse_matrix(camera.transform), point(0, 0, 0));
-	//printf("Origin: %f %f %f\n", origin.x, origin.y, origin.z);
 	t_tuple direction = normalize(substract_tuple(pixel, origin));
 
 	return create_ray(origin, direction);
@@ -187,16 +174,59 @@ t_ray ray_for_pixel(t_camera camera, int px, int py)
 t_canvas *render(t_camera camera, t_scene *world)
 {
 	t_canvas *image = create_canvas(camera.hsize, camera.vsize);
-	//printf("Camera matrix inside render:\n");
-	//print_matrix(camera.transform);
 	for (int y = 0; y < camera.vsize; y++)
 	{
 		for (int x = 0; x < camera.hsize; x++)
 		{
 			t_ray ray = ray_for_pixel(camera, x, y);
 			t_tuple color = color_at(world, ray, DEFAULT_REMAINING);
-			write_pixel(image, x, y, color);
+			image->pixels[y][x] = color_at(world, ray, DEFAULT_REMAINING);
 		}
 	}
 	return (image);
+}
+
+t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize)
+{
+	t_camera camera;
+	double		half_view;
+	double		aspect;
+
+	// Camera position
+	t_tuple from = point(x, y, z);
+	t_tuple up = vector(0.0, -1.0, 0.0);
+
+	// Assign field of view
+	camera.hsize = hsize;
+	camera.vsize = vsize;
+	camera.field_of_view = fov;
+
+	half_view = tan(camera.field_of_view / 2);
+	aspect = (double)camera.hsize / (double)camera.vsize;
+	if (aspect >= 1)
+	{
+		camera.half_width = half_view;
+		camera.half_height = half_view / aspect;
+	}
+	else
+	{
+		camera.half_width = half_view * aspect;
+		camera.half_height = half_view;
+	}
+	camera.pixel_size = (camera.half_width * 2) / camera.hsize;
+
+	// Compute the view transformation matrix
+	camera.transform = view_transform(from, add_tuple(from, forward), up);
+
+	return camera;
+}
+
+t_light init_light(t_tuple position, t_tuple color, double brightness)
+{
+	t_light light;
+
+	light.position = position;
+	light.intensity = multiply_tuple_scalar(color, brightness);
+
+	return light;
 }

@@ -6,34 +6,22 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:45:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/17 13:01:34 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/19 20:45:20 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_matrix create_matrix(int size)
+t_matrix identity_matrix(void)
 {
-	t_matrix matrix;
-	int i, j;
+	t_matrix id;
 
-	matrix.size = size;
-	for (i = 0; i < size; i++)
-	{
-		for (j = 0; j < size; j++)
-		{
-			matrix.matrix[i][j] = 0.0;
-		}
-	}
-	return matrix;
-}
-
-t_matrix identity_matrix(int size)
-{
-	t_matrix id = create_matrix(size);
-	for (int i = 0; i < size; i++)
-		id.matrix[i][i] = 1;
-	return id;
+	ft_bzero(&id, sizeof(t_matrix));
+	id.matrix[0][0] = 1.0;
+	id.matrix[1][1] = 1.0;
+	id.matrix[2][2] = 1.0;
+	id.matrix[3][3] = 1.0;
+	return (id);
 }
 
 /* Check if two matrices are equal. */
@@ -42,16 +30,13 @@ int	is_matrices_equal(t_matrix a, t_matrix b)
 	int	i;
 	int	j;
 
-	if (a.size != b.size)
-		return (0);
 	i = 0;
-	while (i < a.size)
+	while (i < 4)
 	{
 		j = 0;
-		while (j < a.size)
+		while (j < 4)
 		{
-			/* if (a.matrix[i][j] != b.matrix[i][j]) */
-			if (fabs(a.matrix[i][j] - b.matrix[i][j]) > 1e-5) // 1e-5 is comparison within a small tolerance
+			if (fabs(a.matrix[i][j] - b.matrix[i][j]) > EPSILON)
 				return (0);
 			j++;
 		}
@@ -68,15 +53,15 @@ t_matrix	multiply_matrices(t_matrix a, t_matrix b)
 	int			j;
 	int			k;
 
-	result = create_matrix(a.size);
+	ft_bzero(&result, sizeof(t_matrix));
 	i = 0;
-	while (i < a.size)
+	while (i < 4)
 	{
 		j = 0;
-		while (j < a.size)
+		while (j < 4)
 		{
 			k = 0;
-			while (k < a.size)
+			while (k < 4)
 			{
 				result.matrix[i][j] += a.matrix[i][k] * b.matrix[k][j];
 				k++;
@@ -108,12 +93,12 @@ t_matrix	transpose_matrix(t_matrix a)
 	int			i;
 	int			j;
 
-	result = create_matrix(a.size); //shall we create a new matrix here?
+	ft_bzero(&result, sizeof(t_matrix));
 	i = 0;
-	while (i < a.size)
+	while (i < 4)
 	{
 		j = 0;
-		while (j < a.size)
+		while (j < 4)
 		{
 			result.matrix[j][i] = a.matrix[i][j];
 			j++;
@@ -128,7 +113,7 @@ t_matrix	translation_matrix(double x, double y, double z)
 {
 	t_matrix	result;
 
-	result = create_matrix(4);
+	ft_bzero(&result, sizeof(t_matrix));
 	result.matrix[0][0] = 1;
 	result.matrix[1][1] = 1;
 	result.matrix[2][2] = 1;
@@ -144,12 +129,9 @@ t_matrix	scaling_matrix(double x, double y, double z)
 {
 	t_matrix	result;
 
-	if (x == 0 || y == 0 || z == 0)
-    {
-        printf("Error: Scaling matrix has a zero component and is not invertible!\n");
-        exit(1);
-    }
-	result = identity_matrix(4);
+	if (fabs(x) < EPSILON || fabs(y) < EPSILON || fabs(z) < EPSILON)
+		return (identity_matrix()); 
+	ft_bzero(&result, sizeof(t_matrix));
 	result.matrix[0][0] = x;
 	result.matrix[1][1] = y;
 	result.matrix[2][2] = z;
@@ -162,42 +144,54 @@ t_matrix	scaling_matrix(double x, double y, double z)
 t_matrix	rotation_x_matrix(double radian)
 {
 	t_matrix	result;
+	double cos_r;
+	double sin_r;
 
-	result = create_matrix(4);
-	result.matrix[0][0] = 1;
-	result.matrix[1][1] = cos(radian);
-	result.matrix[1][2] = -sin(radian);
-	result.matrix[2][1] = sin(radian);
-	result.matrix[2][2] = cos(radian);
-	result.matrix[3][3] = 1;
+	cos_r = cos(radian);
+	sin_r = sin(radian);
+	ft_bzero(&result, sizeof(t_matrix));
+	result.matrix[0][0] = 1.0;
+	result.matrix[1][1] = cos_r;
+	result.matrix[1][2] = -sin_r;
+	result.matrix[2][1] = -sin_r;
+	result.matrix[2][2] = cos_r;
+	result.matrix[3][3] = 1.0;
 	return (result);
 }
 
 t_matrix	rotation_y_matrix(double radian)
 {
 	t_matrix	result;
+	double cos_r;
+	double sin_r;
 
-	result = create_matrix(4);
-	result.matrix[0][0] = cos(radian);
-	result.matrix[0][2] = sin(radian);
-	result.matrix[1][1] = 1;
-	result.matrix[2][0] = -sin(radian);
-	result.matrix[2][2] = cos(radian);
-	result.matrix[3][3] = 1;
+	cos_r = cos(radian);
+	sin_r = sin(radian);
+	ft_bzero(&result, sizeof(t_matrix));
+	result.matrix[0][0] = cos_r;
+	result.matrix[0][2] = sin_r;
+	result.matrix[1][1] = 1.0;
+	result.matrix[2][0] = -sin_r;
+	result.matrix[2][2] = cos_r;
+	result.matrix[3][3] = 1.0;
 	return (result);
 }
 
 t_matrix	rotation_z_matrix(double radian)
 {
 	t_matrix	result;
+	double cos_r;
+	double sin_r;
 
-	result = create_matrix(4);
-	result.matrix[0][0] = cos(radian);
-	result.matrix[0][1] = -sin(radian);
-	result.matrix[1][0] = sin(radian);
-	result.matrix[1][1] = cos(radian);
-	result.matrix[2][2] = 1;
-	result.matrix[3][3] = 1;
+	cos_r = cos(radian);
+	sin_r = sin(radian);
+	ft_bzero(&result, sizeof(t_matrix));
+	result.matrix[0][0] = cos_r;
+	result.matrix[0][1] = -sin_r;
+	result.matrix[1][0] = sin_r;
+	result.matrix[1][1] = cos_r;
+	result.matrix[2][2] = 1.0;
+	result.matrix[3][3] = 1.0;
 	return (result);
 }
 
@@ -206,38 +200,28 @@ t_matrix	shearing_matrix(double xy, double xz, double yx, double yz, double zx, 
 {
 	t_matrix	result;
 
-	result = create_matrix(4);
-	result.matrix[0][0] = 1;
+	result = identity_matrix();
 	result.matrix[0][1] = xy;
 	result.matrix[0][2] = xz;
 	result.matrix[1][0] = yx;
-	result.matrix[1][1] = 1;
 	result.matrix[1][2] = yz;
 	result.matrix[2][0] = zx;
 	result.matrix[2][1] = zy;
-	result.matrix[2][2] = 1;
-	result.matrix[3][3] = 1;
 	return (result);
 }
 
 /* Submatrix returns a copy of the given matrix with the given row and column removed. */
-t_matrix	submatrix(t_matrix a, int row, int column)
+t_matrix3x3	submatrix(t_matrix a, int row, int column)
 {
-	t_matrix	sub;
+	t_matrix3x3	sub;
 	int		i;
 	int		j;
 	int		x;
 	int		y;
 
-	if (a.size < 2)
-	{
-		printf("Error: Matrix is too small\n"); // Handle error: matrix is too small
-		return (a);
-	}
-	sub = create_matrix(a.size - 1);
 	x = 0;
 	i = 0;
-	while (i < a.size)
+	while (i < 4)
 	{
 		if (i == row)
 		{
@@ -246,7 +230,7 @@ t_matrix	submatrix(t_matrix a, int row, int column)
 		}
 		j = 0;
 		y = 0;
-		while (j < a.size)
+		while (j < 4)
 		{
 			if (j == column)
 			{
@@ -263,16 +247,23 @@ t_matrix	submatrix(t_matrix a, int row, int column)
 	return (sub);
 }
 
+double determinant3x3(t_matrix3x3 m)
+{
+	double	det;
+
+	det = m.matrix[0][0] * (m.matrix[1][1] * m.matrix[2][2] - m.matrix[1][2] * m.matrix[2][1]) -
+	m.matrix[0][1] * (m.matrix[1][0] * m.matrix[2][2] - m.matrix[1][2] * m.matrix[2][0]) +
+	m.matrix[0][2] * (m.matrix[1][0] * m.matrix[2][1] - m.matrix[1][1] * m.matrix[2][0]);
+	return (det);
+}
+
 /* Calculate the minor of matrix. */
 double	minor_matrix(t_matrix a, int row, int column)
 {
-	t_matrix	sub;
-	double	det;
+	t_matrix3x3	sub;
 
 	sub = submatrix(a, row, column);
-	det = determinant(sub);
-	//free_matrix(sub);
-	return (det);
+	return (determinant3x3(sub));
 }
 
 
@@ -294,17 +285,11 @@ double	cofactor_matrix(t_matrix a, int row, int column)
 double	determinant(t_matrix a)
 {
 	double	det;
-	int		i;
 
-	i = 0;
-	det = 0;
-	if (a.size == 2)
-		return (a.matrix[0][0] * a.matrix[1][1] - a.matrix[0][1] * a.matrix[1][0]);
-	while (i < a.size)
-	{
-		det += a.matrix[0][i] * cofactor_matrix(a, 0, i);
-		i++;
-	}
+	det = a.matrix[0][0] * cofactor_matrix(a, 0, 0) +
+	a.matrix[0][1] * cofactor_matrix(a, 0, 1) +
+	a.matrix[0][2] * cofactor_matrix(a, 0, 2) +
+	a.matrix[0][3] * cofactor_matrix(a, 0, 3);
 	return (det);
 }
 
@@ -324,24 +309,14 @@ t_matrix	inverse_matrix(t_matrix a)
 	int			i;
 	int			j;
 
-	/* if (a.matrix == NULL)
-	{
-		printf("Error: Received NULL matrix\n");
-		exit(1); // Handle error, potentially return an invalid matrix
-	} */
 	det = determinant(a);
-	if (fabs(det) < 1e-6) //(det == 0)
-	{
-		printf("Matrix is not invertible\n");
-		//print_matrix(a);
-		return (identity_matrix(4));
-	}
-	inverse = create_matrix(a.size);
+	if (fabs(det) < EPSILON)
+		return (identity_matrix());
 	i = 0;
-	while (i < a.size)
+	while (i < 4)
 	{
 		j = 0;
-		while (j < a.size)
+		while (j < 4)
 		{
 			inverse.matrix[j][i] = cofactor_matrix(a, i, j) / det;
 			j++;

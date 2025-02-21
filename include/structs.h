@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 16:25:42 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:38:11 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,13 @@ typedef struct	s_tuple
 	double	w;
 }	t_tuple;
 
+typedef struct s_matrix3x3
+{
+	double matrix[3][3];
+} t_matrix3x3;
+
 typedef struct	s_matrix
 {
-	int		size;
 	double	matrix[4][4];
 }			t_matrix;
 
@@ -95,6 +99,7 @@ typedef struct	s_shape
 	double		max;
 	double		cylinder_height;
 	bool		closed;
+	t_tuple		scale;
 	t_tuple		center;
 	t_tuple		point_on_plane;
 	t_tuple		normal;
@@ -106,16 +111,16 @@ typedef struct	s_shape
 typedef struct s_intersection
 {
 	double		t;
-	t_shape		*object;
+	double		n1;
+	double		n2;
 	t_tuple		point;
 	t_tuple 	over_point; // for reflection
 	t_tuple 	under_point; // for refraction
 	t_tuple		eyev; // vector
 	t_tuple		normalv; // vector
+	t_shape		*object;
 	int			inside;
 	t_tuple		reflectv; // vector
-	double		n1;
-	double		n2;
 }				t_intersection;
 
 typedef struct	s_intersects // array of intersections

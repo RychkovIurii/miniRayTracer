@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
+#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/20 14:47:56 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/20 22:29:28 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,13 +23,16 @@ SRCS = main.c\
 		parser/conversions.c\
 		parser/trim_line.c\
 		utils.c\
+		utils2.c\
 		color.c\
 		intersection.c\
 		matrix.c\
+		matrix2.c\
 		ray.c\
 		scene.c\
 		tuple.c\
-		vector.c
+		vector.c\
+		mlx.c\
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
@@ -55,7 +58,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -g #-Wall -Wextra -Werror
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)
