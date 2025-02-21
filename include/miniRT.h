@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:14:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:49:07 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define M_PI 3.14159265358979323846  // how accurate should this be?
 # define EPSILON 0.0001f
 
-# define WIDTH 300
-# define HEIGHT 150
+# define WIDTH 1100
+# define HEIGHT 1100
 
 # define DEFAULT_REMAINING 5
 
@@ -147,7 +147,7 @@ t_canvas	*create_canvas(int width, int height);
 t_material default_material();
 t_shape create_shape(t_shape_type type);
 t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up);
-t_ray ray_for_pixel(t_camera camera, int px, int py);
+t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
 t_canvas *render(t_camera camera, t_scene *world);
 t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize);
 t_light init_light(t_tuple position, t_tuple color, double brightness);
