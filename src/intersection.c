@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:58:48 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 19:35:47 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,6 @@ t_intersects local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
 	result.array[0].object = sphere;
 	result.array[1].t = (-b + sqrt_d) / (2 * a);
 	result.array[1].object = sphere;
-
 	return result;
 }
 
@@ -201,6 +200,116 @@ t_intersects local_intersect_plane(t_shape *plane, t_ray transformed_ray)
 	return (result);
 }
 
+/* Checks to see if the intersection at 't' is within a radius of 1
+(radius of cylinders) from the y axis * -- radius currently hardcoded!! */
+
+int	check_cylinder_cap(t_shape cyl, t_ray ray, double t)
+{
+	double	x;
+	double	z;
+	double	sum_of_squares;
+
+	x = ray.origin.x + t * ray.direction.x;
+	z = ray.origin.z + t * ray.direction.z;
+
+	sum_of_squares = x * x + z * z;
+	return (sum_of_squares <= cyl.radius * cyl.radius);
+}
+
+/* Checks cap intersectins (top and bottom)
+ - if the ray's y-direction is close to zero (parallel to cap), skips cap checks since
+   ray cannot intersect cylinder
+ - calculates t for top cap and bottom cap
+ - uses check_cap function to check if the intersection point lies within the cap's radius
+ - adds valid cap intersections to xs
+ */
+
+t_intersects	intersect_cylinder_caps(t_shape cyl, t_ray ray, t_intersects result)
+{
+	double	t;
+
+	t = (cyl.min - ray.origin.y) / ray.direction.y;  // check intersection with bottom cap
+	if (check_cylinder_cap(cyl, ray, t))
+	{
+		result.array[2].t = t;
+		result.array[2].object = &cyl;
+	}
+	t = (cyl.max - ray.origin.y) / ray.direction.y;  // check intersection with top cap
+	if (check_cylinder_cap(cyl, ray, t))
+	{
+		result.array[3].t = t;
+		result.array[3].object = &cyl;
+	}
+	return (result);
+}
+
+t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
+{
+	t_intersects	result;
+	double			a;
+	double			b;
+	double			c;
+	double			discriminant;
+	double			sqrt_discriminant;
+	double			temp;
+	double			y0;
+	double			y1;
+	double			t0;
+	double			t1;
+	
+	ft_bzero(&result, sizeof(t_intersects));
+	/* Wall intersections
+	 - if discriminant is negative, the ray misses the wall completely
+	 - if a is effectively zero (i.e. ray is parallel to the cylinder's axis), skip wall
+	checking and move to check caps */
+	
+	result.count = 4;  // causes a segfault currently!
+	result.array = malloc(sizeof(t_intersection) * 4);
+	if (!result.array)
+		return (result);
+	a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
+	if (fabs(a) > EPSILON)
+	{
+		b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
+		c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
+		discriminant = b * b - 4 * a * c;
+		if (discriminant >= 0)
+		{
+			sqrt_discriminant = sqrt(discriminant);
+			t0 = (-b - sqrt_discriminant) / (2 * a); // Closest intersection
+			t1 = (-b + sqrt_discriminant) / (2 * a); // Farther intersection
+			//printf("Wall Intersection t0: %f, t1: %f\n", t0, t1);
+			/*if (t0 > t1)
+			{
+				temp = t0;
+				t0 = t1;
+				t1 = temp;
+			}	*/
+			/*check corresponding y coordinates for each t to determine whether the intersection is within
+			the cylinder's height bounds and add valid intersections to xs*/
+			y0 = ray.origin.y + t0 * ray.direction.y;
+			if (cylinder->min < y0 && y0 < cylinder->max)
+			{
+				//printf("Valid wall intersection at t0: %f, y0: %f\n", t0, y0);
+				result.array[0].t = t0;
+				result.array[0].object = cylinder;
+			}
+			y1 = ray.origin.y + t1 * ray.direction.y;
+			if (cylinder->min < y1 && y1 < cylinder->max)
+			{
+				//printf("Valid wall intersection at t1: %f, y1: %f\n", t1, y1);
+				result.array[1].t = t1;
+				result.array[1].object = cylinder;
+			}
+		}
+	}
+	/* Check intersections for caps */
+	if (cylinder->closed == 0 && fabs(ray.direction.y) > EPSILON)
+		result = intersect_cylinder_caps(*cylinder, ray, result);
+
+	return (result);
+}
+
 t_intersects intersect(t_shape *shape, t_ray ray)
 {
 	t_ray local_ray;
@@ -214,7 +323,10 @@ t_intersects intersect(t_shape *shape, t_ray ray)
 	{
 		return local_intersect_plane(shape, local_ray);
 	}
-
+	else if (shape->type == SHAPE_CYLINDER)
+	{
+		return local_intersect_cylinder(shape, local_ray);
+	}
 	return (t_intersects){0, NULL};  // No intersections for unknown shapes
 }
 
@@ -227,6 +339,18 @@ t_tuple local_normal_at_plane(t_tuple local_point)
 {
 	(void)local_point;
 	return (vector(0, 1, 0));
+}
+
+t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
+{
+	double	distance;
+	distance = point.x * point.x + point.z * point.z;
+	if (distance < 1 && point.y >= cylinder.max - EPSILON)
+		return (vector(0, 1, 0));
+	else if (distance < 1 && point.y <= cylinder.min + EPSILON)
+		return (vector(0, -1, 0));
+	else
+		return (vector(point.x, 0, point.z));
 }
 
 t_tuple	normal_at(t_shape *shape, t_tuple world_point)
@@ -246,6 +370,11 @@ t_tuple	normal_at(t_shape *shape, t_tuple world_point)
 	else if (shape->type == SHAPE_PLANE)
 	{
 		local_normal = local_normal_at_plane(local_point);
+	}
+	else if (shape->type == SHAPE_CYLINDER)
+	{
+		printf("we are in cyl\n");
+		local_normal = local_normal_at_cylinder(*shape, local_point);
 	}
 	world_normal = multiply_matrix_by_tuple(transpose_matrix(inverse_transform), local_normal);
 	world_normal.w = 0;
