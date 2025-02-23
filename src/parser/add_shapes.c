@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_shapes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/21 18:16:15 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/23 22:01:08 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter)
 	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shapes[i].material.refractive_index = 1.0; */
 	rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 0.0;
+	rt->scene->shapes[i].material.refractive_index = 1.0;
+	rt->scene->shapes[i].material.reflective = 0.0;
+	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shape_count++;
 }
 
@@ -50,7 +52,9 @@ void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shapes[i].material.refractive_index = 0.0; */
 	rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 0.0;
+	rt->scene->shapes[i].material.refractive_index = 1.0;
+	rt->scene->shapes[i].material.reflective = 0.0;
+	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shape_count++;
 }
 
@@ -60,7 +64,7 @@ void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors)
 
 	i = rt->scene->shape_count;
 	rt->scene->shapes[i].type = SHAPE_CYLINDER;
-	//rt->scene->shapes[i].closed = 1;
+	rt->scene->shapes[i].closed = 0;
 	rt->scene->shapes[i].center = string_to_point(coordinates);
 	rt->scene->shapes[i].normal = string_to_vector(normal);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
@@ -68,7 +72,9 @@ void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].material.diffuse = 0.8;
 	rt->scene->shapes[i].material.specular = 0.4;
 	rt->scene->shapes[i].material.shininess = 150.0;
-	rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 0.0;
+	//rt->scene->shapes[i].transform = identity_matrix();
+	rt->scene->shapes[i].material.refractive_index = 1.0;
+	rt->scene->shapes[i].material.reflective = 0.0;
+	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shape_count++;
 }
