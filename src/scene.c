@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:10:10 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/21 16:27:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ t_material	material(t_tuple color, double ambient, double diffuse, double specul
 }
 
 /* This function creates a canvas with the given width and height. */
-t_canvas	*create_canvas(int width, int height)
+/* t_canvas	*create_canvas(int width, int height)
 {
 	t_canvas	*canvas;
 	int			i;
@@ -66,9 +66,10 @@ t_canvas	*create_canvas(int width, int height)
 		i++;
 	}
 	return (canvas);
-}
+} */
 
 /* This function frees the memory allocated for the canvas. */
+/*
 void	free_canvas(t_canvas *canvas)
 {
 	int i;
@@ -81,7 +82,7 @@ void	free_canvas(t_canvas *canvas)
 	}
 	free(canvas->pixels);
 	free(canvas);
-}
+} */
 
 t_material default_material()
 {
@@ -155,7 +156,7 @@ t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 } */
 
 
-t_ray ray_for_pixel(t_camera camera, int px, int py)
+t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
 {
 	double xoffset = (px + 0.5) * camera.pixel_size;
 	double yoffset = (py + 0.5) * camera.pixel_size;
@@ -164,26 +165,26 @@ t_ray ray_for_pixel(t_camera camera, int px, int py)
 	double world_y = camera.half_height - yoffset;
 
 
-	t_tuple pixel = multiply_matrix_by_tuple(inverse_matrix(camera.transform), point(world_x, world_y, -1));
-	t_tuple origin = multiply_matrix_by_tuple(inverse_matrix(camera.transform), point(0, 0, 0));
+	t_tuple pixel = multiply_matrix_by_tuple(camera.transform_inv, point(world_x, world_y, -1));
 	t_tuple direction = normalize(substract_tuple(pixel, origin));
 
 	return create_ray(origin, direction);
 }
 
-t_canvas *render(t_camera camera, t_scene *world)
+void	render(t_camera camera, t_scene *scene)
 {
-	t_canvas *image = create_canvas(camera.hsize, camera.vsize);
+	t_tuple origin;
+
+	camera.transform_inv = inverse_matrix(camera.transform);
+	origin = multiply_matrix_by_tuple(camera.transform_inv, point(0, 0, 0));
 	for (int y = 0; y < camera.vsize; y++)
 	{
 		for (int x = 0; x < camera.hsize; x++)
 		{
-			t_ray ray = ray_for_pixel(camera, x, y);
-			t_tuple color = color_at(world, ray, DEFAULT_REMAINING);
-			image->pixels[y][x] = color_at(world, ray, DEFAULT_REMAINING);
+			t_ray ray = ray_for_pixel(camera, x, y, origin);
+			scene->pixels[y][x] = color_at(scene, ray, DEFAULT_REMAINING);
 		}
 	}
-	return (image);
 }
 
 t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize)

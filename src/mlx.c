@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 17:50:19 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:31:55 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	round_value(int value, int min, int max)
 }
 
 /* This function returns the color of the pixel at the given coordinates. */
-t_tuple	pixel_at(t_canvas *canvas, int x, int y)
+/*t_tuple	pixel_at(t_canvas *canvas, int x, int y)
 {
 	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
 	{
@@ -31,7 +31,7 @@ t_tuple	pixel_at(t_canvas *canvas, int x, int y)
 	}
 	return (create_color(0, 0, 0)); // Return black if out of bounds
 }
-
+ */
 int ft_pixel(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
@@ -40,13 +40,13 @@ int ft_pixel(int r, int g, int b, int a)
 void ft_render_scene(void* param)
 {
 	t_scene *scene = (t_scene *)param;
-	t_canvas *canvas = render(scene->camera, scene);
+	render(scene->camera, scene);
 
 	for (int y = 0; y < scene->camera.vsize; ++y)
 	{
 		for (int x = 0; x < scene->camera.hsize; ++x)
 		{
-			t_tuple color = pixel_at(canvas, x, y);
+			t_tuple color = scene->pixels[y][x];
 			int mlx_color = ft_pixel(
 				round_value((int)(color.x * 255), 0, 255),
 				round_value((int)(color.y * 255), 0, 255),
@@ -56,8 +56,6 @@ void ft_render_scene(void* param)
 			mlx_put_pixel(scene->image, x, y, mlx_color);
 		}
 	}
-
-	free_canvas(canvas);
 }
 
 void ft_hook(void* param)
@@ -69,33 +67,47 @@ void ft_hook(void* param)
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
 	{
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, -0.4, 0));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_DOWN))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0.8, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0.4, 0));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-0.8, 0, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(-0.4, 0, 0));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0.8, 0, 0));
+		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0.4, 0, 0));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
 	{
 		scene->camera.transform = multiply_matrices(scene->camera.transform, rotation_y_matrix(0.2));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
 	{
 		scene->camera.transform = multiply_matrices(scene->camera.transform, rotation_y_matrix(-0.2));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_S))
 	{
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, -0.8));
+		scene->needs_render = 1;
 	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_W))
 	{
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, 0.8));
+		scene->needs_render = 1;
+	}
+	if (scene->needs_render)
+	{
+		scene->camera.transform_inv = inverse_matrix(scene->camera.transform);
+		ft_render_scene(scene);
+		scene->needs_render = 0; // Reset flag after rendering
 	}
 }

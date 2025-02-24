@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   matrix2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/23 15:16:10 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:31:17 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	update_matrices(t_shape *shape, t_matrix transform)
+{
+	shape->transform = transform;
+	shape->transform_inv = inverse_matrix(shape->transform);
+	shape->transpose_inv = transpose_matrix(shape->transform_inv);
+}
 
 t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
 {
@@ -65,6 +72,14 @@ t_matrix	get_rotation_matrix(t_shape *shape)
 	rot_axis = normalize(rot_axis);
 	rot_angle = acos(fmax(-1.0, fmin(1.0, dot(y_axis, shape->normal))));
 	printf("Rotation Axis: (%f, %f, %f), Angle: %f\n", rot_axis.x, rot_axis.y, rot_axis.z, rot_angle);
+	if (shape->type == SHAPE_SPHERE)
+	{
+		if (len <= 1)
+			rot_angle = 0;
+		else
+			rot_angle = fmod(len - 1, 4) * 1.57079633;
+		rot_axis = shape->normal;
+	}
 	return(rotation_matrix_sub(rot_axis, rot_angle));
 }
 
@@ -77,8 +92,6 @@ t_matrix	combine_all_transforms(t_shape *shape)
 		shape->normal.x, shape->normal.y, shape->normal.z);
 	translation_x_rotation = multiply_matrices(translation_matrix(shape->center.x, shape->center.y, shape->center.z), get_rotation_matrix(shape));
 	result = multiply_matrices(translation_x_rotation, scaling_matrix(shape->scale.x, shape->scale.y, shape->scale.z));
-/* 	result = inverse_matrix(result);
-	result = transpose_matrix(result); */
 	return (result);
 }
 
@@ -91,14 +104,16 @@ void	set_matrices(t_scene *scene)
 	{
 		if (scene->shapes[i].type == SHAPE_SPHERE)
 		{
-			scene->shapes[i].transform = identity_matrix();
+			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+			scene->shapes[i].center = point (0, 0, 0);
 		}
 		else if (scene->shapes[i].type == SHAPE_PLANE)
 		{
-			scene->shapes[i].transform = combine_all_transforms(&scene->shapes[i]);
+			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 		}
 		else if (scene->shapes[i].type == SHAPE_CYLINDER)
 			scene->shapes[i].transform = combine_all_transforms(&scene->shapes[i]);
 		i++;
 	}
 }
+

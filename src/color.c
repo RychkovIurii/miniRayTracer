@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 19:38:39 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:29:54 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point)
 	t_tuple object_point;
 	t_tuple pattern_point;
 
-	object_point = multiply_matrix_by_tuple(inverse_matrix(shape.transform), world_point);
+	object_point = multiply_matrix_by_tuple(shape.transform_inv, world_point);
 	pattern_point = multiply_matrix_by_tuple(inverse_matrix(pattern.transform), object_point);
 
 	if (shape.material.has_pattern == PATTERN_STRIPE)
