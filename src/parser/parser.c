@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/21 16:21:44 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/23 15:51:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,20 @@ int	parse_line(char *line, t_rt *rt)
 
 	trimmed = trim_extra_spaces(line);
 	if (!trimmed)
+	{
+		print_error("Failed to trim line");
 		return (1);
+	}
 	element = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!element)
+	{
+		print_error("Failed to split line");
 		return (1);
+	}
 	if (parse_element(element, rt))
 	{
+		print_error("Failed to parse element");
 		free_array(element);
 		return (1);
 	}
@@ -141,22 +148,32 @@ int	parse_file(t_rt *rt)
 
 	fd = open_file(rt->filename);
 	if (fd < 0)
+	{
+		print_error("Failed to open file");
 		return (1);
+	}
 	lines = read_file(rt, fd);
 	if (!lines)
+	{
+		print_error("Failed to read file");
 		return (1);
+	}
 	if (init_scene_structs(rt))
 		return (free_and_return(rt, lines, 1));
 	i = 0;
 	while (lines[i])
 	{
 		if (parse_line(lines[i], rt))
+		{
+			print_error("Failed to parse line");
 			return (free_and_return(rt, lines, 1));
+		}
 		i++;
 	}
 	free_array(lines);
 	if (invalid_file_content(rt))
 	{
+		print_error("Invalid file content");
 		free_rt(rt);
 		return (1);
 	}

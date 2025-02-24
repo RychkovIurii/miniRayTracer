@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:23:31 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/23 15:36:20 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,16 @@ int main(int argc, char **argv)
 	}
 	rt = ft_calloc(1, sizeof(t_rt));
 	if (!rt)
+	{
+		printf("Could not allocate memory for rt\n");
 		return(EXIT_FAILURE);
+	}
 	initialize_structs(argv, rt);
 	if (parse_file(rt))
+	{
+		printf("Parsing error\n");
 		return(EXIT_FAILURE);
+	}
 
 	rt->scene->camera = init_camera(
 		rt->scene->camera.view_point.x,

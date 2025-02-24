@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/23 22:24:15 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/23 21:50:25 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,62 @@ t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects 
 	comps.n2 = 1.0;
 
 	if (!xs || xs->count == 0)  // If `xs` is NULL or empty, just return comps
-		return comps;
+        return comps;
+
+  for (i = 0; i < xs->count; i++)
+  {
+        // If this intersection is the hit, record n1 (before processing)
+        if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
+        {
+            if (!containers || ft_lstlast(containers) == NULL)
+                comps.n1 = 1.0;
+            else
+            {
+                t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
+                if (shape) {
+					comps.n1 = shape->material.refractive_index;
+				} else {
+					comps.n1 = 1.0;
+				}
+            }
+        }
+
+        // Process this intersection: if the object is already in containers, remove it; otherwise, add it.
+        int removed = 0;
+        temp = containers;
+        while (temp)
+        {
+            if (temp->content == xs->array[i].object)
+            {
+                ft_lstremove(&containers, temp->content);
+                removed = 1;
+                break;
+            }
+            temp = temp->next;
+        }
+        if (!removed)
+            ft_lstadd_back(&containers, ft_lstnew(xs->array[i].object));
+
+        // If this intersection is the hit, record n2 (after processing) and break.
+        if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
+        {
+            if (!containers || ft_lstlast(containers) == NULL)
+                comps.n2 = 1.0;
+            else
+            {
+                t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
+                if (shape) {
+					comps.n2 = shape->material.refractive_index;
+				} else {
+					comps.n2 = 1.0;
+				}
+            }
+            break;
+        }
+    }
+    ft_lstclear_safe(&containers);
+
+    return (comps);
 
 	for (i = 0; i < xs->count; i++)
 	{
@@ -224,26 +279,28 @@ int	check_cylinder_cap(t_shape cyl, t_ray ray, double t)
  - adds valid cap intersections to xs
  */
 
-t_intersects	intersect_cylinder_caps(t_shape cyl, t_ray ray, t_intersects result)
+t_intersects	intersect_cylinder_caps(t_shape *cyl, t_ray ray, t_intersects result)
 {
 	double	t;
 
-	t = (cyl.min - ray.origin.y) / ray.direction.y;  // check intersection with bottom cap
-	if (check_cylinder_cap(cyl, ray, t))
+	t = (cyl->min - ray.origin.y) / ray.direction.y;  // check intersection with bottom cap
+	if (check_cylinder_cap(*cyl, ray, t))
 	{
 		result.array[2].t = t;
-		result.array[2].object = &cyl;
+		result.count = 3;
+		result.array[2].object = cyl;
 	}
-	t = (cyl.max - ray.origin.y) / ray.direction.y;  // check intersection with top cap
-	if (check_cylinder_cap(cyl, ray, t))
+	t = (cyl->max - ray.origin.y) / ray.direction.y;  // check intersection with top cap
+	if (check_cylinder_cap(*cyl, ray, t))
 	{
 		result.array[3].t = t;
-		result.array[3].object = &cyl;
+		result.count = 4;
+		result.array[3].object = cyl;
 	}
 	return (result);
 }
 
-/*t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
+t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 {
 	t_intersects	result;
 	double			a;
@@ -259,13 +316,13 @@ t_intersects	intersect_cylinder_caps(t_shape cyl, t_ray ray, t_intersects result
 	int				count;
 	
 	ft_bzero(&result, sizeof(t_intersects));
-	/ Wall intersections
+	/* Wall intersections
 	 - if discriminant is negative, the ray misses the wall completely
 	 - if a is effectively zero (i.e. ray is parallel to the cylinder's axis), skip wall
-	checking and move to check caps /
+	checking and move to check caps */
 	
-	//result.count = 4;  causes a segfault currently!
-	result.array = malloc(sizeof(t_intersection) * 4);
+	result.count = 0;  // causes a segfault currently!
+	result.array = ft_calloc(4, sizeof(t_intersection));
 	if (!result.array)
 		return (result);
 	a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
@@ -280,12 +337,12 @@ t_intersects	intersect_cylinder_caps(t_shape cyl, t_ray ray, t_intersects result
 			t0 = (-b - sqrt_discriminant) / (2 * a); // Closest intersection
 			t1 = (-b + sqrt_discriminant) / (2 * a); // Farther intersection
 			//printf("Wall Intersection t0: %f, t1: %f\n", t0, t1);
-			/if (t0 > t1)
+			/*if (t0 > t1)
 			{
 				temp = t0;
 				t0 = t1;
 				t1 = temp;
-			}	/
+			}	*/
 			//check corresponding y coordinates for each t to determine whether the intersection is within
 			//the cylinder's height bounds and add valid intersections to xs
 			y0 = ray.origin.y + t0 * ray.direction.y;
@@ -293,6 +350,7 @@ t_intersects	intersect_cylinder_caps(t_shape cyl, t_ray ray, t_intersects result
 			{
 				//printf("Valid wall intersection at t0: %f, y0: %f\n", t0, y0);
 				result.array[0].t = t0;
+				result.count = 1;
 				result.array[0].object = cylinder;
 			}
 			y1 = ray.origin.y + t1 * ray.direction.y;
@@ -300,18 +358,18 @@ t_intersects	intersect_cylinder_caps(t_shape cyl, t_ray ray, t_intersects result
 			{
 				//printf("Valid wall intersection at t1: %f, y1: %f\n", t1, y1);
 				result.array[1].t = t1;
+				result.count = 2;
 				result.array[1].object = cylinder;
 			}
 		}
 	}
-	// Check intersections for caps
-	if (cylinder->closed == 0 && fabs(ray.direction.y) > EPSILON)
-		result = intersect_cylinder_caps(*cylinder, ray, result);
-
+	/* Check intersections for caps */
+	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON)
+		result = intersect_cylinder_caps(cylinder, ray, result);
 	return (result);
-} */
 
-t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
+
+/*t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 {
 	t_intersects	result;
 	double	a;
@@ -410,7 +468,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	}
 
 	return (result);
-}
+} */
 
 t_intersects intersect(t_shape *shape, t_ray ray)
 {
