@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 22:18:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 23:00:50 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void ft_hook(void* param)
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, 0.8));
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_O))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_ADD))
 	{
 		int i;
 
@@ -130,14 +130,14 @@ void ft_hook(void* param)
 		{
 			if (scene->shapes[i].selected == 1)
 			{
-				scene->shapes[i].scale = multiply_tuple_scalar(scene->shapes[i].scale, 2.0);
+				scene->shapes[i].scale = multiply_tuple_scalar(scene->shapes[i].scale, 2.0);  //LIMIT
 				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 			}
 			i++;
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_P))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_SUBTRACT))
 	{
 		int i;
 
@@ -146,8 +146,120 @@ void ft_hook(void* param)
 		{
 			if (scene->shapes[i].selected == 1)
 			{
-				scene->shapes[i].scale = multiply_tuple_scalar(scene->shapes[i].scale, 0.5);
+				scene->shapes[i].scale = multiply_tuple_scalar(scene->shapes[i].scale, 0.5); //LIMIT
 				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_8))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, 0, 0.8));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_5))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, 0, -0.8));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_4))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(-0.4, 0, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_6))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0.4, 0, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_1))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, -0.4, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_0))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, 0.4, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_7))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_y_matrix(0.2));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_9))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_y_matrix(-0.2));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
 			}
 			i++;
 		}
@@ -160,3 +272,6 @@ void ft_hook(void* param)
 		scene->needs_render = 0; // Reset flag after rendering
 	}
 }
+
+
+// Rotation for cylinders??? Shadows if we rotate.
