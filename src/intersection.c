@@ -67,36 +67,36 @@ void	ft_lstremove(t_list **lst, void *content)
 
 t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs)
 {
-    t_intersection comps;
-    t_list *containers = NULL;  // Keeps track of the objects the ray is inside
-    t_list *temp;
-    int i;
+	t_intersection comps;
+	t_list *containers = NULL;  // Keeps track of the objects the ray is inside
+	t_list *temp;
+	int i;
 
-    comps.t = hit.t;
-    comps.object = hit.object;
-    comps.point = get_ray_position(ray, comps.t);
-    comps.eyev = negate_tuple(ray.direction);
-    comps.normalv = normal_at(comps.object, comps.point);
+	comps.t = hit.t;
+	comps.object = hit.object;
+	comps.point = get_ray_position(ray, comps.t);
+	comps.eyev = negate_tuple(ray.direction);
+	comps.normalv = normal_at(comps.object, comps.point);
 	
-    comps.inside = 0;
-    if (dot(comps.normalv, comps.eyev) < 0)
-    {
-        comps.inside = 1;
-        comps.normalv = negate_tuple(comps.normalv);
-    }
+	comps.inside = 0;
+	if (dot(comps.normalv, comps.eyev) < 0)
+	{
+		comps.inside = 1;
+		comps.normalv = negate_tuple(comps.normalv);
+	}
 
 	comps.over_point = add_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
-    comps.under_point = substract_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
+	comps.under_point = substract_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
 	comps.reflectv = reflect(ray.direction, comps.normalv);
 	
-    comps.n1 = 1.0;
-    comps.n2 = 1.0;
+	comps.n1 = 1.0;
+	comps.n2 = 1.0;
 
 	if (!xs || xs->count == 0)  // If `xs` is NULL or empty, just return comps
         return comps;
 
-    for (i = 0; i < xs->count; i++)
-    {
+  for (i = 0; i < xs->count; i++)
+  {
         // If this intersection is the hit, record n1 (before processing)
         if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
         {
@@ -149,6 +149,53 @@ t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects 
     ft_lstclear_safe(&containers);
 
     return (comps);
+
+	for (i = 0; i < xs->count; i++)
+	{
+		// If this intersection is the hit, record n1 (before processing)
+		if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
+		{
+			if (!containers /* || ft_lstlast(containers) == NULL */)
+				comps.n1 = 1.0;
+			else
+			{
+				t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
+				comps.n1 = shape->material.refractive_index;
+			}
+		}
+
+		// Process this intersection: if the object is already in containers, remove it; otherwise, add it.
+		int removed = 0;
+		temp = containers;
+		while (temp)
+		{
+			if (temp->content == xs->array[i].object)
+			{
+				ft_lstremove(&containers, temp->content);
+				removed = 1;
+				break;
+			}
+			temp = temp->next;
+		}
+		if (!removed)
+			ft_lstadd_back(&containers, ft_lstnew(xs->array[i].object));
+
+		// If this intersection is the hit, record n2 (after processing) and break.
+		if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
+		{
+			if (!containers /* || ft_lstlast(containers) == NULL */)
+				comps.n2 = 1.0;
+			else
+			{
+				t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
+				comps.n2 = shape->material.refractive_index;
+			}
+			break;
+		}
+	}
+	ft_lstclear_safe(&containers);
+
+	return (comps);
 }
 
 t_intersection	*hit(t_intersects intersections)
@@ -266,6 +313,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	double			y1;
 	double			t0;
 	double			t1;
+	int				count;
 	
 	ft_bzero(&result, sizeof(t_intersects));
 	/* Wall intersections
@@ -295,8 +343,8 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 				t0 = t1;
 				t1 = temp;
 			}	*/
-			/*check corresponding y coordinates for each t to determine whether the intersection is within
-			the cylinder's height bounds and add valid intersections to xs*/
+			//check corresponding y coordinates for each t to determine whether the intersection is within
+			//the cylinder's height bounds and add valid intersections to xs
 			y0 = ray.origin.y + t0 * ray.direction.y;
 			if (cylinder->min < y0 && y0 < cylinder->max)
 			{
@@ -318,9 +366,109 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	/* Check intersections for caps */
 	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON)
 		result = intersect_cylinder_caps(cylinder, ray, result);
+	return (result);
+
+
+/*t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
+{
+	t_intersects	result;
+	double	a;
+	double	b;
+	double	c;
+	double	discriminant;
+	double	sqrt_discriminant;
+	double	t0;
+	double	t1;
+	double	y0;
+	double	y1;
+	int		count = 0;
+
+	ft_bzero(&result, sizeof(t_intersects));
+	a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
+	// If a is effectively zero, the ray is parallel to the cylinder's axis, so skip wall intersections
+	if (fabs(a) > EPSILON)
+	{
+		b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
+		c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
+		discriminant = b * b - 4 * a * c;
+
+		if (discriminant >= 0)  // Ray intersects the infinite cylinder
+		{
+			sqrt_discriminant = sqrt(discriminant);
+			t0 = (-b - sqrt_discriminant) / (2 * a);
+			t1 = (-b + sqrt_discriminant) / (2 * a);
+
+			y0 = ray.origin.y + t0 * ray.direction.y;
+			if (cylinder->min < y0 && y0 < cylinder->max)
+				count++;  // Valid wall intersection
+
+			y1 = ray.origin.y + t1 * ray.direction.y;
+			if (cylinder->min < y1 && y1 < cylinder->max)
+				count++;  // Valid wall intersection
+		}
+	}
+	// Check for cap intersections
+	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON)
+	{
+		if (check_cylinder_cap(*cylinder, ray, (cylinder->min - ray.origin.y) / ray.direction.y))
+			count++;
+		if (check_cylinder_cap(*cylinder, ray, (cylinder->max - ray.origin.y) / ray.direction.y))
+			count++;
+	}
+	result.count = count;
+	if (count > 0)
+	{
+		result.array = malloc(sizeof(t_intersection) * count);
+		if (!result.array)
+			return (result);
+	}
+	else
+	{
+		result.array = NULL;
+		return (result);
+	}
+
+	// Store valid intersections
+	int	index = 0;
+	if (discriminant >= 0)
+	{
+		y0 = ray.origin.y + t0 * ray.direction.y;
+		if (cylinder->min < y0 && y0 < cylinder->max)
+		{
+			result.array[index].t = t0;
+			result.array[index].object = cylinder;
+			index++;
+		}
+
+		y1 = ray.origin.y + t1 * ray.direction.y;
+		if (cylinder->min < y1 && y1 < cylinder->max)
+		{
+			result.array[index].t = t1;
+			result.array[index].object = cylinder;
+			index++;
+		}
+	}
+
+	// Check for cap intersections again and store them
+	double	t;
+	t = (cylinder->min - ray.origin.y) / ray.direction.y;
+	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON && check_cylinder_cap(*cylinder, ray, t))
+	{
+		result.array[index].t = t;
+		result.array[index].object = cylinder;
+		index++;
+	}
+
+	t = (cylinder->max - ray.origin.y) / ray.direction.y;
+	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON && check_cylinder_cap(*cylinder, ray, t))
+	{
+		result.array[index].t = t;
+		result.array[index].object = cylinder;
+		index++;
+	}
 
 	return (result);
-}
+} */
 
 t_intersects intersect(t_shape *shape, t_ray ray)
 {
