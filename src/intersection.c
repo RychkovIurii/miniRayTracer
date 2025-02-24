@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 17:58:48 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:52:46 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,7 @@ t_intersects intersect(t_shape *shape, t_ray ray)
 {
 	t_ray local_ray;
 
-	local_ray = transform_ray(ray, inverse_matrix(shape->transform));
+	local_ray = transform_ray(ray, shape->transform_inv);
 	if (shape->type == SHAPE_SPHERE)
 	{
 		return local_intersect_sphere(shape, local_ray);
@@ -235,10 +235,8 @@ t_tuple	normal_at(t_shape *shape, t_tuple world_point)
 	t_tuple world_normal;
 	t_tuple local_point;
 	t_tuple local_normal;
-	t_matrix inverse_transform;
 
-	inverse_transform = inverse_matrix(shape->transform);
-	local_point = multiply_matrix_by_tuple(inverse_transform, world_point);
+	local_point = multiply_matrix_by_tuple(shape->transform_inv, world_point);
 	if (shape->type == SHAPE_SPHERE)
 	{
 		local_normal = local_normal_at_sphere(shape->center, local_point);
@@ -247,7 +245,7 @@ t_tuple	normal_at(t_shape *shape, t_tuple world_point)
 	{
 		local_normal = local_normal_at_plane(local_point);
 	}
-	world_normal = multiply_matrix_by_tuple(transpose_matrix(inverse_transform), local_normal);
+	world_normal = multiply_matrix_by_tuple(shape->transpose_inv, local_normal);
 	world_normal.w = 0;
 	surface_normal = normalize(world_normal);
 	return (surface_normal);

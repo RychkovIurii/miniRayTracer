@@ -6,11 +6,18 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 11:55:42 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:49:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	update_matrices(t_shape *shape, t_matrix transform)
+{
+	shape->transform = transform;
+	shape->transform_inv = inverse_matrix(shape->transform);
+	shape->transpose_inv = transpose_matrix(shape->transform_inv);
+}
 
 t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
 {
@@ -85,8 +92,6 @@ t_matrix	combine_all_transforms(t_shape *shape)
 		shape->normal.x, shape->normal.y, shape->normal.z);
 	translation_x_rotation = multiply_matrices(translation_matrix(shape->center.x, shape->center.y, shape->center.z), get_rotation_matrix(shape));
 	result = multiply_matrices(translation_x_rotation, scaling_matrix(shape->scale.x, shape->scale.y, shape->scale.z));
-/* 	result = inverse_matrix(result);
-	result = transpose_matrix(result); */
 	return (result);
 }
 
@@ -99,12 +104,13 @@ void	set_matrices(t_scene *scene)
 	{
 		if (scene->shapes[i].type == SHAPE_SPHERE)
 		{
-			scene->shapes[i].transform = identity_matrix();
+			update_matrices(&scene->shapes[i], identity_matrix());
 		}
 		else if (scene->shapes[i].type == SHAPE_PLANE)
 		{
-			scene->shapes[i].transform = combine_all_transforms(&scene->shapes[i]);
+			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 		}
 		i++;
 	}
 }
+

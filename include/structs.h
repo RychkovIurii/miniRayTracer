@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 16:16:05 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:38:59 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ typedef struct	s_shape
 	t_tuple		point_on_plane;
 	t_tuple		normal;
 	t_matrix	transform;
+	t_matrix	transform_inv;
+	t_matrix	transpose_inv;
 	t_material	material;
 	t_shape_type		type;
 }	t_shape;
