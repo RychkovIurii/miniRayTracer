@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 18:18:16 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 21:58:19 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ t_intersects local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
 	double		sqrt_d;
 
 	ft_bzero(&result, sizeof(t_intersects));
-	sphere_to_ray = substract_tuple(transformed_ray.origin, sphere->center);
+	sphere_to_ray = vector(transformed_ray.origin.x, transformed_ray.origin.y, transformed_ray.origin.z);
 	a = dot(transformed_ray.direction, transformed_ray.direction);
 	b = 2 * dot(transformed_ray.direction, sphere_to_ray);
 	c = dot(sphere_to_ray, sphere_to_ray) - sphere->radius * sphere->radius;
