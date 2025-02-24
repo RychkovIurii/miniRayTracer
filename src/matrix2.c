@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   matrix2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:37:22 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:16:23 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ t_matrix	combine_all_transforms(t_shape *shape)
 	t_matrix	translation_x_rotation;
 	t_matrix	result;
 
-	printf("Before rotation: Normalized Vector: (%f, %f, %f)\n",
+	printf("Before transformation: Normalized Vector: (%f, %f, %f)\n",
 		shape->normal.x, shape->normal.y, shape->normal.z);
 	translation_x_rotation = multiply_matrices(translation_matrix(shape->center.x, shape->center.y, shape->center.z), get_rotation_matrix(shape));
 	result = multiply_matrices(translation_x_rotation, scaling_matrix(shape->scale.x, shape->scale.y, shape->scale.z));
@@ -105,7 +105,7 @@ void	set_matrices(t_scene *scene)
 		if (scene->shapes[i].type == SHAPE_SPHERE)
 		{
 			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
-			scene->shapes[i].center = point (0, 0, 0);
+			scene->shapes[i].center = point (0, 0, 0); // ??????????????????????????????????????THINK
 		}
 		else if (scene->shapes[i].type == SHAPE_PLANE)
 		{

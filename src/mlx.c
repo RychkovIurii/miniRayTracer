@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:51:10 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:11:31 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,23 @@ void ft_hook(void* param)
 {
 	t_scene *scene = (t_scene *)param;
 
+	mlx_get_mouse_pos(scene->mlx, &scene->mouse_x, &scene->mouse_y);
+	if (mlx_is_mouse_down(scene->mlx, MLX_MOUSE_BUTTON_RIGHT))
+	{
+		t_ray ray = ray_for_pixel(scene->camera, scene->mouse_x, scene->mouse_y, multiply_matrix_by_tuple(scene->camera.transform_inv, point(0, 0, 0)));
+		t_intersects xs = intersect_scene(scene, ray);
+		t_intersection *closest = hit(xs);
+		if (closest->object)
+		{
+			int i = 0;
+			while (i < scene->shape_count)
+			{
+				scene->shapes[i].selected = 0;
+				i++;
+			}
+			closest->object->selected = 1;
+		}
+	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(scene->mlx);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
@@ -104,7 +121,6 @@ void ft_hook(void* param)
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, 0.8));
 		scene->needs_render = 1;
 	}
-/* 
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_O))
 	{
 		int i;
@@ -112,11 +128,10 @@ void ft_hook(void* param)
 		i = 0;
 		while (i < scene->shape_count)
 		{
-			if (scene->shapes[i].type == SHAPE_SPHERE)
+			if (scene->shapes[i].selected == 1)
 			{
-				scene->shapes[i].transform = scaling_matrix(2, 2, 2);
+				scene->shapes[i].scale = point(2, 2, 2);
 				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
-				
 			}
 			i++;
 		}
@@ -129,14 +144,15 @@ void ft_hook(void* param)
 		i = 0;
 		while (i < scene->shape_count)
 		{
-			if (scene->shapes[i].type == SHAPE_SPHERE)
+			if (scene->shapes[i].selected == 1)
 			{
-				update_matrices(&scene->shapes[i], scaling_matrix(0.5, 0.5, 0.5));
+				scene->shapes[i].scale = point(0.5, 0.5, 0.5);
+				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 			}
 			i++;
 		}
 		scene->needs_render = 1;
-	} */
+	}
 	if (scene->needs_render)
 	{
 		scene->camera.transform_inv = inverse_matrix(scene->camera.transform);
