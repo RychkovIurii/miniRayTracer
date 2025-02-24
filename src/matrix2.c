@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 19:16:23 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 22:20:13 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	set_matrices(t_scene *scene)
 		if (scene->shapes[i].type == SHAPE_SPHERE)
 		{
 			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
-			scene->shapes[i].center = point (0, 0, 0); // ??????????????????????????????????????THINK
 		}
 		else if (scene->shapes[i].type == SHAPE_PLANE)
 		{
