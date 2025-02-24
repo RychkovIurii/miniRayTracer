@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:08:22 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 13:52:28 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/23 21:55:55 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	validate_cylinder_dimensions(char **element, t_rt *rt)
 	if (cylinder_height == -1)
 		return (error("Invalid cylinder height", 1));
 	rt->scene->shapes[rt->scene->shape_count].cylinder_height = cylinder_height;
+	rt->scene->shapes[rt->scene->shape_count].min = -cylinder_height / 2.0;
+	rt->scene->shapes[rt->scene->shape_count].max = cylinder_height / 2.0;
 	return (0);
 }
 
@@ -89,7 +91,10 @@ int	parse_cylinder(char **element, t_rt *rt)
 	if (validate_argument_count(element, 6))
 		return (error("Invalid number of arguments for cylinder", 1));
 	if (validate_cylinder_dimensions(element, rt))
+	{
+		print_error("Failed to validate cylinder dimensions");
 		return (1);
+	}
 	coordinates = validate_coordinates(element[1]);
 	if (!coordinates)
 		return (error("Invalid coordinates for center of cylinder", 1));

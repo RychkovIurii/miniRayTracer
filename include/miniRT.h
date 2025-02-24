@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:14:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:51:34 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@
 # define M_PI 3.14159265358979323846  // how accurate should this be?
 # define EPSILON 0.0001f
 
-# define WIDTH 300
-# define HEIGHT 150
+# define WIDTH 400
+# define HEIGHT 400
 
-# define DEFAULT_REMAINING 5
+# define DEFAULT_REMAINING 0
 
 # define PATTERN_NONE 0
 # define PATTERN_STRIPE 1
@@ -119,6 +119,8 @@ double		determinant(t_matrix a);
 int			is_invertible(t_matrix a);
 t_matrix	inverse_matrix(t_matrix a);
 void	set_matrices(t_scene *scene);
+void	update_matrices(t_shape *shape, t_matrix transform);
+t_matrix	combine_all_transforms(t_shape *shape);
 
 
 /** Intersection **/
@@ -147,8 +149,8 @@ t_canvas	*create_canvas(int width, int height);
 t_material default_material();
 t_shape create_shape(t_shape_type type);
 t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up);
-t_ray ray_for_pixel(t_camera camera, int px, int py);
-t_canvas *render(t_camera camera, t_scene *world);
+t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
+void	render(t_camera camera, t_scene *scene);
 t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize);
 t_light init_light(t_tuple position, t_tuple color, double brightness);
 void	free_canvas(t_canvas *canvas);
