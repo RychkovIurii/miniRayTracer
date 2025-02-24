@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/23 21:50:25 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:15:29 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -255,8 +255,8 @@ t_intersects local_intersect_plane(t_shape *plane, t_ray transformed_ray)
 	return (result);
 }
 
-/* Checks to see if the intersection at 't' is within a radius of 1
-(radius of cylinders) from the y axis * -- radius currently hardcoded!! */
+/* Checks to see if the intersection at 't' is within a radius
+(radius of cylinder) from the y axis */
 
 int	check_cylinder_cap(t_shape cyl, t_ray ray, double t)
 {
@@ -315,13 +315,13 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	double			t1;
 	int				count;
 	
-	ft_bzero(&result, sizeof(t_intersects));
+	//ft_bzero(&result, sizeof(t_intersects));
 	/* Wall intersections
 	 - if discriminant is negative, the ray misses the wall completely
 	 - if a is effectively zero (i.e. ray is parallel to the cylinder's axis), skip wall
 	checking and move to check caps */
 	
-	result.count = 0;  // causes a segfault currently!
+	result.count = 0;
 	result.array = ft_calloc(4, sizeof(t_intersection));
 	if (!result.array)
 		return (result);
@@ -367,108 +367,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON)
 		result = intersect_cylinder_caps(cylinder, ray, result);
 	return (result);
-
-
-/*t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
-{
-	t_intersects	result;
-	double	a;
-	double	b;
-	double	c;
-	double	discriminant;
-	double	sqrt_discriminant;
-	double	t0;
-	double	t1;
-	double	y0;
-	double	y1;
-	int		count = 0;
-
-	ft_bzero(&result, sizeof(t_intersects));
-	a = (ray.direction.x * ray.direction.x) + (ray.direction.z * ray.direction.z);
-	// If a is effectively zero, the ray is parallel to the cylinder's axis, so skip wall intersections
-	if (fabs(a) > EPSILON)
-	{
-		b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
-		c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
-		discriminant = b * b - 4 * a * c;
-
-		if (discriminant >= 0)  // Ray intersects the infinite cylinder
-		{
-			sqrt_discriminant = sqrt(discriminant);
-			t0 = (-b - sqrt_discriminant) / (2 * a);
-			t1 = (-b + sqrt_discriminant) / (2 * a);
-
-			y0 = ray.origin.y + t0 * ray.direction.y;
-			if (cylinder->min < y0 && y0 < cylinder->max)
-				count++;  // Valid wall intersection
-
-			y1 = ray.origin.y + t1 * ray.direction.y;
-			if (cylinder->min < y1 && y1 < cylinder->max)
-				count++;  // Valid wall intersection
-		}
-	}
-	// Check for cap intersections
-	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON)
-	{
-		if (check_cylinder_cap(*cylinder, ray, (cylinder->min - ray.origin.y) / ray.direction.y))
-			count++;
-		if (check_cylinder_cap(*cylinder, ray, (cylinder->max - ray.origin.y) / ray.direction.y))
-			count++;
-	}
-	result.count = count;
-	if (count > 0)
-	{
-		result.array = malloc(sizeof(t_intersection) * count);
-		if (!result.array)
-			return (result);
-	}
-	else
-	{
-		result.array = NULL;
-		return (result);
-	}
-
-	// Store valid intersections
-	int	index = 0;
-	if (discriminant >= 0)
-	{
-		y0 = ray.origin.y + t0 * ray.direction.y;
-		if (cylinder->min < y0 && y0 < cylinder->max)
-		{
-			result.array[index].t = t0;
-			result.array[index].object = cylinder;
-			index++;
-		}
-
-		y1 = ray.origin.y + t1 * ray.direction.y;
-		if (cylinder->min < y1 && y1 < cylinder->max)
-		{
-			result.array[index].t = t1;
-			result.array[index].object = cylinder;
-			index++;
-		}
-	}
-
-	// Check for cap intersections again and store them
-	double	t;
-	t = (cylinder->min - ray.origin.y) / ray.direction.y;
-	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON && check_cylinder_cap(*cylinder, ray, t))
-	{
-		result.array[index].t = t;
-		result.array[index].object = cylinder;
-		index++;
-	}
-
-	t = (cylinder->max - ray.origin.y) / ray.direction.y;
-	if (cylinder->closed == 1 && fabs(ray.direction.y) > EPSILON && check_cylinder_cap(*cylinder, ray, t))
-	{
-		result.array[index].t = t;
-		result.array[index].object = cylinder;
-		index++;
-	}
-
-	return (result);
-} */
+}
 
 t_intersects intersect(t_shape *shape, t_ray ray)
 {
@@ -504,10 +403,11 @@ t_tuple local_normal_at_plane(t_tuple local_point)
 t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
 {
 	double	distance;
+	
 	distance = point.x * point.x + point.z * point.z;
-	if (distance < 1 && point.y >= cylinder.max - EPSILON)
+	if (distance < (cylinder.radius * cylinder.radius) && point.y >= cylinder.max - EPSILON)
 		return (vector(0, 1, 0));
-	else if (distance < 1 && point.y <= cylinder.min + EPSILON)
+	else if (distance < (cylinder.radius * cylinder.radius) && point.y <= cylinder.min + EPSILON)
 		return (vector(0, -1, 0));
 	else
 		return (vector(point.x, 0, point.z));
