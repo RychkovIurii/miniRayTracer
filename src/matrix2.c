@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/20 22:06:52 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 11:55:42 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,14 @@ t_matrix	get_rotation_matrix(t_shape *shape)
 	rot_axis = normalize(rot_axis);
 	rot_angle = acos(fmax(-1.0, fmin(1.0, dot(y_axis, shape->normal))));
 	printf("Rotation Axis: (%f, %f, %f), Angle: %f\n", rot_axis.x, rot_axis.y, rot_axis.z, rot_angle);
+	if (shape->type == SHAPE_SPHERE)
+	{
+		if (len <= 1)
+			rot_angle = 0;
+		else
+			rot_angle = fmod(len - 1, 4) * 1.57079633;
+		rot_axis = shape->normal;
+	}
 	return(rotation_matrix_sub(rot_axis, rot_angle));
 }
 
