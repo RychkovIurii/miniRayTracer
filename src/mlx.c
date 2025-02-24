@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:31:55 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:51:10 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,39 @@ void ft_hook(void* param)
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, 0.8));
 		scene->needs_render = 1;
 	}
+/* 
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_O))
+	{
+		int i;
+
+		i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].type == SHAPE_SPHERE)
+			{
+				scene->shapes[i].transform = scaling_matrix(2, 2, 2);
+				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+				
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_P))
+	{
+		int i;
+
+		i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].type == SHAPE_SPHERE)
+			{
+				update_matrices(&scene->shapes[i], scaling_matrix(0.5, 0.5, 0.5));
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	} */
 	if (scene->needs_render)
 	{
 		scene->camera.transform_inv = inverse_matrix(scene->camera.transform);

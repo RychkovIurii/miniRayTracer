@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 17:05:16 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:51:34 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ double		determinant(t_matrix a);
 int			is_invertible(t_matrix a);
 t_matrix	inverse_matrix(t_matrix a);
 void	set_matrices(t_scene *scene);
+void	update_matrices(t_shape *shape, t_matrix transform);
+t_matrix	combine_all_transforms(t_shape *shape);
 
 
 /** Intersection **/

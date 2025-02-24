@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 15:32:03 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 16:22:06 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors)
 
 	i = rt->scene->shape_count;
 	rt->scene->shapes[i].type = SHAPE_PLANE;
-	rt->scene->shapes[i].point_on_plane = string_to_point(coordinates);
+	rt->scene->shapes[i].center = string_to_point(coordinates);
 	rt->scene->shapes[i].normal = string_to_vector(normal);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
 	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
@@ -64,7 +64,7 @@ void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors)
 
 	i = rt->scene->shape_count;
 	rt->scene->shapes[i].type = SHAPE_CYLINDER;
-	rt->scene->shapes[i].closed = 0;
+	rt->scene->shapes[i].closed = 1;
 	rt->scene->shapes[i].center = string_to_point(coordinates);
 	rt->scene->shapes[i].normal = string_to_vector(normal);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
