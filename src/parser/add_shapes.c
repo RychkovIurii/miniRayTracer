@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 16:22:06 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:05:49 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,3 +78,4 @@ void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shape_count++;
 }
+

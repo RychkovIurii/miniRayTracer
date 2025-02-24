@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 16:51:34 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 19:16:21 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@
 # define PATTERN_RING 3
 # define PATTERN_CHECKER 4
 
+/** Bonus parsing */
+
+int		parse_cone(char **element, t_rt *rt);
+void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors);
+
 /** Parsing */
 
 int		parse_file(t_rt *rt);
@@ -49,6 +54,9 @@ char	*trim_extra_spaces(char *line);
 int		count_lines_in_file(int fd);
 int		init_scene_structs(t_rt *rt);
 int		parse_element(char **element, t_rt *rt);
+int		parse_ambient(char **element, t_rt *rt);
+int		parse_camera(char **element, t_rt *rt);
+int		parse_light(char **element, t_rt *rt);
 int		parse_sphere(char **element, t_rt *rt);
 int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);

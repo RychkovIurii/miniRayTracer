@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:08:22 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/23 21:55:55 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 20:07:03 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	validate_cylinder_dimensions(char **element, t_rt *rt)
 	cylinder_height = validate_dimension(element[4]);
 	if (cylinder_height == -1)
 		return (error("Invalid cylinder height", 1));
-	rt->scene->shapes[rt->scene->shape_count].cylinder_height = cylinder_height;
+	rt->scene->shapes[rt->scene->shape_count].height = cylinder_height;
 	rt->scene->shapes[rt->scene->shape_count].min = -cylinder_height / 2.0;
 	rt->scene->shapes[rt->scene->shape_count].max = cylinder_height / 2.0;
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:37:22 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:31:13 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,8 @@ void	set_matrices(t_scene *scene)
 			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 		}
 		else if (scene->shapes[i].type == SHAPE_CYLINDER)
+			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+		else if (scene->shapes[i].type == SHAPE_CONE)
 			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 		i++;
 	}

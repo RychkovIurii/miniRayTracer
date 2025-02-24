@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/21 18:11:57 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/24 20:05:13 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,9 +15,11 @@ NAME = miniRT
 SRCS = main.c\
 		parser/parser.c\
 		parser/parser_utils.c\
-		parser/parse_element.c\
+		parser/parse_element_bonus.c\
 		parser/parse_element_utils.c\
+		parser/parse_non_shapes.c\
 		parser/parse_shapes.c\
+		parser/parse_shapes_bonus.c\
 		parser/add_shapes.c\
 		parser/validations.c\
 		parser/conversions.c\
@@ -33,6 +35,8 @@ SRCS = main.c\
 		tuple.c\
 		vector.c\
 		mlx.c\
+		#parser/parse_element.c
+
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
