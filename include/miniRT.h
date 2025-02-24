@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 16:51:34 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 17:44:15 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@
 # define M_PI 3.14159265358979323846  // how accurate should this be?
 # define EPSILON 0.0001f
 
-# define WIDTH 400
-# define HEIGHT 400
+# define WIDTH 600
+# define HEIGHT 600
 
 # define DEFAULT_REMAINING 0
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   intersection.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:30:54 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:18:16 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,7 +329,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	if (fabs(a) > EPSILON)
 	{
 		b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z;
-		c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - 1;
+		c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - cylinder->radius * cylinder->radius;
 		discriminant = b * b - 4 * a * c;
 		if (discriminant >= 0)
 		{
