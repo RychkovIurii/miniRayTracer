@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 17:58:13 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:34:04 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@
 # define PATTERN_CHECKER 4
 
 # define MOVE_STEP 1.2
-# define ROTATE_STEP 0.2
+# define ROTATE_OBJECT_STEP 0.2
+# define ROTATE_CAMERA_STEP 0.05
 # define SCALE_UP 2
 # define SCALE_DOWN 0.5
 # define BRIGHTNESS_STEP 0.1

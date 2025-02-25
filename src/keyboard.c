@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:04:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 18:18:33 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 19:37:10 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void move_camera(t_scene *scene, t_tuple point, double angle)
 {
 	if (angle != 0)
 	{
-		scene->camera.transform = multiply_matrices(scene->camera.transform, rotation_y_matrix(angle));
+		scene->camera.transform = multiply_matrices(rotation_y_matrix(angle), scene->camera.transform);
 		scene->needs_render = 1;
 		return ;
 	}
@@ -60,9 +60,9 @@ void handle_camera_movement(t_scene *scene)
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
 		move_camera(scene, point(MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
-		move_camera(scene, point(0, 0, 0), ROTATE_STEP);
+		move_camera(scene, point(0, 0, 0), -ROTATE_CAMERA_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
-		move_camera(scene, point(0, 0, 0), -ROTATE_STEP);
+		move_camera(scene, point(0, 0, 0), ROTATE_CAMERA_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_W))
 		move_camera(scene, point(0, 0, MOVE_STEP), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_S))
@@ -149,9 +149,9 @@ void handle_object_transformation(t_scene *scene)
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_1))
 		move_object(scene, 0, MOVE_STEP, 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_7))
-		rotate_object(scene, ROTATE_STEP);
+		rotate_object(scene, ROTATE_OBJECT_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_9))
-		rotate_object(scene, -ROTATE_STEP);
+		rotate_object(scene, -ROTATE_OBJECT_STEP);
 }
 
 void update_light(t_scene *scene, t_tuple new_vector, double brightness)
