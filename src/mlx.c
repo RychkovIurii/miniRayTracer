@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 23:00:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:28:58 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,7 @@ void ft_hook(void* param)
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_8))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_5))
 	{
 		int i = 0;
 		while (i < scene->shape_count)
@@ -167,7 +167,7 @@ void ft_hook(void* param)
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_5))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_8))
 	{
 		int i = 0;
 		while (i < scene->shape_count)
@@ -181,7 +181,7 @@ void ft_hook(void* param)
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_4))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_6))
 	{
 		int i = 0;
 		while (i < scene->shape_count)
@@ -195,7 +195,7 @@ void ft_hook(void* param)
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_6))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_4))
 	{
 		int i = 0;
 		while (i < scene->shape_count)
@@ -209,7 +209,7 @@ void ft_hook(void* param)
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_1))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_0))
 	{
 		int i = 0;
 		while (i < scene->shape_count)
@@ -223,7 +223,7 @@ void ft_hook(void* param)
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_0))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_1))
 	{
 		int i = 0;
 		while (i < scene->shape_count)
