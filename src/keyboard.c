@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:04:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 18:08:26 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:18:33 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void handle_mouse_and_exit(t_scene *scene)
 		mlx_close_window(scene->mlx);
 }
 
-void move_camera(t_scene *scene, double x, double y, double z, double angle)
+void move_camera(t_scene *scene, t_tuple point, double angle)
 {
 	if (angle != 0)
 	{
@@ -45,28 +45,28 @@ void move_camera(t_scene *scene, double x, double y, double z, double angle)
 		scene->needs_render = 1;
 		return ;
 	}
-	scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(x, y, z));
+	scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(point.x, point.y, point.z));
 	scene->needs_render = 1;
 }
 
 void handle_camera_movement(t_scene *scene)
 {
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
-		move_camera(scene, 0, -MOVE_STEP, 0, 0);
+		move_camera(scene, point(0, -MOVE_STEP, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_DOWN))
-		move_camera(scene, 0, MOVE_STEP, 0, 0);
+		move_camera(scene, point(0, MOVE_STEP, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
-		move_camera(scene, -MOVE_STEP, 0, 0, 0);
+		move_camera(scene, point(-MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
-		move_camera(scene, MOVE_STEP, 0, 0, 0);
+		move_camera(scene, point(MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
-		move_camera(scene, 0, 0, 0, ROTATE_STEP);
+		move_camera(scene, point(0, 0, 0), ROTATE_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
-		move_camera(scene, 0, 0, 0, -ROTATE_STEP);
+		move_camera(scene, point(0, 0, 0), -ROTATE_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_W))
-		move_camera(scene, 0, 0, MOVE_STEP, 0);
+		move_camera(scene, point(0, 0, MOVE_STEP), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_S))
-		move_camera(scene, 0, 0, -MOVE_STEP, 0);
+		move_camera(scene, point(0, 0, -MOVE_STEP), 0);
 }
 
 void move_object(t_scene *scene, double x, double y, double z)
@@ -154,7 +154,7 @@ void handle_object_transformation(t_scene *scene)
 		rotate_object(scene, -ROTATE_STEP);
 }
 
-void update_light(t_scene *scene, double x, double y, double z, double brightness)
+void update_light(t_scene *scene, t_tuple new_vector, double brightness)
 {
 	if (brightness != 0)
 	{
@@ -167,28 +167,28 @@ void update_light(t_scene *scene, double x, double y, double z, double brightnes
 			return ;
 		}
 	}
-	scene->light.position = add_tuple(scene->light.position, vector(x, y, z));
+	scene->light.position = add_tuple(scene->light.position, new_vector);
 	scene->needs_render = 1;
 }
 
 void handle_light_controls(t_scene *scene)
 {
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_SHIFT))
-		update_light(scene, 0, 0, 0, BRIGHTNESS_STEP);
+		update_light(scene, vector(0, 0, 0), BRIGHTNESS_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_CONTROL))
-		update_light(scene, 0, 0, 0, -BRIGHTNESS_STEP);
+		update_light(scene, vector(0, 0, 0), -BRIGHTNESS_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_HOME))
-		update_light(scene, 0, MOVE_STEP, 0, 0);
+		update_light(scene, vector(0, MOVE_STEP, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_END))
-		update_light(scene, 0, -MOVE_STEP, 0, 0);
+		update_light(scene, vector(0, -MOVE_STEP, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_PAGE_DOWN))
-		update_light(scene, -MOVE_STEP, 0, 0, 0);
+		update_light(scene, vector(-MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_DELETE))
-		update_light(scene, MOVE_STEP, 0, 0, 0);
+		update_light(scene, vector(MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_SHIFT))
-		update_light(scene, 0, 0, -MOVE_STEP, 0);
+		update_light(scene, vector(0, 0, -MOVE_STEP), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_CONTROL))
-		update_light(scene, 0, 0, MOVE_STEP, 0);
+		update_light(scene, vector(0, 0, MOVE_STEP), 0);
 }
 
 void ft_hook(void* param)
