@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   color.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:29:54 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/25 18:07:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,13 @@ t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point)
 		return (checker_at(pattern, pattern_point));
 }
 
+int	is_tuples_equal(t_tuple a, t_tuple b)
+{
+	if (fabs(a.x - b.x) < EPSILON && fabs(a.y - b.y) < EPSILON &&
+		fabs(a.z - b.z) < EPSILON && fabs(a.w - b.w) < EPSILON)
+		return (1);
+	return (0);
+}
 
 t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow)
 {
@@ -96,7 +103,11 @@ t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple posi
 		color = material.color;
 	effective_color = multiply_color(color, light.intensity);
 	lightv = normalize(substract_tuple(light.position, position));
-	ambient = multiply_tuple_scalar(effective_color, material.ambient);
+	//ambient = multiply_tuple_scalar(effective_color, material.ambient);
+	if (!is_tuples_equal(effective_color, create_color(0, 0, 0)))
+		ambient = multiply_tuple_scalar(effective_color, material.ambient);
+	else
+		ambient = multiply_tuple_scalar(color, material.ambient);
 	light_dot_normal = dot(lightv, normalv);
 	if (light_dot_normal < 0 || in_shadow)
 	{

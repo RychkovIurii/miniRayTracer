@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 15:21:12 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:26:59 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void ft_render_scene(void* param)
 		}
 	}
 }
-
+/* 
 void ft_hook(void* param)
 {
 	t_scene *scene = (t_scene *)param;
@@ -333,7 +333,7 @@ void ft_hook(void* param)
 		ft_render_scene(scene);
 		scene->needs_render = 0; // Reset flag after rendering
 	}
-}
+} */
 
 
 // Rotation for cylinders??? Shadows if we rotate.

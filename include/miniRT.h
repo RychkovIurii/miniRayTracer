@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 17:44:15 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:58:13 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,12 @@
 # define PATTERN_GRADIENT 2
 # define PATTERN_RING 3
 # define PATTERN_CHECKER 4
+
+# define MOVE_STEP 1.2
+# define ROTATE_STEP 0.2
+# define SCALE_UP 2
+# define SCALE_DOWN 0.5
+# define BRIGHTNESS_STEP 0.1
 
 /** Parsing */
 
@@ -174,16 +180,23 @@ t_pattern		set_pattern(t_tuple a, t_tuple b);
 /** Mlx **/
 
 void ft_render_scene(void* param);
-void ft_hook(void* param);
 t_tuple	pixel_at(t_canvas *canvas, int x, int y);
 int	round_value(int value, int min, int max);
 
 
 /** Utils **/
+
 void	ft_bzero(void *s, size_t n);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 
+
 /** Debug **/
+
 void print_shapes(t_scene *scene);
+
+
+/** Keyboard **/
+void ft_hook(void* param);
+
 
 #endif

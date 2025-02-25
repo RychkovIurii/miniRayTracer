@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
+#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/21 18:11:57 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/25 17:39:40 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,7 @@ SRCS = main.c\
 		tuple.c\
 		vector.c\
 		mlx.c\
+		keyboard.c\
 
 SRC_DIR = ./src
 OBJ_DIR = ./obj
