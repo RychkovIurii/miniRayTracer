@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 10:53:08 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:21:12 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,7 +135,8 @@ void ft_hook(void* param)
 				if (new_scale.x <= 8 && new_scale.y <= 8 && new_scale.z <= 8)
 				{
 					scene->shapes[i].scale = new_scale;
-					update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+					scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, scaling_matrix(2, 2, 2));
+					update_matrices(&scene->shapes[i], scene->shapes[i].transform);
 				}
 			}
 			i++;
@@ -156,7 +157,8 @@ void ft_hook(void* param)
 				if (new_scale.x >= 0.1 && new_scale.y >= 0.1 && new_scale.z >= 0.1)
 				{
 					scene->shapes[i].scale = new_scale;
-					update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+					scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, scaling_matrix(0.5, 0.5, 0.5));
+					update_matrices(&scene->shapes[i], scene->shapes[i].transform);
 				}
 			}
 			i++;
@@ -252,9 +254,9 @@ void ft_hook(void* param)
 		int i = 0;
 		while (i < scene->shape_count)
 		{
-			if (scene->shapes[i].selected)
+			if (scene->shapes[i].selected && scene->shapes[i].type != SHAPE_SPHERE)
 			{
-				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_y_matrix(0.2));
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_z_matrix(0.2));
 				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
 			}
 			i++;
@@ -266,13 +268,63 @@ void ft_hook(void* param)
 		int i = 0;
 		while (i < scene->shape_count)
 		{
-			if (scene->shapes[i].selected)
+			if (scene->shapes[i].selected && scene->shapes[i].type != SHAPE_SPHERE)
 			{
-				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_y_matrix(-0.2));
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_z_matrix(-0.2));
 				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
 			}
 			i++;
 		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_SHIFT))
+	{
+		double new_brightness = scene->light.brightness + 0.1;
+		if (new_brightness <= 1.0)
+		{
+			scene->light.brightness = new_brightness;
+			scene->light.intensity = multiply_tuple_scalar(scene->light.color, scene->light.brightness);
+			scene->needs_render = 1;
+		}
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_CONTROL))
+	{
+		double new_brightness = scene->light.brightness - 0.1;
+		if (new_brightness >= 0.2)
+		{
+			scene->light.brightness = new_brightness;
+			scene->light.intensity = multiply_tuple_scalar(scene->light.color, scene->light.brightness);
+			scene->needs_render = 1;
+		}
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_HOME))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, 1, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_END))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, -1, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_PAGE_DOWN))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(-1, 0, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_DELETE))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(1, 0, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_SHIFT))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, 0, -1));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_CONTROL))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, 0, 1));
 		scene->needs_render = 1;
 	}
 	if (scene->needs_render)

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 22:20:13 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 15:34:08 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	update_matrices(t_shape *shape, t_matrix transform)
 {
 	shape->transform = transform;
 	shape->transform_inv = inverse_matrix(shape->transform);
+	//shape->normal = multiply_matrix_by_tuple(shape->transform_inv, shape->normal);
+	//shape->normal = normalize(shape->normal);
 	shape->transpose_inv = transpose_matrix(shape->transform_inv);
 }
 
@@ -85,13 +87,13 @@ t_matrix	get_rotation_matrix(t_shape *shape)
 
 t_matrix	combine_all_transforms(t_shape *shape)
 {
-	t_matrix	translation_x_rotation;
+	t_matrix	scaling_x_rotation;
 	t_matrix	result;
 
 	printf("Before transformation: Normalized Vector: (%f, %f, %f)\n",
 		shape->normal.x, shape->normal.y, shape->normal.z);
-	translation_x_rotation = multiply_matrices(translation_matrix(shape->center.x, shape->center.y, shape->center.z), get_rotation_matrix(shape));
-	result = multiply_matrices(translation_x_rotation, scaling_matrix(shape->scale.x, shape->scale.y, shape->scale.z));
+	scaling_x_rotation = multiply_matrices(scaling_matrix(shape->scale.x, shape->scale.y, shape->scale.z), get_rotation_matrix(shape));
+	result = multiply_matrices(translation_matrix(shape->center.x, shape->center.y, shape->center.z), scaling_x_rotation);
 	return (result);
 }
 

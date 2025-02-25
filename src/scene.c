@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/21 16:27:22 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 14:32:39 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,8 @@ t_light init_light(t_tuple position, t_tuple color, double brightness)
 	t_light light;
 
 	light.position = position;
+	light.color = color;
+	light.brightness = brightness;
 	light.intensity = multiply_tuple_scalar(color, brightness);
 
 	return light;
