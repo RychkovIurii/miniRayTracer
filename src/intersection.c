@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 18:02:09 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/25 23:58:38 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,8 +377,10 @@ int	check_cone_cap(t_ray ray, double t, t_shape cone, double y)
 
 	x = ray.origin.x + t * ray.direction.x;
 	z = ray.origin.z + t * ray.direction.z;
-	cap_radius = (cone.radius * (y - cone.min)) / cone.height;
-	return (x * x) + (z * z) <= cap_radius * cap_radius;
+	if (fabs(cone.height) < EPSILON)
+		return (0);
+	cap_radius = cone.radius * fabs(y - cone.max) / cone.height;
+	return ((x * x) + (z * z) <= cap_radius * cap_radius);
 }
 
 t_intersects	intersect_cone_caps(t_shape *cone, t_ray ray, t_intersects result)
@@ -387,19 +389,19 @@ t_intersects	intersect_cone_caps(t_shape *cone, t_ray ray, t_intersects result)
 
 	if (cone->closed && fabs(ray.direction.y) > EPSILON)
 	{
-		t = (cone->min - ray.origin.y) / ray.direction.y;
+		/*t = (cone->min - ray.origin.y) / ray.direction.y;
 		if (check_cone_cap(ray, t, *cone, cone->min))
 		{
 			result.array[2].t = t;
 			result.count = 3;
 			result.array[2].object = cone;
-		}
+		} */
 		t = (cone->max - ray.origin.y) / ray.direction.y;
 		if (check_cone_cap(ray, t, *cone, cone->max))
 		{
-			result.array[3].t = t;
+			result.array[2].t = t;
 			result.count = 4;
-			result.array[3].object = cone;
+			result.array[2].object = cone;
 		}
 	}
 	return (result);
@@ -427,21 +429,22 @@ t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 	// - if a is effectively zero (i.e. ray is parallel to the cylinder's axis), skip wall
 	//checking and move to check caps
 	result.count = 0;
-	result.array = ft_calloc(4, sizeof(t_intersection));
+	result.array = ft_calloc(3, sizeof(t_intersection));
 	if (!result.array)
 		return (result);
 	slope = cone->radius / cone->height;
 	slope2 = slope * slope;
-	a = pow(ray.direction.x, 2) - slope2 * pow(ray.direction.y, 2) + pow(ray.direction.z, 2);
-	b = 2 * ray.origin.x * ray.direction.x - 2 * slope2 * ray.origin.y * ray.direction.y +
-			2 * ray.origin.z * ray.direction.z;
-	c = ray.origin.x * ray.origin.x - slope2 * ray.origin.y * ray.origin.y + ray.origin.z * ray.origin.z;
+	a = pow(ray.direction.x, 2) + pow(ray.direction.z, 2) - slope2 * pow(ray.direction.y, 2);
+	b = 2 * (ray.origin.x * ray.direction.x + ray.origin.z * ray.direction.z - slope2 * ray.origin.y * ray.direction.y);
+	c = ray.origin.x * ray.origin.x + ray.origin.z * ray.origin.z - slope2 * ray.origin.y * ray.origin.y;
 	//printf("a: %f, b: %f, c: %f\n", a, b, c);
 	//if (fabs(a) < EPSILON && fabs(b) < EPSILON)  // ray misses both halves of the cone
 	//	return (result);
 	if (fabs(a) < EPSILON)  // ray is parallel to one of the cone's halves
 	{
-		t0 = -c / (2 * b);
+		if (fabs(b) < EPSILON)
+			return (result);
+		t0 = -c / b;
 		y0 = ray.origin.y + t0 * ray.direction.y;
 		if (cone->min < y0 && y0 < cone->max)
 		{
@@ -451,37 +454,34 @@ t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 		}
 		return (result);
 	}
-	discriminant = b * b - 4 * a * c;
-	//printf("Disc: %f\n", discriminant);
-	if (discriminant >= 0)
+	else
 	{
-		sqrt_discriminant = sqrt(discriminant);
-		// solve for parametric distances along the ray to the intersections
-		t0 = (-b - sqrt_discriminant) / (2 * a); // Closest intersection
-		t1 = (-b + sqrt_discriminant) / (2 * a); // Farther intersection
-		//if (t0 > t1)
-		//{
-		//	temp = t0;
-		//	t0 = t1;
-		//	t1 = temp;
-		//}
-		//printf("t0: %f, t1: %f\n", t0, t1);
-		//check corresponding y coordinates for each t to determine whether the intersection is within
-		//the cylinder's height bounds and add valid intersections to xs
-		//printf("Cone min: %f, Cone max: %f\n", cone->min, cone->max);
-		y0 = ray.origin.y + t0 * ray.direction.y;
-		if (cone->min < y0 && y0 < cone->max)
+		discriminant = b * b - 4 * a * c;
+		//printf("Disc: %f\n", discriminant);
+		if (discriminant >= 0)
 		{
-			result.array[0].t = t0;
-			result.count = 1;
-			result.array[0].object = cone;
-		}
-		y1 = ray.origin.y + t1 * ray.direction.y;
-		if (cone->min < y1 && y1 < cone->max)
-		{
-			result.array[1].t = t1;
-			result.count = 2;
-			result.array[1].object = cone;
+			sqrt_discriminant = sqrt(discriminant);
+			// solve for parametric distances along the ray to the intersections
+			t0 = (-b - sqrt_discriminant) / (2 * a); // Closest intersection
+			t1 = (-b + sqrt_discriminant) / (2 * a); // Farther intersection
+			//printf("t0: %f, t1: %f\n", t0, t1);
+			//check corresponding y coordinates for each t to determine whether the intersection is within
+			//the cylinder's height bounds and add valid intersections to xs
+			//printf("Cone min: %f, Cone max: %f\n", cone->min, cone->max);
+			y0 = ray.origin.y + t0 * ray.direction.y;
+			if (cone->min < y0 && y0 < cone->max)
+			{
+				result.array[0].t = t0;
+				result.count = 1;
+				result.array[0].object = cone;
+			}
+			y1 = ray.origin.y + t1 * ray.direction.y;
+			if (cone->min < y1 && y1 < cone->max)
+			{
+				result.array[1].t = t1;
+				result.count = 2;
+				result.array[1].object = cone;
+			}
 		}
 	}
 	result = intersect_cone_caps(cone, ray, result);
@@ -620,7 +620,8 @@ t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
 t_tuple	local_normal_at_cone(t_shape cone, t_tuple point)
 {
 	double	distance;
-	double	y_slope;
+	double	y_factor;
+	t_tuple	normal;
 
 	// calculate square of the distance from y axis
 	distance = (point.x * point.x + point.z * point.z);
@@ -628,18 +629,20 @@ t_tuple	local_normal_at_cone(t_shape cone, t_tuple point)
 	// check for cone caps
 	//if (cone.closed && distance < 1 && point.y >= cone.min - EPSILON)
 	//	return (vector(0, 1, 0));
-	if (distance < (cone.radius * cone.radius) && point.y <= cone.max - EPSILON) // something weird here
+	if (cone.closed && fabs(point.y - cone.min) < EPSILON && distance <= cone.radius * cone.radius) // something weird here
 		return (vector(0, -1, 0));
+	if (cone.closed && fabs(point.y - cone.max) < EPSILON && distance <= cone.radius * cone.radius)
+		return (vector(0, 1, 0));
 	// calculate normal for slanted surface
-	else
-	{
-		//y_slope = sqrt(distance);
-		y_slope = sqrt(distance); // * (cone.radius / cone.height)
-		if (point.y > 0)
-			y_slope = -y_slope;
-		//printf("Normal vector: %f, %f, %f\n", point.x, y_slope, point.z);
-		return (vector(point.x, y_slope, point.z));
-	}
+	y_factor = sqrt(distance) * (cone.radius / cone.height);
+	//if (y < cone.min)
+	//	y_factor = -y_factor;
+	y_factor *= cone.radius / cone.height;
+	//printf("Normal vector: %f, %f, %f\n", point.x, y_slope, point.z);
+	normal = vector(point.x, y_factor, point.z);
+	if (dot(normal, point) < 0)
+		normal = negate_tuple(normal);
+	return (normal);
 }
 
 t_tuple	normal_at(t_shape *shape, t_tuple world_point)

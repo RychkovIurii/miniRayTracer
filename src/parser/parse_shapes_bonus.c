@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/25 16:31:33 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/25 23:48:44 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].type = SHAPE_CONE;
 	rt->scene->shapes[i].closed = 1;
 	rt->scene->shapes[i].center = string_to_point(coordinates);
-	//rt->scene->shapes[i].center.y += rt->scene->shapes[i].height;  //forced center.y to be higher by cone height
+	rt->scene->shapes[i].center.y += rt->scene->shapes[i].height / 2;  //forced center.y to be higher by cone height
 	rt->scene->shapes[i].normal = string_to_vector(normal);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
 	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
@@ -47,8 +47,8 @@ int	validate_cone_dimensions(char **element, t_rt *rt)
 	if (cone_height == -1)
 		return (error("Invalid cone height", 1));
 	rt->scene->shapes[rt->scene->shape_count].height = cone_height;
-	rt->scene->shapes[rt->scene->shape_count].min = 0;
-	rt->scene->shapes[rt->scene->shape_count].max = cone_height;
+	rt->scene->shapes[rt->scene->shape_count].max = 0;
+	rt->scene->shapes[rt->scene->shape_count].min = -cone_height;
 	return (0);
 }
 
