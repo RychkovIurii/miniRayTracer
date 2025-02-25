@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 10:28:58 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 10:53:08 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,8 +130,13 @@ void ft_hook(void* param)
 		{
 			if (scene->shapes[i].selected == 1)
 			{
-				scene->shapes[i].scale = multiply_tuple_scalar(scene->shapes[i].scale, 2.0);  //LIMIT
-				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+				t_tuple new_scale = multiply_tuple_scalar(scene->shapes[i].scale, 2);
+				
+				if (new_scale.x <= 8 && new_scale.y <= 8 && new_scale.z <= 8)
+				{
+					scene->shapes[i].scale = new_scale;
+					update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+				}
 			}
 			i++;
 		}
@@ -146,8 +151,13 @@ void ft_hook(void* param)
 		{
 			if (scene->shapes[i].selected == 1)
 			{
-				scene->shapes[i].scale = multiply_tuple_scalar(scene->shapes[i].scale, 0.5); //LIMIT
-				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+				t_tuple new_scale = multiply_tuple_scalar(scene->shapes[i].scale, 0.5);
+				
+				if (new_scale.x >= 0.1 && new_scale.y >= 0.1 && new_scale.z >= 0.1)
+				{
+					scene->shapes[i].scale = new_scale;
+					update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+				}
 			}
 			i++;
 		}
