@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_element.c                                    :+:      :+:    :+:   */
+/*   parse_element_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/17 10:58:50 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 19:46:38 by henbuska         ###   ########.fr       */
+/*   Created: 2025/02/24 18:43:33 by henbuska          #+#    #+#             */
+/*   Updated: 2025/02/24 19:28:59 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	parse_element(char **element, t_rt *rt)
 		return (parse_plane(element, rt));
 	else if (ft_strcmp(element[0], "cy") == 0)
 		return (parse_cylinder(element, rt));
+	else if (ft_strcmp(element[0], "co") == 0)
+		return (parse_cone(element, rt));
 	else
 	{
 		printf("Invalid element identifier\n");
