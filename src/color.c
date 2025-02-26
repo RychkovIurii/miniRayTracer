@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 18:07:56 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:26:03 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -248,10 +248,7 @@ t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining)
 		return (create_color(0, 0, 0));
 	cos_t = sqrt(1.0 - sin2_t);
 	direction = substract_tuple(multiply_tuple_scalar(comps.normalv, n_ratio * cos_i - cos_t), multiply_tuple_scalar(comps.eyev, n_ratio));
-	if (comps.inside)
-		refracted_ray = create_ray(comps.under_point, direction);
-	else
-		refracted_ray = create_ray(comps.over_point, direction);
+	refracted_ray = create_ray(comps.under_point, direction);
 	refract_color = color_at(world, refracted_ray, remaining - 1);
 	return (multiply_tuple_scalar(refract_color, comps.object->material.transparency));
 }

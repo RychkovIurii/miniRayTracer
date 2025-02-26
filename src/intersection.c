@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 12:40:25 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:10:50 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,55 +147,7 @@ t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects 
         }
     }
     ft_lstclear_safe(&containers);
-
     return (comps);
-
-	for (i = 0; i < xs->count; i++)
-	{
-		// If this intersection is the hit, record n1 (before processing)
-		if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
-		{
-			if (!containers /* || ft_lstlast(containers) == NULL */)
-				comps.n1 = 1.0;
-			else
-			{
-				t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
-				comps.n1 = shape->material.refractive_index;
-			}
-		}
-
-		// Process this intersection: if the object is already in containers, remove it; otherwise, add it.
-		int removed = 0;
-		temp = containers;
-		while (temp)
-		{
-			if (temp->content == xs->array[i].object)
-			{
-				ft_lstremove(&containers, temp->content);
-				removed = 1;
-				break;
-			}
-			temp = temp->next;
-		}
-		if (!removed)
-			ft_lstadd_back(&containers, ft_lstnew(xs->array[i].object));
-
-		// If this intersection is the hit, record n2 (after processing) and break.
-		if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
-		{
-			if (!containers /* || ft_lstlast(containers) == NULL */)
-				comps.n2 = 1.0;
-			else
-			{
-				t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
-				comps.n2 = shape->material.refractive_index;
-			}
-			break;
-		}
-	}
-	ft_lstclear_safe(&containers);
-
-	return (comps);
 }
 
 t_intersection	*hit(t_intersects intersections)
