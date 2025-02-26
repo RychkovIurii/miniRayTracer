@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 13:10:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:28:20 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,8 @@ t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects 
 	comps.eyev = negate_tuple(ray.direction);
 	comps.normalv = normal_at(comps.object, comps.point);
 	
-	comps.inside = 0;
 	if (dot(comps.normalv, comps.eyev) < 0)
-	{
-		comps.inside = 1;
 		comps.normalv = negate_tuple(comps.normalv);
-	}
 
 	comps.over_point = add_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
 	comps.under_point = substract_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
