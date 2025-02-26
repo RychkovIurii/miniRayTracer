@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 21:49:24 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:54:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,3 +81,4 @@ void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 }
+

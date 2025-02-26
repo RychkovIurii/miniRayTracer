@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 18:51:46 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:53:44 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ typedef struct	s_shape
 	double		radius;
 	double		min;
 	double		max;
-	double		cylinder_height;
+	double		height;
 	bool		closed;
 	t_tuple		scale;
 	t_tuple		center;

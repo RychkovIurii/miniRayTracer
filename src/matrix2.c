@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:05:20 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 15:34:08 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:54:13 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ void	set_matrices(t_scene *scene)
 			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 		}
 		else if (scene->shapes[i].type == SHAPE_CYLINDER)
+			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+		else if (scene->shapes[i].type == SHAPE_CONE)
 			update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
 		i++;
 	}

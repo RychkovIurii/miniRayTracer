@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/25 20:13:00 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:54:28 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,20 @@ void	print_parsed_content(t_rt *rt)
 			printf("Cylinder center: %f, %f, %f\n", shape.center.x, shape.center.y, shape.center.z);
 			printf("Cylinder normal:%f, %f, %f\n", shape.normal.x, shape.normal.y, shape.normal.z);
 			printf("Cylinder radius: %f\n", shape.radius);
-			printf("Cylinder height: %f\n", shape.cylinder_height);
+			printf("Cylinder height: %f\n", shape.height);
 			printf("Cylinder color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
 			printf("Cylinder reflectivity: %f\n", shape.material.reflective);
 			printf("Cylinder transparency: %f\n", shape.material.transparency);
 			printf("Cylinder refractive index: %f\n", shape.material.refractive_index);
+		}
+		else if (shape.type == SHAPE_CONE)
+		{
+			printf("Shape type: %d\n", shape.type);
+			printf("Cone center: %f, %f, %f\n", shape.center.x, shape.center.y, shape.center.z);
+			printf("Cone normal:%f, %f, %f\n", shape.normal.x, shape.normal.y, shape.normal.z);
+			printf("Cone radius: %f\n", shape.radius);
+			printf("Cone height: %f\n", shape.height);
+			printf("Cone color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
 		}
 		i++;
 	}
