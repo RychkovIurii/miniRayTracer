@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 14:32:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 20:23:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,16 +112,12 @@ t_shape create_shape(t_shape_type type)
 t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 {
 	t_tuple forward = normalize(substract_tuple(to, from));
-	if (fabs(dot(forward, up)) >= (1.0 - EPSILON))
-	{
-		if (fabs(forward.y) >= (1.0 - EPSILON))
-			up = vector(1, 0, 0); // If forward is vertical, use (1,0,0)
-		else
-			up = vector(0, 1, 0); // Otherwise, use (0,1,0)
-	}
-	t_tuple upn = normalize(up);
-	t_tuple left = cross(forward, upn);
+	t_tuple left = cross(forward, up);
+	if (magnitude(left) < EPSILON)
+		left = vector(-1, 0, 0);
+	left = normalize(left);
 	t_tuple true_up = cross(left, forward);
+	//true_up = normalize(true_up);
 
 	t_matrix orientation;
 	ft_bzero(&orientation, sizeof(t_matrix));
@@ -195,14 +191,15 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, 
 
 	// Camera position
 	t_tuple from = point(x, y, z);
-	t_tuple up = vector(0.0, -1.0, 0.0);
+	t_tuple up = vector(0.0, 1.0, 0.0);
+	forward = normalize(forward);
 
 	// Assign field of view
 	camera.hsize = hsize;
 	camera.vsize = vsize;
 	camera.field_of_view = fov;
 
-	half_view = tan(camera.field_of_view / 2);
+	half_view = tan(camera.field_of_view * (M_PI / 180.0) * 0.5);
 	aspect = (double)camera.hsize / (double)camera.vsize;
 	if (aspect >= 1)
 	{
@@ -218,6 +215,7 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, 
 
 	// Compute the view transformation matrix
 	camera.transform = view_transform(from, add_tuple(from, forward), up);
+	camera.transform_inv = inverse_matrix(camera.transform);
 
 	return camera;
 }

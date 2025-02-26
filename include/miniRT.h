@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 14:16:34 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:55:27 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define WIDTH 600
 # define HEIGHT 600
 
-# define DEFAULT_REMAINING 3
+# define DEFAULT_REMAINING 0
 
 # define PATTERN_NONE 0
 # define PATTERN_STRIPE 1

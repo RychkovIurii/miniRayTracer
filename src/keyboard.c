@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:04:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 16:36:08 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 18:35:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ void handle_camera_movement(t_scene *scene)
 		move_camera(scene, point(-MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
 		move_camera(scene, point(MOVE_STEP, 0, 0), 0);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
-		move_camera(scene, point(0, 0, 0), -ROTATE_CAMERA_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
+		move_camera(scene, point(0, 0, 0), -ROTATE_CAMERA_STEP);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
 		move_camera(scene, point(0, 0, 0), ROTATE_CAMERA_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_W))
 		move_camera(scene, point(0, 0, MOVE_STEP), 0);
