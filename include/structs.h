@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 12:38:59 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:51:46 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct	s_shape
 	t_matrix	transpose_inv;
 	t_material	material;
 	t_shape_type		type;
+	int			selected;
 }	t_shape;
 
 typedef struct s_intersection
@@ -153,6 +154,8 @@ typedef struct s_scene
 	t_shape			*shapes;
 	int 			needs_render;
 	t_tuple			**pixels;
+	int				mouse_x;
+	int				mouse_y;
 }				t_scene;
 
 typedef struct	s_rt

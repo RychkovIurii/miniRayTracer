@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:51:10 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/25 17:26:59 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,28 @@ void ft_render_scene(void* param)
 		}
 	}
 }
-
+/* 
 void ft_hook(void* param)
 {
 	t_scene *scene = (t_scene *)param;
 
+	mlx_get_mouse_pos(scene->mlx, &scene->mouse_x, &scene->mouse_y);
+	if (mlx_is_mouse_down(scene->mlx, MLX_MOUSE_BUTTON_RIGHT))
+	{
+		t_ray ray = ray_for_pixel(scene->camera, scene->mouse_x, scene->mouse_y, multiply_matrix_by_tuple(scene->camera.transform_inv, point(0, 0, 0)));
+		t_intersects xs = intersect_scene(scene, ray);
+		t_intersection *closest = hit(xs);
+		if (closest->object)
+		{
+			int i = 0;
+			while (i < scene->shape_count)
+			{
+				scene->shapes[i].selected = 0;
+				i++;
+			}
+			closest->object->selected = 1;
+		}
+	}
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(scene->mlx);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_UP))
@@ -104,43 +121,219 @@ void ft_hook(void* param)
 		scene->camera.transform = multiply_matrices(scene->camera.transform, translation_matrix(0, 0, 0.8));
 		scene->needs_render = 1;
 	}
-/* 
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_O))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_ADD))
 	{
 		int i;
 
 		i = 0;
 		while (i < scene->shape_count)
 		{
-			if (scene->shapes[i].type == SHAPE_SPHERE)
+			if (scene->shapes[i].selected == 1)
 			{
-				scene->shapes[i].transform = scaling_matrix(2, 2, 2);
-				update_matrices(&scene->shapes[i], combine_all_transforms(&scene->shapes[i]));
+				t_tuple new_scale = multiply_tuple_scalar(scene->shapes[i].scale, 2);
 				
+				if (new_scale.x <= 8 && new_scale.y <= 8 && new_scale.z <= 8)
+				{
+					scene->shapes[i].scale = new_scale;
+					scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, scaling_matrix(2, 2, 2));
+					update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+				}
 			}
 			i++;
 		}
 		scene->needs_render = 1;
 	}
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_P))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_SUBTRACT))
 	{
 		int i;
 
 		i = 0;
 		while (i < scene->shape_count)
 		{
-			if (scene->shapes[i].type == SHAPE_SPHERE)
+			if (scene->shapes[i].selected == 1)
 			{
-				update_matrices(&scene->shapes[i], scaling_matrix(0.5, 0.5, 0.5));
+				t_tuple new_scale = multiply_tuple_scalar(scene->shapes[i].scale, 0.5);
+				
+				if (new_scale.x >= 0.1 && new_scale.y >= 0.1 && new_scale.z >= 0.1)
+				{
+					scene->shapes[i].scale = new_scale;
+					scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, scaling_matrix(0.5, 0.5, 0.5));
+					update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+				}
 			}
 			i++;
 		}
 		scene->needs_render = 1;
-	} */
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_5))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, 0, 0.8));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_8))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, 0, -0.8));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_6))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(-0.4, 0, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_4))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0.4, 0, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_0))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, -0.4, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_1))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, translation_matrix(0, 0.4, 0));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_7))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected && scene->shapes[i].type != SHAPE_SPHERE)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_z_matrix(0.2));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_9))
+	{
+		int i = 0;
+		while (i < scene->shape_count)
+		{
+			if (scene->shapes[i].selected && scene->shapes[i].type != SHAPE_SPHERE)
+			{
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_z_matrix(-0.2));
+				update_matrices(&scene->shapes[i], scene->shapes[i].transform);
+			}
+			i++;
+		}
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_SHIFT))
+	{
+		double new_brightness = scene->light.brightness + 0.1;
+		if (new_brightness <= 1.0)
+		{
+			scene->light.brightness = new_brightness;
+			scene->light.intensity = multiply_tuple_scalar(scene->light.color, scene->light.brightness);
+			scene->needs_render = 1;
+		}
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_CONTROL))
+	{
+		double new_brightness = scene->light.brightness - 0.1;
+		if (new_brightness >= 0.2)
+		{
+			scene->light.brightness = new_brightness;
+			scene->light.intensity = multiply_tuple_scalar(scene->light.color, scene->light.brightness);
+			scene->needs_render = 1;
+		}
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_HOME))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, 1, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_END))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, -1, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_PAGE_DOWN))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(-1, 0, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_DELETE))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(1, 0, 0));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_SHIFT))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, 0, -1));
+		scene->needs_render = 1;
+	}
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_CONTROL))
+	{
+		scene->light.position = add_tuple(scene->light.position, vector(0, 0, 1));
+		scene->needs_render = 1;
+	}
 	if (scene->needs_render)
 	{
 		scene->camera.transform_inv = inverse_matrix(scene->camera.transform);
 		ft_render_scene(scene);
 		scene->needs_render = 0; // Reset flag after rendering
 	}
-}
+} */
+
+
+// Rotation for cylinders??? Shadows if we rotate.

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/23 15:51:22 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/25 20:13:00 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Sphere center: %f, %f, %f\n", shape.center.x, shape.center.y, shape.center.z);
 			printf("Sphere radius: %f\n", shape.radius);
 			printf("Sphere color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
+			printf("Sphere reflectivity: %f\n", shape.material.reflective);
+			printf("Sphere transparency: %f\n", shape.material.transparency);
+			printf("Sphere refractive index: %f\n", shape.material.refractive_index);
 		}
 		else if (shape.type == SHAPE_PLANE)
 		{
@@ -44,6 +47,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Plane center: %f, %f, %f\n", shape.point_on_plane.x, shape.point_on_plane.y, shape.point_on_plane.z);
 			printf("Plane normal:%f, %f, %f\n", shape.normal.x, shape.normal.y, shape.normal.z);
 			printf("Plane color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
+			printf("Plane reflectivity: %f\n", shape.material.reflective);
+			printf("Plane transparency: %f\n", shape.material.transparency);
+			printf("Plane refractive index: %f\n", shape.material.refractive_index);
 		}
 		else if (shape.type == SHAPE_CYLINDER)
 		{
@@ -53,6 +59,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Cylinder radius: %f\n", shape.radius);
 			printf("Cylinder height: %f\n", shape.cylinder_height);
 			printf("Cylinder color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
+			printf("Cylinder reflectivity: %f\n", shape.material.reflective);
+			printf("Cylinder transparency: %f\n", shape.material.transparency);
+			printf("Cylinder refractive index: %f\n", shape.material.refractive_index);
 		}
 		i++;
 	}
