@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 23:58:38 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/26 11:17:27 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -369,6 +369,19 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	return (result);
 }
 
+
+/* 
+Checks whether a ray intersects with the cone's cap. 
+The function calculates the intersection point's (x, z) coordinates and 
+verifies if they lie within the cap's radius at the given height.
+
+@param ray: The ray being tested for intersection.
+@param t: The parametric distance along the ray to the intersection.
+@param cone: The cone being tested for intersection.
+@param y: The y-coordinate of the cap (either min or max of the cone).
+@returns 1 if the intersection is within the cap's radius, 0 otherwise.
+*/
+
 int	check_cone_cap(t_ray ray, double t, t_shape cone, double y)
 {
 	double	x;
@@ -382,6 +395,17 @@ int	check_cone_cap(t_ray ray, double t, t_shape cone, double y)
 	cap_radius = cone.radius * fabs(y - cone.max) / cone.height;
 	return ((x * x) + (z * z) <= cap_radius * cap_radius);
 }
+
+/* 
+Checks for intersections between a ray and the cone's caps.
+If the cone is closed and the ray is not parallel to the y-axis, 
+it calculates possible intersection with bottom cap.
+
+@param cone: The cone being tested for intersections.
+@param ray: The ray being tested for intersection.
+@param result: The intersection array that will store valid intersections.
+@returns The updated result containing any intersection with the cap.
+*/
 
 t_intersects	intersect_cone_caps(t_shape *cone, t_ray ray, t_intersects result)
 {
@@ -406,6 +430,17 @@ t_intersects	intersect_cone_caps(t_shape *cone, t_ray ray, t_intersects result)
 	}
 	return (result);
 }
+
+/* 
+Computes the intersections between a ray and a truncated cone.
+It first checks for intersections with the cone's curved surface using the quadratic equation.
+Then, it filters valid intersections within the truncated height range.
+Finally, it checks for intersections with the cone's cap.
+
+@param cone: The cone being tested for intersection.
+@param ray: The ray being tested for intersection.
+@returns A t_intersects struct containing up to three valid intersection points.
+*/
 
 t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 {
@@ -457,16 +492,13 @@ t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 	else
 	{
 		discriminant = b * b - 4 * a * c;
-		//printf("Disc: %f\n", discriminant);
 		if (discriminant >= 0)
 		{
 			sqrt_discriminant = sqrt(discriminant);
-			// solve for parametric distances along the ray to the intersections
 			t0 = (-b - sqrt_discriminant) / (2 * a); // Closest intersection
 			t1 = (-b + sqrt_discriminant) / (2 * a); // Farther intersection
-			//printf("t0: %f, t1: %f\n", t0, t1);
 			//check corresponding y coordinates for each t to determine whether the intersection is within
-			//the cylinder's height bounds and add valid intersections to xs
+			//the cone's height bounds and add valid intersections to result
 			//printf("Cone min: %f, Cone max: %f\n", cone->min, cone->max);
 			y0 = ray.origin.y + t0 * ray.direction.y;
 			if (cone->min < y0 && y0 < cone->max)
@@ -617,29 +649,42 @@ t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
 		return (vector(point.x, 0, point.z));
 }
 
+/* 
+Computes the normal vector at a given point on the surface of a cone.
+This function determines whether the point lies on the cone's curved surface or its cap
+and returns the appropriate normal.
+
+@param cone: The cone shape being tested.
+@param point: The point on the cone's surface where the normal is calculated.
+@returns A t_tuple representing the normal vector at the given point.
+*/
+
 t_tuple	local_normal_at_cone(t_shape cone, t_tuple point)
 {
 	double	distance;
 	double	y_factor;
 	t_tuple	normal;
 
-	// calculate square of the distance from y axis
+	// Compute the squared distance from the y-axis
 	distance = (point.x * point.x + point.z * point.z);
 	//printf("Distance: %f\n", distance);
 	// check for cone caps
 	//if (cone.closed && distance < 1 && point.y >= cone.min - EPSILON)
 	//	return (vector(0, 1, 0));
+	// Check if the point is on the bottom cap
 	if (cone.closed && fabs(point.y - cone.min) < EPSILON && distance <= cone.radius * cone.radius) // something weird here
 		return (vector(0, -1, 0));
+	// Check if the point is on the top cap
 	if (cone.closed && fabs(point.y - cone.max) < EPSILON && distance <= cone.radius * cone.radius)
 		return (vector(0, 1, 0));
-	// calculate normal for slanted surface
+	// Calculate the normal for the cone's slanted surface
 	y_factor = sqrt(distance) * (cone.radius / cone.height);
 	//if (y < cone.min)
 	//	y_factor = -y_factor;
 	y_factor *= cone.radius / cone.height;
 	//printf("Normal vector: %f, %f, %f\n", point.x, y_slope, point.z);
 	normal = vector(point.x, y_factor, point.z);
+	// Ensure the normal is pointing outward
 	if (dot(normal, point) < 0)
 		normal = negate_tuple(normal);
 	return (normal);
