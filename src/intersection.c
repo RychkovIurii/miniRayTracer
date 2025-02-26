@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 11:54:05 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:40:25 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,13 +290,13 @@ t_intersects	intersect_cylinder_caps(t_shape *cyl, t_ray ray, t_intersects resul
 		result.count = 3;
 		result.array[2].object = cyl;
 	}
-	/*t = (cyl->max - ray.origin.y) / ray.direction.y;  // check intersection with top cap
+	t = (cyl->max - ray.origin.y) / ray.direction.y;  // check intersection with top cap
 	if (check_cylinder_cap(*cyl, ray, t))
 	{
 		result.array[3].t = t;
 		result.count = 4;
 		result.array[3].object = cyl;
-	}*/
+	}
 	return (result);
 }
 
@@ -413,20 +413,20 @@ t_intersects	intersect_cone_caps(t_shape *cone, t_ray ray, t_intersects result)
 
 	if (cone->closed && fabs(ray.direction.y) > EPSILON)
 	{
-		/*t = (cone->min - ray.origin.y) / ray.direction.y;
+		t = (cone->min - ray.origin.y) / ray.direction.y;
 		if (check_cone_cap(ray, t, *cone, cone->min))
 		{
 			result.array[2].t = t;
 			result.count = 3;
 			result.array[2].object = cone;
-		} */
-		t = (cone->max - ray.origin.y) / ray.direction.y;
+		}
+		/* t = (cone->max - ray.origin.y) / ray.direction.y;
 		if (check_cone_cap(ray, t, *cone, cone->max))
 		{
 			result.array[2].t = t;
-			result.count = 4;
+			result.count = 3;
 			result.array[2].object = cone;
-		}
+		} */
 	}
 	return (result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/25 23:48:44 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/26 12:56:11 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].material.refractive_index = 1.0;
 	rt->scene->shapes[i].material.reflective = 0.0;
 	rt->scene->shapes[i].material.transparency = 0.0;
+	rt->scene->shapes[i].scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 }
 
