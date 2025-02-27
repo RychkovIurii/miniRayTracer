@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:31:08 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 12:52:51 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
 	mlx_loop(rt->scene->mlx);
 	mlx_terminate(rt->scene->mlx);
-	free_rt(rt);
 	free_pixels(rt->scene->pixels, HEIGHT);
+	free_rt(rt);
 	return (EXIT_SUCCESS);
 }
