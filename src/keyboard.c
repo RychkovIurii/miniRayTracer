@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:04:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 19:37:10 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:54:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,13 @@ void handle_camera_movement(t_scene *scene)
 		move_camera(scene, point(0, -MOVE_STEP, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_DOWN))
 		move_camera(scene, point(0, MOVE_STEP, 0), 0);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
+		move_camera(scene, point(MOVE_STEP, 0, 0), 0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
 		move_camera(scene, point(-MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT))
-		move_camera(scene, point(MOVE_STEP, 0, 0), 0);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_A))
 		move_camera(scene, point(0, 0, 0), -ROTATE_CAMERA_STEP);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_D))
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT))
 		move_camera(scene, point(0, 0, 0), ROTATE_CAMERA_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_W))
 		move_camera(scene, point(0, 0, MOVE_STEP), 0);
@@ -112,7 +112,7 @@ void scale_object(t_scene *scene, double scale_factor)
 }
 
 
-void rotate_object(t_scene *scene, double angle)
+void rotate_object(t_scene *scene, double angle, int flag)
 {
 	int i;
 	
@@ -121,7 +121,12 @@ void rotate_object(t_scene *scene, double angle)
 	{
 		if (scene->shapes[i].selected && scene->shapes[i].type != SHAPE_SPHERE)
 		{
-			scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_z_matrix(angle));
+			if (flag == 1)
+				scene->shapes[i].transform = multiply_matrices(scene->shapes[i].transform, rotation_z_matrix(angle));
+			if (flag == 2)
+				scene->shapes[i].transform = multiply_matrices(rotation_y_matrix(angle), scene->shapes[i].transform);
+			if (flag == 3)
+				scene->shapes[i].transform = multiply_matrices(rotation_z_matrix(angle), scene->shapes[i].transform);
 			update_matrices(&scene->shapes[i], scene->shapes[i].transform);
 			scene->needs_render = 1;
 			return ;
@@ -149,9 +154,17 @@ void handle_object_transformation(t_scene *scene)
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_1))
 		move_object(scene, 0, MOVE_STEP, 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_7))
-		rotate_object(scene, ROTATE_OBJECT_STEP);
+		rotate_object(scene, ROTATE_OBJECT_STEP, 1);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_9))
-		rotate_object(scene, -ROTATE_OBJECT_STEP);
+		rotate_object(scene, -ROTATE_OBJECT_STEP, 1);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_EQUAL))
+		rotate_object(scene, ROTATE_OBJECT_STEP, 2);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_DIVIDE))
+		rotate_object(scene, -ROTATE_OBJECT_STEP, 2);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_2))
+		rotate_object(scene, ROTATE_OBJECT_STEP, 3);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_3))
+		rotate_object(scene, -ROTATE_OBJECT_STEP, 3);
 }
 
 void update_light(t_scene *scene, t_tuple new_vector, double brightness)
@@ -177,17 +190,17 @@ void handle_light_controls(t_scene *scene)
 		update_light(scene, vector(0, 0, 0), BRIGHTNESS_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_RIGHT_CONTROL))
 		update_light(scene, vector(0, 0, 0), -BRIGHTNESS_STEP);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_HOME))
-		update_light(scene, vector(0, MOVE_STEP, 0), 0);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_END))
-		update_light(scene, vector(0, -MOVE_STEP, 0), 0);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_PAGE_DOWN))
-		update_light(scene, vector(-MOVE_STEP, 0, 0), 0);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_DELETE))
-		update_light(scene, vector(MOVE_STEP, 0, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_SHIFT))
-		update_light(scene, vector(0, 0, -MOVE_STEP), 0);
+		update_light(scene, vector(0, MOVE_STEP, 0), 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_LEFT_CONTROL))
+		update_light(scene, vector(0, -MOVE_STEP, 0), 0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_DELETE))
+		update_light(scene, vector(-MOVE_STEP, 0, 0), 0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_PAGE_DOWN))
+		update_light(scene, vector(MOVE_STEP, 0, 0), 0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_HOME))
+		update_light(scene, vector(0, 0, -MOVE_STEP), 0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_END))
 		update_light(scene, vector(0, 0, MOVE_STEP), 0);
 }
 
