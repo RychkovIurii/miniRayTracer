@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 14:16:34 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 11:58:41 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@
 
 # include "libft.h"
 
-# define M_PI 3.14159265358979323846  // how accurate should this be?
 # define EPSILON 0.0001f
 
 # define WIDTH 600
