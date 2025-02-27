@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:55:27 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:30:06 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,12 @@
 
 
 /******************** PARSER FOLDER **********/
-/** Bonus parsing */
+// Parsing_bonus
 
 int		parse_cone(char **element, t_rt *rt);
 void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors);
 
-/** Parsing */
+// Parsing
 
 int		parse_file(t_rt *rt);
 char	*trim_extra_spaces(char *line);
@@ -133,6 +133,11 @@ void		set_matrices(t_scene *scene);
 void		update_matrices(t_shape *shape, t_matrix transform);
 t_matrix	combine_all_transforms(t_shape *shape);
 
+// Ray
+
+t_ray		create_ray(t_tuple origin, t_tuple direction);
+t_tuple		get_ray_position(t_ray ray, double t);
+t_ray		transform_ray(t_ray ray, t_matrix matrix);
 
 /******************** LIGHT_AND_COLOR FOLDER **********/
 
@@ -151,32 +156,27 @@ t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray);
 t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray);
 t_intersects	local_intersect_cone(t_shape *cone, t_ray ray);
 t_intersects	intersect_scene(t_scene *world, t_ray ray);
-
 t_intersection 	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
 t_intersection	*hit(t_intersects intersections);
 
+/******************** KEYBOARD FOLDER **********/
 
-void	insertion_sort_intersections(t_intersection *array, int count);
-
-
-/** Ray **/
-
-t_ray		create_ray(t_tuple origin, t_tuple direction);
-t_tuple		get_ray_position(t_ray ray, double t);
-t_ray		transform_ray(t_ray ray, t_matrix matrix);
+void	handle_mouse_and_exit(t_scene *scene);
+void	handle_camera_movement(t_scene *scene);
+void	handle_object_movement(t_scene *scene);
+void	handle_object_transformation(t_scene *scene);
+void	handle_light_controls(t_scene *scene);
 
 
-/** Scene **/
 
-t_light		point_light(t_tuple position, t_tuple intensity);
+/******************** ROOT FOLDER **********/
+
 t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern);
 t_canvas	*create_canvas(int width, int height);
-t_material default_material();
-t_shape create_shape(t_shape_type type);
 t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up);
 t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
 void	render(t_camera camera, t_scene *scene);
-t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize);
+t_camera init_camera(t_tuple from, t_tuple forward, double fov);
 t_light init_light(t_tuple position, t_tuple color, double brightness);
 void	free_canvas(t_canvas *canvas);
 

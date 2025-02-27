@@ -6,13 +6,13 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:14:29 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:23:20 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void free_intersects(t_intersects *xs)
+void	free_intersects(t_intersects *xs)
 {
 	if (xs->array)
 		free(xs->array);
@@ -20,7 +20,7 @@ void free_intersects(t_intersects *xs)
 	xs->count = 0;
 }
 
-t_intersects intersect(t_shape *shape, t_ray ray)
+t_intersects	intersect(t_shape *shape, t_ray ray)
 {
 	t_ray			local_ray;
 	t_intersects	empty;
@@ -38,11 +38,11 @@ t_intersects intersect(t_shape *shape, t_ray ray)
 	return (empty);
 }
 
-void insertion_sort_intersections(t_intersection *array, int count)
+void	insertion_sort_intersections(t_intersection *array, int count)
 {
-	t_intersection key;
-	int i;
-	int j;
+	t_intersection	key;
+	int				i;
+	int				j;
 	
 	i = 1;
 	while (i < count)
@@ -65,12 +65,12 @@ void insertion_sort_intersections(t_intersection *array, int count)
 }
 
 // Function to find the intersections in the world
-t_intersects intersect_scene(t_scene *world, t_ray ray)
+t_intersects	intersect_scene(t_scene *world, t_ray ray)
 {
-	t_intersects xs;
-	t_intersection *temp_array;
-	t_intersection *xs_array;
-	t_intersects temp;
+	t_intersects	xs;
+	t_intersects	temp;
+	t_intersection	*xs_array;
+	t_intersection	*temp_array;
 	int total_intersections = 0;
 	int i;
 	int index;

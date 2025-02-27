@@ -6,25 +6,11 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:59:09 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:29:29 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-/* Function to create a point light source.
-** @param position: The position(point) of the light source.
-** @param intensity: The intensity(color) of the light source.
-** @return The struct of the light source.
-*/
-t_light		point_light(t_tuple position, t_tuple intensity)
-{
-	t_light light;
-
-	light.position = position;
-	light.intensity = intensity;
-	return (light);
-}
 
 t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern)
 {
@@ -42,7 +28,7 @@ t_material	material(t_tuple color, double ambient, double diffuse, double specul
 	return (material);
 }
 
-t_material default_material()
+/* t_material default_material()
 {
 	t_material mat;
 	mat.color = create_color(1, 1, 1);
@@ -53,56 +39,9 @@ t_material default_material()
 	mat.has_pattern = 0;
 	mat.reflective = 0.0;
 	return (mat);
-}
+} */
 
-t_shape create_shape(t_shape_type type)
-{
-	t_shape	shape;
 
-	shape.transform = identity_matrix();
-	shape.material = default_material();
-	shape.type = type;
-	shape.center = point(0, 0, 0);
-	shape.radius = 1;
-	return (shape);
-}
-
-t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
-{
-	t_tuple forward = normalize(substract_tuple(to, from));
-	if (fabs(dot(forward, up)) >= (1.0 - EPSILON))
-	{
-		if (fabs(forward.y) >= (1.0 - EPSILON))
-			up = vector(1, 0, 0); // If forward is vertical, use (1,0,0)
-		else
-			up = vector(0, 1, 0); // Otherwise, use (0,1,0)
-	}
-	t_tuple upn = normalize(up);
-	t_tuple left = cross(forward, upn);
-	t_tuple true_up = cross(left, forward);
-
-	t_matrix orientation;
-	ft_bzero(&orientation, sizeof(t_matrix));
-	orientation.matrix[0][0] = -left.x;
-	orientation.matrix[0][1] = -left.y;
-	orientation.matrix[0][2] = -left.z;
-	orientation.matrix[0][3] = 0;
-	orientation.matrix[1][0] = true_up.x;
-	orientation.matrix[1][1] = true_up.y;
-	orientation.matrix[1][2] = true_up.z;
-	orientation.matrix[1][3] = 0;
-	orientation.matrix[2][0] = -forward.x;
-	orientation.matrix[2][1] = -forward.y;
-	orientation.matrix[2][2] = -forward.z;
-	orientation.matrix[2][3] = 0;
-	orientation.matrix[3][0] = 0;
-	orientation.matrix[3][1] = 0;
-	orientation.matrix[3][2] = 0;
-	orientation.matrix[3][3] = 1;
-
-	t_matrix translation = translation_matrix(-from.x, -from.y, -from.z);
-	return multiply_matrices(orientation, translation);
-}
 
 t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
 {
@@ -135,41 +74,7 @@ void	render(t_camera camera, t_scene *scene)
 	}
 }
 
-t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, int hsize, int vsize)
-{
-	t_camera camera;
-	double		half_view;
-	double		aspect;
 
-	// Camera position
-	t_tuple from = point(x, y, z);
-	t_tuple up = vector(0.0, 1.0, 0.0);
-
-	// Assign field of view
-	camera.hsize = hsize;
-	camera.vsize = vsize;
-	camera.field_of_view = fov;
-
-	half_view = tan(camera.field_of_view * (M_PI / 180.0) * 0.5);
-	aspect = (double)camera.hsize / (double)camera.vsize;
-	if (aspect >= 1)
-	{
-		camera.half_width = half_view;
-		camera.half_height = half_view / aspect;
-	}
-	else
-	{
-		camera.half_width = half_view * aspect;
-		camera.half_height = half_view;
-	}
-	camera.pixel_size = (camera.half_width * 2) / camera.hsize;
-
-	// Compute the view transformation matrix
-	camera.transform = view_transform(from, add_tuple(from, forward), up);
-	camera.transform_inv = inverse_matrix(camera.transform);
-
-	return camera;
-}
 
 t_light init_light(t_tuple position, t_tuple color, double brightness)
 {

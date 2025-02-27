@@ -6,13 +6,13 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:55:12 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:27:57 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_pattern		set_pattern(t_tuple a, t_tuple b)
+t_pattern	set_pattern(t_tuple a, t_tuple b)
 {
 	t_pattern	pattern;
 
@@ -24,16 +24,16 @@ t_pattern		set_pattern(t_tuple a, t_tuple b)
 
 t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow)
 {
-	t_tuple color;
-	t_tuple effective_color;
-	t_tuple lightv;
-	t_tuple reflectv;
-	t_tuple ambient;
-	double reflect_dot_eye;
-	double light_dot_normal;
-	t_tuple diffuse;
-	t_tuple specular;
-	double factor;
+	t_tuple	color;
+	t_tuple	effective_color;
+	t_tuple	lightv;
+	t_tuple	reflectv;
+	t_tuple	ambient;
+	t_tuple	diffuse;
+	t_tuple	specular;
+	double	reflect_dot_eye;
+	double	light_dot_normal;
+	double	factor;
 
 	if (material.has_pattern)
 		color = pattern_at_object(material.pattern, shape, position);
@@ -79,7 +79,7 @@ t_tuple	color_at(t_scene *world, t_ray ray, int remaining)
 	if (xs.count == 0)
 	{
 		free(xs.array);
-		return create_color(0, 0, 0);
+		return (create_color(0, 0, 0));
 	}
 	hits = hit(xs);
 	if (hits == NULL)

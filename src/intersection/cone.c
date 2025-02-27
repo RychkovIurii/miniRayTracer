@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:15:09 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:19:41 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:20:36 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 	int				count;
 	double			slope;
 	double			slope2;
-	
+
 	result.count = 0;
 	result.array = ft_calloc(3, sizeof(t_intersection));
 	if (!result.array)

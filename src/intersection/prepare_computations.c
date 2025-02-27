@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:39:01 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:50:02 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:21:41 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	ft_lstremove(t_list **lst, void *content)
 t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs)
 {
 	t_intersection comps;
-	t_list *containers = NULL;  // Keeps track of the objects the ray is inside
+	t_list *containers = NULL;
 	t_list *temp;
 	int i;
 

@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/27 17:16:21 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/27 18:31:32 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS = main.c\
 		math/matrix3.c\
 		math/matrix4.c\
 		math/vector.c\
+		math/ray.c\
 		light_and_color/color.c\
 		light_and_color/pattern.c\
 		light_and_color/refraction_and_reflection.c \
@@ -40,11 +41,12 @@ SRCS = main.c\
 		intersection/cylinder.c\
 		intersection/sphere_and_plane.c\
 		intersection/prepare_computations.c\
+		keyboard/keyboard.c\
+		keyboard/keyboard2.c\
 		utils.c\
-		ray.c\
 		scene.c\
+		camera.c\
 		mlx.c\
-		keyboard.c\
 		#parser/parse_element.c
 
 

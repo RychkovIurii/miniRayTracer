@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:20:14 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:25:31 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:21:05 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ t_intersects	intersect_cylinder_caps(t_shape *cyl, t_ray ray, t_intersects resul
 	}
 	return (result);
 }
+
 /*
 ** Checks for intersections between a ray and a cylinder.
 ** The function calculates the intersection points with the cylinder's curved
@@ -83,7 +84,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	double			t0;
 	double			t1;
 	int				count;
-	
+
 	result.count = 0;
 	result.array = ft_calloc(4, sizeof(t_intersection));
 	if (!result.array)

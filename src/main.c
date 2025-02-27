@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 12:52:51 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:26:35 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,9 @@ int main(int argc, char **argv)
 	}
 
 	rt->scene->camera = init_camera(
-		rt->scene->camera.view_point.x,
-		rt->scene->camera.view_point.y,
-		rt->scene->camera.view_point.z,
+		rt->scene->camera.view_point,
 		rt->scene->camera.normal,
-		rt->scene->camera.field_of_view,
-		WIDTH, HEIGHT);
+		rt->scene->camera.field_of_view);
 
 	init_scene_pixels(rt->scene, HEIGHT, WIDTH);
 	
