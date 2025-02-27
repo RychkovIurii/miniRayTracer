@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 11:58:41 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:39:45 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@
 # define BRIGHTNESS_STEP 0.1
 
 
+/******************** PARSER FOLDER **********/
 /** Bonus parsing */
 
 int		parse_cone(char **element, t_rt *rt);
@@ -90,18 +91,19 @@ void	print_error(char *message);
 int		error(char *message, int ret);
 int		ft_strcmp(char const *s1, char const *s2);
 
+
+/******************** MATH FOLDER **********/
 /** Tuple **/
 
 t_tuple	create_color(double r, double g, double b);
 t_tuple	multiply_color(t_tuple a, t_tuple b);
-t_tuple	create_tuple(double x, double y, double z, double w);
 t_tuple	point(double x, double y, double z);
 t_tuple	vector(double x, double y, double z);
 t_tuple	add_tuple(t_tuple a, t_tuple b);
 t_tuple	substract_tuple(t_tuple a, t_tuple b);
 t_tuple	negate_tuple(t_tuple a);
 t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
-t_tuple	divide_tuple(t_tuple a, double scalar);
+int	is_tuples_equal(t_tuple a, t_tuple b);
 
 
 /** Vector **/
@@ -116,7 +118,6 @@ t_tuple reflect(t_tuple in, t_tuple normal);
 /** Matrix **/
 
 t_matrix	identity_matrix(void);
-int			is_matrices_equal(t_matrix a, t_matrix b);
 t_tuple		multiply_matrix_by_tuple(t_matrix a, t_tuple b);
 t_matrix	multiply_matrices(t_matrix a, t_matrix b);
 t_matrix	transpose_matrix(t_matrix a);
@@ -125,18 +126,24 @@ t_matrix	scaling_matrix(double x, double y, double z);
 t_matrix	rotation_x_matrix(double radian);
 t_matrix	rotation_y_matrix(double radian);
 t_matrix	rotation_z_matrix(double radian);
-t_matrix	shearing_matrix(double xy, double xz, double yx, double yz, double zx, double zy);
-t_matrix3x3	submatrix(t_matrix a, int row, int column);
-double		determinant3x3(t_matrix3x3 m);
-double		minor_matrix(t_matrix a, int row, int column);
 double		cofactor_matrix(t_matrix a, int row, int column);
 double		determinant(t_matrix a);
-int			is_invertible(t_matrix a);
 t_matrix	inverse_matrix(t_matrix a);
 void	set_matrices(t_scene *scene);
 void	update_matrices(t_shape *shape, t_matrix transform);
 t_matrix	combine_all_transforms(t_shape *shape);
 
+
+/******************** LIGHT_AND_COLOR FOLDER **********/
+/** Color **/
+
+t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
+t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
+void	insertion_sort_intersections(t_intersection *array, int count);
+t_intersects intersect_scene(t_scene *world, t_ray ray);
+t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
+t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
+t_pattern		set_pattern(t_tuple a, t_tuple b);
 
 /** Intersection **/
 
@@ -171,19 +178,6 @@ t_light init_light(t_tuple position, t_tuple color, double brightness);
 void	free_canvas(t_canvas *canvas);
 
 
-/** Color **/
-
-t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
-t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
-void	insertion_sort_intersections(t_intersection *array, int count);
-t_intersects intersect_scene(t_scene *world, t_ray ray);
-t_tuple reflected_color(t_scene *world, t_intersection comps, int remaining);
-t_tuple refracted_color(t_scene *world, t_intersection comps, int remaining);
-double schlick(t_intersection comps);
-t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
-t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
-int is_shadowed(t_scene world, t_tuple point);
-t_pattern		set_pattern(t_tuple a, t_tuple b);
 
 
 /** Mlx **/

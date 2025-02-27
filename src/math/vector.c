@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:44:26 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/19 22:31:03 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 14:37:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /* The distance represented by a vector is the length of the vector or the
 magnitude of the vector.
 @param vector to calculate the magnitude of.
-@returns the square root of the sum of the squares of the vector's components. */
+@returns the square root of the sum of the squares of the vector's components.
+*/
 double	magnitude(t_tuple v)
 {
 	return (sqrt(v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w));
@@ -27,12 +28,12 @@ Which is a vector with a magnitude of 1.
 @returns a new vector that is the normalized version of the input vector. */
 t_tuple	normalize(t_tuple v)
 {
-	double mag;
-	t_tuple norm;
+	double	mag;
+	t_tuple	norm;
 
 	mag = magnitude(v);
 	if (fabs(mag) < EPSILON)
-		return vector(0, 0, 0);
+		return (vector(0, 0, 0));
 	norm.x = v.x / mag;
 	norm.y = v.y / mag;
 	norm.z = v.z / mag;
@@ -55,7 +56,7 @@ perpendicular to the two input vectors.
 @returns a new vector that is perpendicular to the two input vectors. */
 t_tuple	cross(t_tuple a, t_tuple b)
 {
-	t_tuple cross;
+	t_tuple	cross;
 
 	cross.x = a.y * b.z - a.z * b.y;
 	cross.y = a.z * b.x - a.x * b.z;
@@ -74,10 +75,11 @@ t_tuple	cross(t_tuple a, t_tuple b)
 ** @param normal: The normal vector of the surface.
 ** @return The reflection vector.
 */
-t_tuple reflect(t_tuple in, t_tuple normal)
+t_tuple	reflect(t_tuple in, t_tuple normal)
 {
-	t_tuple result;
+	t_tuple	result;
 
-	result = substract_tuple(in, multiply_tuple_scalar(normal, 2 * dot(in, normal)));
+	result = substract_tuple(in,
+			multiply_tuple_scalar(normal, 2 * dot(in, normal)));
 	return (result);
 }

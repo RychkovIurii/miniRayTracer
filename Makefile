@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/26 11:52:52 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/27 15:40:30 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,16 +24,21 @@ SRCS = main.c\
 		parser/validations.c\
 		parser/conversions.c\
 		parser/trim_line.c\
+		math/tuple.c\
+		math/tuple2.c\
+		math/matrix.c\
+		math/matrix2.c\
+		math/matrix3.c\
+		math/matrix4.c\
+		math/vector.c\
+		light_and_color/color.c\
+		light_and_color/pattern.c\
+		light_and_color/refraction_and_reflection.c \
 		utils.c\
 		utils2.c\
-		color.c\
 		intersection.c\
-		matrix.c\
-		matrix2.c\
 		ray.c\
 		scene.c\
-		tuple.c\
-		vector.c\
 		mlx.c\
 		keyboard.c\
 		#parser/parse_element.c
