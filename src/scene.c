@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/25 14:32:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 10:51:57 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,9 +125,9 @@ t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 
 	t_matrix orientation;
 	ft_bzero(&orientation, sizeof(t_matrix));
-	orientation.matrix[0][0] = left.x;
-	orientation.matrix[0][1] = left.y;
-	orientation.matrix[0][2] = left.z;
+	orientation.matrix[0][0] = -left.x;
+	orientation.matrix[0][1] = -left.y;
+	orientation.matrix[0][2] = -left.z;
 	orientation.matrix[0][3] = 0;
 	orientation.matrix[1][0] = true_up.x;
 	orientation.matrix[1][1] = true_up.y;
@@ -195,14 +195,14 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, 
 
 	// Camera position
 	t_tuple from = point(x, y, z);
-	t_tuple up = vector(0.0, -1.0, 0.0);
+	t_tuple up = vector(0.0, 1.0, 0.0);
 
 	// Assign field of view
 	camera.hsize = hsize;
 	camera.vsize = vsize;
 	camera.field_of_view = fov;
 
-	half_view = tan(camera.field_of_view / 2);
+	half_view = tan(camera.field_of_view * (M_PI / 180.0) * 0.5);
 	aspect = (double)camera.hsize / (double)camera.vsize;
 	if (aspect >= 1)
 	{
@@ -218,6 +218,7 @@ t_camera init_camera(double x, double y, double z, t_tuple forward, double fov, 
 
 	// Compute the view transformation matrix
 	camera.transform = view_transform(from, add_tuple(from, forward), up);
+	camera.transform_inv = inverse_matrix(camera.transform);
 
 	return camera;
 }
