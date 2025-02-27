@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 14:28:30 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:37:28 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,6 @@ typedef struct s_camera
 	double		half_width;
 	double		half_height;
 	double		field_of_view;
-	int			hsize;
-	int			vsize;
 	int			id;
 	t_matrix	transform;
 	t_matrix	transform_inv;

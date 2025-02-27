@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 18:29:29 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:20:45 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern)
 {
-	t_material material;
+	t_material	material;
 
 	material.color = color;
 	material.ambient = ambient;
@@ -41,9 +41,7 @@ t_material	material(t_tuple color, double ambient, double diffuse, double specul
 	return (mat);
 } */
 
-
-
-t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
+t_ray	ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
 {
 	double xoffset = (px + 0.5) * camera.pixel_size;
 	double yoffset = (py + 0.5) * camera.pixel_size;
@@ -55,7 +53,7 @@ t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
 	t_tuple pixel = multiply_matrix_by_tuple(camera.transform_inv, point(world_x, world_y, -1));
 	t_tuple direction = normalize(substract_tuple(pixel, origin));
 
-	return create_ray(origin, direction);
+	return (create_ray(origin, direction));
 }
 
 void	render(t_camera camera, t_scene *scene)
@@ -64,9 +62,9 @@ void	render(t_camera camera, t_scene *scene)
 
 	camera.transform_inv = inverse_matrix(camera.transform);
 	origin = multiply_matrix_by_tuple(camera.transform_inv, point(0, 0, 0));
-	for (int y = 0; y < camera.vsize; y++)
+	for (int y = 0; y < HEIGHT; y++)
 	{
-		for (int x = 0; x < camera.hsize; x++)
+		for (int x = 0; x < WIDTH; x++)
 		{
 			t_ray ray = ray_for_pixel(camera, x, y, origin);
 			scene->pixels[y][x] = color_at(scene, ray, DEFAULT_REMAINING);
@@ -76,14 +74,14 @@ void	render(t_camera camera, t_scene *scene)
 
 
 
-t_light init_light(t_tuple position, t_tuple color, double brightness)
+t_light	init_light(t_tuple position, t_tuple color, double brightness)
 {
-	t_light light;
+	t_light	light;
 
 	light.position = position;
 	light.color = color;
 	light.brightness = brightness;
 	light.intensity = multiply_tuple_scalar(color, brightness);
 
-	return light;
+	return (light);
 }

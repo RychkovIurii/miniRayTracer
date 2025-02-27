@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 18:30:06 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:28:05 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,39 +170,23 @@ void	handle_light_controls(t_scene *scene);
 
 
 /******************** ROOT FOLDER **********/
+// Camera
+
+t_camera init_camera(t_tuple from, t_tuple forward, double fov);
+
+// Mlx
+
+void ft_hook(void* param);
+
+// Scene
 
 t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern);
-t_canvas	*create_canvas(int width, int height);
-t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up);
-t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
-void	render(t_camera camera, t_scene *scene);
-t_camera init_camera(t_tuple from, t_tuple forward, double fov);
-t_light init_light(t_tuple position, t_tuple color, double brightness);
-void	free_canvas(t_canvas *canvas);
-
-
-
-
-/** Mlx **/
-
-void ft_render_scene(void* param);
-t_tuple	pixel_at(t_canvas *canvas, int x, int y);
-int	round_value(int value, int min, int max);
-
-
-/** Utils **/
-
-void	ft_bzero(void *s, size_t n);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
+t_ray		ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
+t_light		init_light(t_tuple position, t_tuple color, double brightness);
+void		render(t_camera camera, t_scene *scene);
 
 
 /** Debug **/
-
 void print_shapes(t_scene *scene);
-
-
-/** Keyboard **/
-void ft_hook(void* param);
-
 
 #endif
