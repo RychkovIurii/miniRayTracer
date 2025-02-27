@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:42:58 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 20:03:41 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,18 @@
 /** Bonus parsing */
 
 int		parse_cone(char **element, t_rt *rt);
-t_shape	*add_cone(t_rt *rt, char **coordinates, char **normal, char **colors);
+t_shape	*add_cone(t_rt *rt, t_element_data data);
 int		add_material(char **element, t_material *material, size_t size);
 t_shape	*add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
 t_shape	*add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-t_shape	*add_cylinder(t_rt *rt, char **coordinates, char** normal, char **colors);
+t_shape	*add_cylinder(t_rt *rt, t_element_data data);
 
 /** Parsing */
 
 int		parse_file(t_rt *rt);
 char	*trim_extra_spaces(char *line);
 int		count_lines_in_file(int fd);
-int		init_scene_structs(t_rt *rt);
+int		init_scene_structs(char **lines, t_rt *rt);
 int		parse_element(char **element, t_rt *rt);
 int		parse_ambient(char **element, t_rt *rt);
 int		parse_camera(char **element, t_rt *rt);
@@ -73,10 +73,11 @@ int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);
 //void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
 //void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-//void	add_cylinder(t_rt *rt, char **coordinates, char** normal, char **colors);
+//void	add_cylinder(t_rt *rt, t_element_data data);
 void	assign_default_material(t_material *material);
 int		invalid_file_content(t_rt *rt);
 int		validate_argument_count(char **array, int count);
+t_element_data	validate_element_data(char **element);
 char	**validate_color(char *str);
 char	**validate_coordinates(char *str);
 char	**validate_vector(char *str);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 15:04:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/21 13:00:51 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:55:32 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,17 +37,36 @@ void print_elements(char **elements)
 	}
 }
 
-int	init_scene_structs(t_rt *rt)
+int	count_non_shape_elements(char **lines)
 {
+	int	count;
+	int	i;
+
+	count = 0;
+	i = 0;
+	while (lines[i])
+	{
+		if (lines[i][0] == 'A' || lines[i][0] == 'L' || lines[i][0] == 'C')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+int	init_scene_structs(char **lines, t_rt *rt)
+{
+	int	non_shape;
+
 	rt->scene = ft_calloc(1, sizeof(t_scene));
 	if (!rt->scene)
 	{
 		print_error("Failed to allocate t_scene");
 		return (1);
 	}
+	non_shape = count_non_shape_elements(lines);
 	rt->scene->shape_count = 0;
 	rt->scene->needs_render = 1;
-	rt->scene->shapes = ft_calloc(rt->element_count - 2, sizeof(t_shape));
+	rt->scene->shapes = ft_calloc(rt->element_count - non_shape, sizeof(t_shape));
 	if (!rt->scene->shapes)
 	{
 		print_error("Failed to allocate shapes array");

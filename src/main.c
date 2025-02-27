@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:43:41 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:10:15 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int main(int argc, char **argv)
 	initialize_structs(argv, rt);
 	if (parse_file(rt))
 	{
+		free_rt(rt);
 		printf("Parsing error\n");
 		return(EXIT_FAILURE);
 	}

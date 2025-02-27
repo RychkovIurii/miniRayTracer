@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 13:20:39 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 19:46:47 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,28 @@ char	**validate_vector(char *str)
 		i++;
 	}
 	return (vector_strings);
+}
+
+t_element_data	validate_element_data(char **element)
+{
+	t_element_data	data;
+
+	ft_bzero(&data, sizeof(t_element_data));
+	data.coordinates = validate_coordinates(element[1]);
+	if (!data.coordinates)
+		print_error("Invalid coordinates for center");
+	else if (!(data.normal = validate_vector(element[2])))
+	{
+		free_array(data.coordinates);
+		print_error("Invalid normal vector");
+	}
+	else if (!(data.colors = validate_color(element[5])))
+	{
+		free_array(data.normal);
+		free_array(data.coordinates);
+		print_error("Invalid color");
+	}
+	return (data);
 }
 
 double	validate_ratio(char *str)

@@ -6,11 +6,21 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 15:46:29 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 20:06:31 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+
+void	assign_default_material(t_material *material)
+{
+	material->diffuse = 0.9;
+	material->specular = 0.9;
+	material->shininess = 300.0;
+	material->reflective = 0.5;
+	material->transparency = 0.0;
+	material->refractive_index = 1.0;
+}
 
 void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter)
 {

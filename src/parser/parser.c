@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 17:13:56 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 18:51:47 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,7 +165,7 @@ int	parse_line(char *line, t_rt *rt)
 	}
 	if (parse_element(element, rt))
 	{
-		printf("Failed to parse line %s\n", line);
+		printf("Failed to parse line %s", line);
 		free_array(element);
 		return (1);
 	}
@@ -185,18 +185,24 @@ int	parse_file(t_rt *rt)
 	lines = read_file(rt, fd);
 	if (!lines)
 		return (error("Failed to read file", 1));
-	if (init_scene_structs(rt))
+	if (init_scene_structs(lines, rt))
 		return (free_and_return(rt, lines, 1));
 	i = 0;
 	while (lines[i])
 	{
 		if (parse_line(lines[i], rt))
+		{
+			free_array(lines);
 			return (1);
+		}
 		i++;
 	}
 	free_array(lines);
 	if (invalid_file_content(rt))
-		return (print_clean(rt, "Invalid file content", 1));
+	{
+		printf("Invalid file content\n");
+		return (1);
+	}
 	print_parsed_content(rt);
 	return (0);
 }

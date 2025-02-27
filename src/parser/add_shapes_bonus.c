@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:27:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 17:21:05 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 20:04:07 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_shape	*add_plane(t_rt *rt, char **coord, char **normal, char **colors)
 	return (plane);
 }
 
-t_shape	*add_cylinder(t_rt *rt, char **coord, char **normal, char **colors)
+t_shape	*add_cylinder(t_rt *rt, t_element_data data)
 {
 	int		i;
 	t_shape	*cylinder;
@@ -57,16 +57,16 @@ t_shape	*add_cylinder(t_rt *rt, char **coord, char **normal, char **colors)
 	cylinder = &rt->scene->shapes[i];
 	cylinder->type = SHAPE_CYLINDER;
 	cylinder->closed = 1;
-	cylinder->center = string_to_point(coord);
-	cylinder->normal = string_to_vector(normal);
-	cylinder->material.color = string_to_color(colors);
+	cylinder->center = string_to_point(data.coordinates);
+	cylinder->normal = string_to_vector(data.normal);
+	cylinder->material.color = string_to_color(data.colors);
 	cylinder->material.ambient = rt->scene->ambient.ratio;
 	cylinder->scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 	return (cylinder);
 }
 
-t_shape	*add_cone(t_rt *rt, char **coord, char **normal, char **colors)
+t_shape	*add_cone(t_rt *rt, t_element_data data)
 {
 	int		i;
 	t_shape	*cone;
@@ -75,10 +75,10 @@ t_shape	*add_cone(t_rt *rt, char **coord, char **normal, char **colors)
 	cone = &rt->scene->shapes[i];
 	cone->type = SHAPE_CONE;
 	cone->closed = 1;
-	cone->center = string_to_point(coord);
-	//rt->scene->shapes[i].center.y += rt->scene->shapes[i].height / 2;  //forced center.y to be higher by cone height
-	cone->normal = string_to_vector(normal);
-	cone->material.color = string_to_color(colors);
+	cone->center = string_to_point(data.coordinates);
+	rt->scene->shapes[i].center.y += rt->scene->shapes[i].height / 2; //forced center.y to be higher by cone height
+	cone->normal = string_to_vector(data.normal);
+	cone->material.color = string_to_color(data.colors);
 	cone->material.ambient = rt->scene->ambient.ratio;
 	cone->transform = identity_matrix();
 	cone->scale = vector(1, 1, 1);

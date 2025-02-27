@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/27 17:27:27 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/27 20:06:58 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,6 @@ SRCS = main.c\
 		#parser/parse_shapes.c\
 		#parser/add_shapes.c\
 		#parser/parse_element.c\
-		#parser/default_material.c\
 		
 SRC_DIR = ./src
 OBJ_DIR = ./obj

@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:43:18 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 17:05:00 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 20:08:09 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 int	invalid_file_content(t_rt *rt)
 {
 	if (rt->scene->camera.id == 0)
-	{
-		printf("Camera id: %d\n", rt->scene->camera.id);
 		return (error("Camera missing from file", 1));
-	}
 	if (rt->scene->ambient.id == 0 && rt->scene->light.id == 0)
 		return (error("Light source missing from file", 1));
 	if (rt->scene->ambient.id != 0 && rt->scene->light.id == 0
