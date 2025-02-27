@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:43:18 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 13:18:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:05:00 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,25 @@ int	free_and_return(t_rt *rt, char **array, int ret)
 	free_array(array);
 	free_rt(rt);
 	return (ret);
+}
+
+int	print_clean(t_rt *rt, char *message, int ret)
+{
+	free_rt(rt);
+	print_error("Invalid file content");
+	return (ret);
+}
+
+void	free_arrays(char **array1, char **array2)
+{
+	if (array1)
+	{
+		free_array(array1);
+		*array1 = NULL;
+	}
+	if (array2)
+	{
+		free_array(array2);
+		*array2 = NULL;
+	}
 }

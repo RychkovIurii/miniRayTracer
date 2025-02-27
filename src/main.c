@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/24 15:31:08 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:31:12 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
 	mlx_loop(rt->scene->mlx);
 	mlx_terminate(rt->scene->mlx);
-	free_rt(rt);
 	free_pixels(rt->scene->pixels, HEIGHT);
+	free_rt(rt);
 	return (EXIT_SUCCESS);
 }

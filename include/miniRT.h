@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/26 14:16:34 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:19:43 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,11 @@
 /** Bonus parsing */
 
 int		parse_cone(char **element, t_rt *rt);
-void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors);
+t_shape	*add_cone(t_rt *rt, char **coordinates, char **normal, char **colors);
+int		add_material(char **element, t_material *material, size_t size);
+t_shape	*add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
+t_shape	*add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
+t_shape	*add_cylinder(t_rt *rt, char **coordinates, char** normal, char **colors);
 
 /** Parsing */
 
@@ -68,9 +72,10 @@ int		parse_light(char **element, t_rt *rt);
 int		parse_sphere(char **element, t_rt *rt);
 int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);
-void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
-void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-void	add_cylinder(t_rt *rt, char **coordinates, char** normal, char **colors);
+//void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
+//void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
+//void	add_cylinder(t_rt *rt, char **coordinates, char** normal, char **colors);
+void	assign_default_material(t_material *material);
 int		invalid_file_content(t_rt *rt);
 int		validate_argument_count(char **array, int count);
 char	**validate_color(char *str);
@@ -87,6 +92,8 @@ void	free_array(char **array);
 //void	print_elements(char **elements);
 void	free_rt(t_rt *rt);
 int		free_and_return(t_rt *rt, char **array, int ret);
+int		print_clean(t_rt *rt, char *message, int ret);
+void	free_arrays(char **array1, char **array2);
 void	print_error(char *message);
 int		error(char *message, int ret);
 int		ft_strcmp(char const *s1, char const *s2);

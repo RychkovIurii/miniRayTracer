@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:45:07 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 11:45:40 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:40:58 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static int	count_new_length(char *line)
 	}
 	return (new_len);
 }
+
 
 char	*trim_extra_spaces(char *line)
 {

@@ -3,85 +3,121 @@
 /*                                                        :::      ::::::::   */
 /*   parse_shapes_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/26 12:56:11 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:40:38 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
 
-void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors)
+int	parse_sphere(char **element, t_rt *rt)
 {
-	int	i;
+	char		**coordinates;
+	double		diameter;
+	char		**colors;
+	size_t		arg_count;
+	t_shape		*sphere;
 
-	i = rt->scene->shape_count;
-	rt->scene->shapes[i].type = SHAPE_CONE;
-	rt->scene->shapes[i].closed = 1;
-	rt->scene->shapes[i].center = string_to_point(coordinates);
-	rt->scene->shapes[i].center.y += rt->scene->shapes[i].height / 2;  //forced center.y to be higher by cone height
-	rt->scene->shapes[i].normal = string_to_vector(normal);
-	rt->scene->shapes[i].material.color = string_to_color(colors);
-	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
-	rt->scene->shapes[i].material.diffuse = 0.8;
-	rt->scene->shapes[i].material.specular = 0.4;
-	rt->scene->shapes[i].material.shininess = 150.0;
-	rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 1.0;
-	rt->scene->shapes[i].material.reflective = 0.0;
-	rt->scene->shapes[i].material.transparency = 0.0;
-	rt->scene->shapes[i].scale = vector(1, 1, 1);
-	rt->scene->shape_count++;
-}
-
-int	validate_cone_dimensions(char **element, t_rt *rt)
-{
-	double	diameter;
-	double	cone_height;
-
-	diameter = validate_dimension(element[3]);
+	arg_count = 10;
+	if (validate_argument_count(element, arg_count))
+		return (error("Invalid number of arguments for sphere", 1));
+	diameter = validate_dimension(element[2]);
 	if (diameter == -1)
-		return (error("Invalid cone diameter", 1));
+		return (error("Invalid sphere diameter", 1));
 	rt->scene->shapes[rt->scene->shape_count].radius = diameter / 2.0;
-	cone_height = validate_dimension(element[4]);
-	if (cone_height == -1)
-		return (error("Invalid cone height", 1));
-	rt->scene->shapes[rt->scene->shape_count].height = cone_height;
-	rt->scene->shapes[rt->scene->shape_count].max = 0;
-	rt->scene->shapes[rt->scene->shape_count].min = -cone_height;
-	return (0);
-}
-
-int	parse_cone(char **element, t_rt *rt)
-{
-	char	**coordinates;
-	char	**normal;
-	char	**colors;
-
-	if (validate_argument_count(element, 6))
-		return (error("Invalid number of arguments for cone", 1));
-	if (validate_cone_dimensions(element, rt))
-	{
-		print_error("Failed to validate cone dimensions");
-		return (1);
-	}
 	coordinates = validate_coordinates(element[1]);
 	if (!coordinates)
-		return (error("Invalid coordinates for center of cone", 1));
+		return (error("Invalid coordinates for sphere center", 1));
+	colors = validate_color(element[3]);
+	if (!colors)
+	{
+		free_array(coordinates);
+		return (error("Invalid sphere color", 1));
+	}
+	sphere = add_sphere(rt, coordinates, colors, diameter);
+	return (add_material(element, &(sphere->material), arg_count));
+}
+
+int	parse_plane(char **element, t_rt *rt)
+{
+	char		**coordinates;
+	char		**normal;
+	char		**colors;
+	size_t		arg_count;
+	t_shape		*plane;
+
+	arg_count = 10;
+	if (validate_argument_count(element, arg_count))
+		return (error("Invalid number of arguments for plane", 1));
+	coordinates = validate_coordinates(element[1]);
+	if (!coordinates)
+		return (error("Invalid coordinates for point in plane", 1));
 	normal = validate_vector(element[2]);
 	if (!normal)
 	{
 		free_array(coordinates);
-		return (error("Invalid normal vector for cone", 1));
+		return (error("Invalid normal vector for plane", 1));
+	}
+	colors = validate_color(element[3]);
+	if (!colors)
+	{
+		free_arrays(normal, coordinates);
+		return (error("Invalid plane color", 1));
+	}
+	plane = add_plane(rt, coordinates, normal, colors);
+	return (add_material(element, &(plane->material), arg_count));
+}
+
+int	validate_cylinder_dimensions(char **element, t_rt *rt)
+{
+	double	diameter;
+	double	cylinder_height;
+
+	diameter = validate_dimension(element[3]);
+	if (diameter == -1)
+		return (error("Invalid cylinder diameter", 1));
+	rt->scene->shapes[rt->scene->shape_count].radius = diameter / 2.0;
+	cylinder_height = validate_dimension(element[4]);
+	if (cylinder_height == -1)
+		return (error("Invalid cylinder height", 1));
+	rt->scene->shapes[rt->scene->shape_count].height = cylinder_height;
+	rt->scene->shapes[rt->scene->shape_count].min = -cylinder_height / 2.0;
+	rt->scene->shapes[rt->scene->shape_count].max = cylinder_height / 2.0;
+	return (0);
+}
+
+int	parse_cylinder(char **element, t_rt *rt)
+{
+	char		**coordinates;
+	char		**normal;
+	char		**colors;
+	size_t		arg_count;
+	t_shape		*cylinder;
+
+	arg_count = 12;
+	if (validate_argument_count(element, arg_count))
+		return (error("Invalid number of arguments for cylinder", 1));
+	if (validate_cylinder_dimensions(element, rt))
+		return (1);
+	coordinates = validate_coordinates(element[1]);
+	if (!coordinates)
+		return (error("Invalid coordinates for center of cylinder", 1));
+	normal = validate_vector(element[2]);
+	if (!normal)
+	{
+		free_array(coordinates);
+		return (error("Invalid normal vector for cylinder", 1));
 	}
 	colors = validate_color(element[5]);
 	if (!colors)
 	{
-		free_array(normal);
-		free_array(coordinates);
-		return (error("Invalid cone color", 1));
+		free_arrays(normal, coordinates);
+		return (error("Invalid cylinder color", 1));
 	}
-	add_cone(rt, coordinates, normal, colors);
-	return (0);
+	cylinder = add_cylinder(rt, coordinates, normal, colors);
+	return (add_material(element, &(cylinder->material), arg_count));
 }
+
+

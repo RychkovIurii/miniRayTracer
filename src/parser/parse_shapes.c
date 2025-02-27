@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:08:22 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 20:07:03 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:12:19 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,7 @@ int	parse_cylinder(char **element, t_rt *rt)
 	if (validate_argument_count(element, 6))
 		return (error("Invalid number of arguments for cylinder", 1));
 	if (validate_cylinder_dimensions(element, rt))
-	{
-		print_error("Failed to validate cylinder dimensions");
 		return (1);
-	}
 	coordinates = validate_coordinates(element[1]);
 	if (!coordinates)
 		return (error("Invalid coordinates for center of cylinder", 1));
@@ -107,8 +104,7 @@ int	parse_cylinder(char **element, t_rt *rt)
 	colors = validate_color(element[5]);
 	if (!colors)
 	{
-		free_array(normal);
-		free_array(coordinates);
+		free_arrays(normal, coordinates);
 		return (error("Invalid cylinder color", 1));
 	}
 	add_cylinder(rt, coordinates, normal, colors);

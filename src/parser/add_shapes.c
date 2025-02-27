@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   add_shapes.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/26 11:54:22 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 15:46:29 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,10 @@ void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter)
 	rt->scene->shapes[i].type = SHAPE_SPHERE;
 	rt->scene->shapes[i].center = string_to_point(coordinates);
 	rt->scene->shapes[i].radius = diameter / 2;
+	assign_default_material(&rt->scene->shapes[i].material);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
 	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
-	rt->scene->shapes[i].material.diffuse = 0.9;
-	rt->scene->shapes[i].material.specular = 0.9;
-	rt->scene->shapes[i].material.shininess = 300.0;
-	/* rt->scene->shapes[i].material.reflective = 0.9;
-	rt->scene->shapes[i].material.transparency = 0.0;
-	rt->scene->shapes[i].material.refractive_index = 1.0; */
 	rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 1.0;
-	rt->scene->shapes[i].material.reflective = 0.0;
-	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shapes[i].scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 }
@@ -44,18 +36,10 @@ void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].type = SHAPE_PLANE;
 	rt->scene->shapes[i].center = string_to_point(coordinates);
 	rt->scene->shapes[i].normal = string_to_vector(normal);
+	assign_default_material(&rt->scene->shapes[i].material);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
 	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
-	rt->scene->shapes[i].material.diffuse = 0.8;
-	rt->scene->shapes[i].material.specular = 0.7;
-	rt->scene->shapes[i].material.shininess = 200.0;
-	/* rt->scene->shapes[i].material.reflective = 0.2;
-	rt->scene->shapes[i].material.transparency = 0.0;
-	rt->scene->shapes[i].material.refractive_index = 0.0; */
 	rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 1.0;
-	rt->scene->shapes[i].material.reflective = 0.0;
-	rt->scene->shapes[i].material.transparency = 0.0;
 	rt->scene->shapes[i].scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 }
@@ -69,16 +53,10 @@ void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors)
 	rt->scene->shapes[i].closed = 1;
 	rt->scene->shapes[i].center = string_to_point(coordinates);
 	rt->scene->shapes[i].normal = string_to_vector(normal);
+	assign_default_material(&rt->scene->shapes[i].material);
 	rt->scene->shapes[i].material.color = string_to_color(colors);
 	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
-	rt->scene->shapes[i].material.diffuse = 0.8;
-	rt->scene->shapes[i].material.specular = 0.4;
-	rt->scene->shapes[i].material.shininess = 150.0;
-	//rt->scene->shapes[i].transform = identity_matrix();
-	rt->scene->shapes[i].material.refractive_index = 1.0;
-	rt->scene->shapes[i].material.reflective = 0.0;
-	rt->scene->shapes[i].material.transparency = 0.0;
+	rt->scene->shapes[i].transform = identity_matrix();
 	rt->scene->shapes[i].scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 }
-

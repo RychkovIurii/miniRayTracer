@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/26 11:54:28 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 17:13:56 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,17 @@ void	print_parsed_content(t_rt *rt)
 	int i = 0;
 	while (i < rt->scene->shape_count)
 	{
-		t_shape shape = rt->scene->shapes[i];
+		t_shape	shape = rt->scene->shapes[i];
 		if (shape.type == SHAPE_SPHERE)
 		{
 			printf("Shape type: %d\n", shape.type);
 			printf("Sphere center: %f, %f, %f\n", shape.center.x, shape.center.y, shape.center.z);
 			printf("Sphere radius: %f\n", shape.radius);
 			printf("Sphere color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
-			printf("Sphere reflectivity: %f\n", shape.material.reflective);
+			printf("Sphere diffuse: %f\n", shape.material.diffuse);
+			printf("Sphere specular: %f\n", shape.material.specular);
+			printf("Sphere shininess: %f\n", shape.material.shininess);
+			printf("Sphere reflective: %f\n", shape.material.reflective);
 			printf("Sphere transparency: %f\n", shape.material.transparency);
 			printf("Sphere refractive index: %f\n", shape.material.refractive_index);
 		}
@@ -47,9 +50,12 @@ void	print_parsed_content(t_rt *rt)
 			printf("Plane center: %f, %f, %f\n", shape.point_on_plane.x, shape.point_on_plane.y, shape.point_on_plane.z);
 			printf("Plane normal:%f, %f, %f\n", shape.normal.x, shape.normal.y, shape.normal.z);
 			printf("Plane color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
-			printf("Plane reflectivity: %f\n", shape.material.reflective);
-			printf("Plane transparency: %f\n", shape.material.transparency);
+			printf("Plane diffuse: %f\n", shape.material.diffuse);
+			printf("Plane specular: %f\n", shape.material.specular);
+			printf("Plane shininess: %f\n", shape.material.shininess);
+			printf("Plane reflective: %f\n", shape.material.reflective);
 			printf("Plane refractive index: %f\n", shape.material.refractive_index);
+			printf("Plane transparency: %f\n", shape.material.transparency);
 		}
 		else if (shape.type == SHAPE_CYLINDER)
 		{
@@ -59,7 +65,10 @@ void	print_parsed_content(t_rt *rt)
 			printf("Cylinder radius: %f\n", shape.radius);
 			printf("Cylinder height: %f\n", shape.height);
 			printf("Cylinder color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
-			printf("Cylinder reflectivity: %f\n", shape.material.reflective);
+			printf("Cylinder diffuse: %f\n", shape.material.diffuse);
+			printf("Cylinder specular: %f\n", shape.material.specular);
+			printf("Cylinder shininess: %f\n", shape.material.shininess);
+			printf("Cylinder reflective: %f\n", shape.material.reflective);
 			printf("Cylinder transparency: %f\n", shape.material.transparency);
 			printf("Cylinder refractive index: %f\n", shape.material.refractive_index);
 		}
@@ -71,6 +80,12 @@ void	print_parsed_content(t_rt *rt)
 			printf("Cone radius: %f\n", shape.radius);
 			printf("Cone height: %f\n", shape.height);
 			printf("Cone color: %f, %f, %f\n", shape.material.color.x, shape.material.color.y, shape.material.color.z);
+			printf("Cone diffuse: %f\n", shape.material.diffuse);
+			printf("Cone specular: %f\n", shape.material.specular);
+			printf("Cone shininess: %f\n", shape.material.shininess);
+			printf("Cone reflective: %f\n", shape.material.reflective);
+			printf("Cone transparency: %f\n", shape.material.transparency);
+			printf("Cone refractive index: %f\n", shape.material.refractive_index);
 		}
 		i++;
 	}
@@ -150,7 +165,7 @@ int	parse_line(char *line, t_rt *rt)
 	}
 	if (parse_element(element, rt))
 	{
-		print_error("Failed to parse element");
+		printf("Failed to parse line %s\n", line);
 		free_array(element);
 		return (1);
 	}
@@ -166,35 +181,22 @@ int	parse_file(t_rt *rt)
 
 	fd = open_file(rt->filename);
 	if (fd < 0)
-	{
-		print_error("Failed to open file");
-		return (1);
-	}
+		return (error("Failed to open file", 1));
 	lines = read_file(rt, fd);
 	if (!lines)
-	{
-		print_error("Failed to read file");
-		return (1);
-	}
+		return (error("Failed to read file", 1));
 	if (init_scene_structs(rt))
 		return (free_and_return(rt, lines, 1));
 	i = 0;
 	while (lines[i])
 	{
 		if (parse_line(lines[i], rt))
-		{
-			print_error("Failed to parse line");
-			return (free_and_return(rt, lines, 1));
-		}
+			return (1);
 		i++;
 	}
 	free_array(lines);
 	if (invalid_file_content(rt))
-	{
-		print_error("Invalid file content");
-		free_rt(rt);
-		return (1);
-	}
+		return (print_clean(rt, "Invalid file content", 1));
 	print_parsed_content(rt);
 	return (0);
 }
