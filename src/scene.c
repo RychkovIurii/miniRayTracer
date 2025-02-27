@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 10:51:57 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:59:09 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,48 +41,6 @@ t_material	material(t_tuple color, double ambient, double diffuse, double specul
 	material.refractive_index = 1.0;
 	return (material);
 }
-
-/* This function creates a canvas with the given width and height. */
-/* t_canvas	*create_canvas(int width, int height)
-{
-	t_canvas	*canvas;
-	int			i;
-	int			j;
-
-	canvas = (t_canvas *)calloc(1, sizeof(t_canvas));
-	canvas->width = width;
-	canvas->height = height;
-	canvas->pixels = (t_tuple **)calloc(height, sizeof(t_tuple *));
-	i = 0;
-	while (i < height)
-	{
-		canvas->pixels[i] = (t_tuple *)calloc(width, sizeof(t_tuple));
-		j = 0;
-		while (j < width)
-		{
-			canvas->pixels[i][j] = create_color(0, 0, 0);
-			j++;
-		}
-		i++;
-	}
-	return (canvas);
-} */
-
-/* This function frees the memory allocated for the canvas. */
-/*
-void	free_canvas(t_canvas *canvas)
-{
-	int i;
-
-	i = 0;
-	while (i < canvas->height)
-	{
-		free(canvas->pixels[i]);
-		i++;
-	}
-	free(canvas->pixels);
-	free(canvas);
-} */
 
 t_material default_material()
 {
@@ -145,16 +103,6 @@ t_matrix view_transform(t_tuple from, t_tuple to, t_tuple up)
 	t_matrix translation = translation_matrix(-from.x, -from.y, -from.z);
 	return multiply_matrices(orientation, translation);
 }
-
-/* This function writes a color to the pixel at the given coordinates. */
-/* void write_pixel(t_canvas *canvas, int x, int y, t_tuple color)
-{
-	if (x >= 0 && x < canvas->width && y >= 0 && y < canvas->height)
-	{
-		canvas->pixels[y][x] = color;
-	}
-} */
-
 
 t_ray ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
 {

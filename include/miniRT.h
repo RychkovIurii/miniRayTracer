@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 15:39:45 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:55:27 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,29 +93,29 @@ int		ft_strcmp(char const *s1, char const *s2);
 
 
 /******************** MATH FOLDER **********/
-/** Tuple **/
+// Tuple
 
-t_tuple	create_color(double r, double g, double b);
-t_tuple	multiply_color(t_tuple a, t_tuple b);
-t_tuple	point(double x, double y, double z);
-t_tuple	vector(double x, double y, double z);
-t_tuple	add_tuple(t_tuple a, t_tuple b);
-t_tuple	substract_tuple(t_tuple a, t_tuple b);
-t_tuple	negate_tuple(t_tuple a);
-t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
-int	is_tuples_equal(t_tuple a, t_tuple b);
-
-
-/** Vector **/
-
-double	magnitude(t_tuple v);
-t_tuple	normalize(t_tuple v);
-double	dot(t_tuple a, t_tuple b);
-t_tuple	cross(t_tuple a, t_tuple b);
-t_tuple reflect(t_tuple in, t_tuple normal);
+t_tuple		create_color(double r, double g, double b);
+t_tuple		multiply_color(t_tuple a, t_tuple b);
+t_tuple		point(double x, double y, double z);
+t_tuple		vector(double x, double y, double z);
+t_tuple		add_tuple(t_tuple a, t_tuple b);
+t_tuple		substract_tuple(t_tuple a, t_tuple b);
+t_tuple		negate_tuple(t_tuple a);
+t_tuple		multiply_tuple_scalar(t_tuple a, double scalar);
+int			is_tuples_equal(t_tuple a, t_tuple b);
 
 
-/** Matrix **/
+//Vector 
+
+double		magnitude(t_tuple v);
+double		dot(t_tuple a, t_tuple b);
+t_tuple		normalize(t_tuple v);
+t_tuple		cross(t_tuple a, t_tuple b);
+t_tuple		reflect(t_tuple in, t_tuple normal);
+
+
+// Matrix
 
 t_matrix	identity_matrix(void);
 t_tuple		multiply_matrix_by_tuple(t_matrix a, t_tuple b);
@@ -129,31 +129,34 @@ t_matrix	rotation_z_matrix(double radian);
 double		cofactor_matrix(t_matrix a, int row, int column);
 double		determinant(t_matrix a);
 t_matrix	inverse_matrix(t_matrix a);
-void	set_matrices(t_scene *scene);
-void	update_matrices(t_shape *shape, t_matrix transform);
+void		set_matrices(t_scene *scene);
+void		update_matrices(t_shape *shape, t_matrix transform);
 t_matrix	combine_all_transforms(t_shape *shape);
 
 
 /******************** LIGHT_AND_COLOR FOLDER **********/
-/** Color **/
 
-t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
-t_tuple pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
-void	insertion_sort_intersections(t_intersection *array, int count);
-t_intersects intersect_scene(t_scene *world, t_ray ray);
-t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
-t_tuple	color_at(t_scene *world, t_ray ray, int remaining);
-t_pattern		set_pattern(t_tuple a, t_tuple b);
+t_pattern	set_pattern(t_tuple a, t_tuple b); // We don't use it for now
+t_tuple		pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
+t_tuple		shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
+t_tuple		lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
+t_tuple		color_at(t_scene *world, t_ray ray, int remaining);
 
-/** Intersection **/
 
-void free_intersects(t_intersects *xs);
+/******************** INTERSECTION FOLDER **********/
+
+t_tuple			normal_at(t_shape *shape, t_tuple world_point);
+t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray);
+t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray);
+t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray);
+t_intersects	local_intersect_cone(t_shape *cone, t_ray ray);
+t_intersects	intersect_scene(t_scene *world, t_ray ray);
+
 t_intersection 	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
 t_intersection	*hit(t_intersects intersections);
-t_intersects local_intersect_sphere(t_shape *sphere, t_ray transformed_ray);
-t_intersects local_intersect_plane(t_shape *plane, t_ray transformed_ray);
-t_intersects intersect(t_shape *shape, t_ray ray);
-t_tuple	normal_at(t_shape *shape, t_tuple world_point);
+
+
+void	insertion_sort_intersections(t_intersection *array, int count);
 
 
 /** Ray **/

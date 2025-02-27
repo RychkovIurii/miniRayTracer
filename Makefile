@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/27 15:40:30 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/27 17:16:21 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,9 +34,13 @@ SRCS = main.c\
 		light_and_color/color.c\
 		light_and_color/pattern.c\
 		light_and_color/refraction_and_reflection.c \
+		intersection/intersection.c\
+		intersection/normal.c\
+		intersection/cone.c\
+		intersection/cylinder.c\
+		intersection/sphere_and_plane.c\
+		intersection/prepare_computations.c\
 		utils.c\
-		utils2.c\
-		intersection.c\
 		ray.c\
 		scene.c\
 		mlx.c\
@@ -68,7 +72,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -g -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)

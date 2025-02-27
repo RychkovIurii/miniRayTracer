@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 15:37:22 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/27 16:55:12 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,90 +66,6 @@ t_tuple	lighting(t_material material, t_shape shape, t_light light, t_tuple posi
 		}
 	}
 	return (add_tuple(add_tuple(ambient, diffuse), specular));
-}
-
-void insertion_sort_intersections(t_intersection *array, int count)
-{
-	t_intersection key;
-	int i;
-	int j;
-	
-	i = 1;
-	while (i < count)
-	{
-		key = array[i];
-		j = i - 1;
-		if (array[j].t <= key.t)
-		{
-			i++;
-			continue;
-		}
-		while (j >= 0 && array[j].t > key.t)
-		{
-			array[j + 1] = array[j];
-			j--;
-		}
-		array[j + 1] = key;
-		i++;
-	}
-}
-
-// Function to find the intersections in the world
-t_intersects intersect_scene(t_scene *world, t_ray ray)
-{
-	t_intersects xs;
-	t_intersection *temp_array;
-	t_intersection *xs_array;
-	t_intersects temp;
-	int total_intersections = 0;
-	int i;
-	int index;
-	temp_array = NULL;
-
-	// Allocate memory for intersections dynamically (in case there are more than 2 intersections)
-	xs_array = NULL;
-
-	// First pass: Count total intersections
-	i = 0;
-	while (i < world->shape_count)
-	{
-		temp = intersect(&world->shapes[i], ray);
-		total_intersections += temp.count;
-		free_intersects(&temp);
-		i++;
-	}
-	//printf("Total intersections: %d\n", total_intersections);
-	// Allocate memory once
-	if (total_intersections > 0)
-	{
-		xs_array = malloc(sizeof(t_intersection) * total_intersections);
-		if (!xs_array)
-		{
-			xs.count = 0;
-			xs.array = NULL;
-			return xs;
-		}
-	}
-
-	// Second pass: Store all intersections
-	index = 0;
-	i = 0;
-	while (i < world->shape_count)
-	{
-		temp = intersect(&world->shapes[i], ray);
-		if (temp.count > 0)
-		{
-			ft_memcpy(xs_array + index, temp.array, sizeof(t_intersection) * temp.count);
-			index += temp.count;
-		}
-		free_intersects(&temp);
-		i++;
-	}
-
-	insertion_sort_intersections(xs_array, total_intersections);
-	xs.count = total_intersections;
-	xs.array = xs_array;
-	return (xs);
 }
 
 t_tuple	color_at(t_scene *world, t_ray ray, int remaining)
