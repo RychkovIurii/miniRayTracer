@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 18:37:28 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:14:33 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,13 @@
 # define STRUCTS_H
 
 # include "miniRT.h"
+
+typedef struct	s_quadratic
+{
+	double	a;
+	double	b;
+	double	c;
+}	t_quadratic;
 
 typedef struct	s_tuple
 {

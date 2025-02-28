@@ -6,13 +6,14 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 11:26:09 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 13:07:47 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern)
+/* t_material	material(t_tuple color, double ambient, double diffuse,
+	double specular, double shininess, int has_pattern)
 {
 	t_material	material;
 
@@ -26,7 +27,7 @@ t_material	material(t_tuple color, double ambient, double diffuse, double specul
 	material.transparency = 0.0;
 	material.refractive_index = 1.0;
 	return (material);
-}
+} */
 
 /* t_material default_material()
 {
@@ -49,20 +50,30 @@ t_light	init_light(t_tuple position, t_tuple color, double brightness)
 	light.color = color;
 	light.brightness = brightness;
 	light.intensity = multiply_tuple_scalar(color, brightness);
-
 	return (light);
 }
 
-void init_scene_pixels(t_scene *scene, int height, int width)
+void	init_scene_pixels(t_scene *scene, int height, int width)
 {
+	int	i;
+	int	j;
+
+	i = 0;
 	scene->pixels = malloc(height * sizeof(t_tuple *));
-	for (int i = 0; i < height; i++)
+	if (!scene->pixels)
+		exit(EXIT_FAILURE); // TODO: handle error
+	while (i < height)
 	{
+		j = 0;
 		scene->pixels[i] = malloc(width * sizeof(t_tuple));
-		for (int j = 0; j < width; j++)
+		if (!scene->pixels[i])
+			exit(EXIT_FAILURE); // TODO: handle error
+		while (j < width)
 		{
 			scene->pixels[i][j] = create_color(0, 0, 0);
+			j++;
 		}
+		i++;
 	}
 }
 
