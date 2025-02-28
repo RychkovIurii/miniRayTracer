@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 19:28:05 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 11:07:29 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@
 
 # define EPSILON 0.0001f
 
-# define WIDTH 600
-# define HEIGHT 600
+# define WIDTH 400
+# define HEIGHT 400
 
-# define DEFAULT_REMAINING 3
+# define DEFAULT_REMAINING 0
 
 # define PATTERN_NONE 0
 # define PATTERN_STRIPE 1

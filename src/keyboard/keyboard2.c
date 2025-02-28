@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 17:30:47 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 18:08:33 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 11:06:49 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ void	handle_object_movement(t_scene *scene)
 		move_object(scene, 0, 0, MOVE_STEP);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_8))
 		move_object(scene, 0, 0, -MOVE_STEP);
-	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_6))
-		move_object(scene, -MOVE_STEP, 0, 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_4))
+		move_object(scene, -MOVE_STEP, 0, 0);
+	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_6))
 		move_object(scene, MOVE_STEP, 0, 0);
 	if (mlx_is_key_down(scene->mlx, MLX_KEY_KP_0))
 		move_object(scene, 0, -MOVE_STEP, 0);
