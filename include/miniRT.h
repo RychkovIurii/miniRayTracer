@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 12:51:33 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 14:41:53 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,7 @@ t_intersects	intersect_scene(t_scene *world, t_ray ray);
 t_intersection 	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
 t_intersects	intersect(t_shape *shape, t_ray ray);
 t_intersection	*hit(t_intersects intersections);
+int				check_cone_cap(t_ray ray, double t, t_shape cone, double y);
 
 /******************** KEYBOARD FOLDER **********/
 

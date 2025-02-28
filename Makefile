@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/28 12:56:41 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/28 14:44:20 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ SRCS = main.c\
 		intersection/intersection2.c\
 		intersection/normal.c\
 		intersection/cone.c\
+		intersection/cone2.c\
 		intersection/cylinder.c\
 		intersection/sphere_and_plane.c\
 		intersection/prepare_computations.c\
