@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 16:49:44 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:19:50 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**validate_coordinates(char *str)
 	while (i < 3)
 	{
 		coordinate = ft_atof(coord_strings[i]);
-		if (coordinate < -DBL_MAX || coordinate > DBL_MAX) // which boundaries to set??
+		if (coordinate < -1000.0 || coordinate > 1000.0)
 		{
 			free_array(coord_strings);
 			return (NULL);

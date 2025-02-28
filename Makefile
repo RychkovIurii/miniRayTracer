@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/28 17:00:38 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/28 17:22:37 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,14 +33,14 @@ SRCS = main.c\
 		vector.c\
 		mlx.c\
 		keyboard.c\
-		parser/parse_shapes.c\
-		parser/add_shapes.c\
-		parser/parse_element.c\
-		#parser/parse_element_bonus.c\
-		#parser/parse_shapes_bonus.c\
-		#parser/add_shapes_bonus.c\
-		#parser/parse_cone_bonus.c\
-		#parser/parse_material_bonus.c\
+		parser/parse_element_bonus.c\
+		parser/parse_shapes_bonus.c\
+		parser/add_shapes_bonus.c\
+		parser/parse_cone_bonus.c\
+		parser/parse_material_bonus.c\
+		#parser/parse_shapes.c\
+		#parser/add_shapes.c\
+		#parser/parse_element.c\
 		
 	
 		

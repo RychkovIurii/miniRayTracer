@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:27:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 20:04:07 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:25:40 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ t_shape	*add_cone(t_rt *rt, t_element_data data)
 	cone->type = SHAPE_CONE;
 	cone->closed = 1;
 	cone->center = string_to_point(data.coordinates);
-	rt->scene->shapes[i].center.y += rt->scene->shapes[i].height / 2; //forced center.y to be higher by cone height
 	cone->normal = string_to_vector(data.normal);
 	cone->material.color = string_to_color(data.colors);
 	cone->material.ambient = rt->scene->ambient.ratio;

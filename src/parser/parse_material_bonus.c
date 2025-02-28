@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:03:24 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 15:15:39 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:16:11 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	validate_refractive_index(char *str)
 	double	ref;
 
 	ref = ft_atof(str);
-	if (ref < 0.0 || ref > 3.0)
+	if (ref < 0.0 || ref > 2.42)
 		return (1);
 	return (0);
 }

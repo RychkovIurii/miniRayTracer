@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 17:04:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:30:12 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	assign_default_material(t_material *material)
 	material->diffuse = 0.9;
 	material->specular = 0.9;
 	material->shininess = 300.0;
-	material->reflective = 0.5;
+	material->reflective = 0.0;
 	material->transparency = 0.0;
 	material->refractive_index = 1.0;
 }

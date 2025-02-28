@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 17:02:54 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:21:55 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,12 @@
 
 /** Bonus parsing */
 
-//int		parse_cone(char **element, t_rt *rt);
-//t_shape	*add_cone(t_rt *rt, t_element_data data);
-//int		add_material(char **element, t_material *material, size_t size);
-//t_shape	*add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
-//t_shape	*add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-//t_shape	*add_cylinder(t_rt *rt, t_element_data data);
+int		parse_cone(char **element, t_rt *rt);
+t_shape	*add_cone(t_rt *rt, t_element_data data);
+int		add_material(char **element, t_material *material, size_t size);
+t_shape	*add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
+t_shape	*add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
+t_shape	*add_cylinder(t_rt *rt, t_element_data data);
 
 /** Parsing */
 
@@ -71,9 +71,9 @@ int		parse_light(char **element, t_rt *rt);
 int		parse_sphere(char **element, t_rt *rt);
 int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);
-void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
+/* void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
 void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-void	add_cylinder(t_rt *rt, t_element_data data);
+void	add_cylinder(t_rt *rt, t_element_data data); */
 void	assign_default_material(t_material *material);
 int		invalid_file_content(t_rt *rt);
 int		validate_argument_count(char **array, int count);
