@@ -6,13 +6,13 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:27:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 17:25:40 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:09:00 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_shape	*add_sphere(t_rt *rt, char **coord, char **colors, double diameter)
+t_shape	*add_sphere_b(t_rt *rt, char **coord, char **colors, double diameter)
 {
 	int		i;
 	t_shape	*sphere;
@@ -30,7 +30,7 @@ t_shape	*add_sphere(t_rt *rt, char **coord, char **colors, double diameter)
 	return (sphere);
 }
 
-t_shape	*add_plane(t_rt *rt, char **coord, char **normal, char **colors)
+t_shape	*add_plane_b(t_rt *rt, char **coord, char **normal, char **colors)
 {
 	int		i;
 	t_shape	*plane;
@@ -48,7 +48,7 @@ t_shape	*add_plane(t_rt *rt, char **coord, char **normal, char **colors)
 	return (plane);
 }
 
-t_shape	*add_cylinder(t_rt *rt, t_element_data data)
+t_shape	*add_cylinder_b(t_rt *rt, t_element_data data)
 {
 	int		i;
 	t_shape	*cylinder;
@@ -66,7 +66,7 @@ t_shape	*add_cylinder(t_rt *rt, t_element_data data)
 	return (cylinder);
 }
 
-t_shape	*add_cone(t_rt *rt, t_element_data data)
+t_shape	*add_cone_b(t_rt *rt, t_element_data data)
 {
 	int		i;
 	t_shape	*cone;

@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 16:49:25 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:09:29 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	parse_sphere(char **element, t_rt *rt)
 		free_array(coordinates);
 		return (error("Invalid sphere color", 1));
 	}
-	sphere = add_sphere(rt, coordinates, colors, diameter);
+	sphere = add_sphere_b(rt, coordinates, colors, diameter);
 	return (add_material(element, &(sphere->material), arg_count));
 }
 
@@ -66,7 +66,7 @@ int	parse_plane(char **element, t_rt *rt)
 		free_arrays(normal, coordinates);
 		return (error("Invalid plane color", 1));
 	}
-	plane = add_plane(rt, coordinates, normal, colors);
+	plane = add_plane_b(rt, coordinates, normal, colors);
 	return (add_material(element, &(plane->material), arg_count));
 }
 
@@ -102,6 +102,6 @@ int	parse_cylinder(char **element, t_rt *rt)
 	data = validate_element_data(element);
 	if (!data.coordinates || !data.normal || !data.colors)
 		return (1);
-	cylinder = add_cylinder(rt, data);
+	cylinder = add_cylinder_b(rt, data);
 	return (add_material(element, &(cylinder->material), arg_count));
 }
