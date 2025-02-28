@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 14:41:53 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 15:03:30 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@
 # define SCALE_DOWN 0.5
 # define BRIGHTNESS_STEP 0.1
 
-
 /******************** PARSER FOLDER **********/
 // Parsing_bonus
 
@@ -70,7 +69,7 @@ int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);
 void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
 void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-void	add_cylinder(t_rt *rt, char **coordinates, char** normal, char **colors);
+void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors);
 int		invalid_file_content(t_rt *rt);
 int		validate_argument_count(char **array, int count);
 char	**validate_color(char *str);
@@ -91,34 +90,33 @@ void	print_error(char *message);
 int		error(char *message, int ret);
 int		ft_strcmp(char const *s1, char const *s2);
 
-
 /******************** MATH FOLDER **********/
 // Tuple
 
-t_tuple		create_color(double r, double g, double b);
-t_tuple		multiply_color(t_tuple a, t_tuple b);
-t_tuple		point(double x, double y, double z);
-t_tuple		vector(double x, double y, double z);
-t_tuple		add_tuple(t_tuple a, t_tuple b);
-t_tuple		substract_tuple(t_tuple a, t_tuple b);
-t_tuple		negate_tuple(t_tuple a);
-t_tuple		multiply_tuple_scalar(t_tuple a, double scalar);
-int			is_tuples_equal(t_tuple a, t_tuple b);
-
+t_tuple	create_color(double r, double g, double b);
+t_tuple	multiply_color(t_tuple a, t_tuple b);
+t_tuple	point(double x, double y, double z);
+t_tuple	vector(double x, double y, double z);
+t_tuple	add_tuple(t_tuple a, t_tuple b);
+t_tuple	substract_tuple(t_tuple a, t_tuple b);
+t_tuple	negate_tuple(t_tuple a);
+t_tuple	multiply_tuple_scalar(t_tuple a, double scalar);
+int		is_tuples_equal(t_tuple a, t_tuple b);
 
 //Vector 
 
-double		magnitude(t_tuple v);
-double		dot(t_tuple a, t_tuple b);
-t_tuple		normalize(t_tuple v);
-t_tuple		cross(t_tuple a, t_tuple b);
-t_tuple		reflect(t_tuple in, t_tuple normal);
-
+double	magnitude(t_tuple v);
+double	dot(t_tuple a, t_tuple b);
+t_tuple	normalize(t_tuple v);
+t_tuple	cross(t_tuple a, t_tuple b);
+t_tuple	reflect(t_tuple in, t_tuple normal);
 
 // Matrix
 
-t_matrix	identity_matrix(void);
+double		determinant(t_matrix a);
+double		cofactor_matrix(t_matrix a, int row, int column);
 t_tuple		multiply_matrix_by_tuple(t_matrix a, t_tuple b);
+t_matrix	identity_matrix(void);
 t_matrix	multiply_matrices(t_matrix a, t_matrix b);
 t_matrix	transpose_matrix(t_matrix a);
 t_matrix	translation_matrix(double x, double y, double z);
@@ -126,13 +124,11 @@ t_matrix	scaling_matrix(double x, double y, double z);
 t_matrix	rotation_x_matrix(double radian);
 t_matrix	rotation_y_matrix(double radian);
 t_matrix	rotation_z_matrix(double radian);
-double		cofactor_matrix(t_matrix a, int row, int column);
-double		determinant(t_matrix a);
+
 t_matrix	inverse_matrix(t_matrix a);
 void		set_matrices(t_scene *scene);
 void		update_matrices(t_shape *shape, t_matrix transform);
 t_matrix	combine_all_transforms(t_shape *shape);
-
 
 // Ray
 
@@ -148,7 +144,6 @@ t_tuple		shade_hit(t_scene *world, t_intersection comps, int remaining, t_inters
 t_tuple		lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
 t_tuple		color_at(t_scene *world, t_ray ray, int remaining);
 
-
 /******************** INTERSECTION FOLDER **********/
 
 t_tuple			normal_at(t_shape *shape, t_tuple world_point);
@@ -157,7 +152,7 @@ t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray);
 t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray);
 t_intersects	local_intersect_cone(t_shape *cone, t_ray ray);
 t_intersects	intersect_scene(t_scene *world, t_ray ray);
-t_intersection 	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
+t_intersection	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
 t_intersects	intersect(t_shape *shape, t_ray ray);
 t_intersection	*hit(t_intersects intersections);
 int				check_cone_cap(t_ray ray, double t, t_shape cone, double y);
@@ -170,32 +165,26 @@ void	handle_object_movement(t_scene *scene);
 void	handle_object_transformation(t_scene *scene);
 void	handle_light_controls(t_scene *scene);
 
-
-
 /******************** ROOT FOLDER **********/
 // Camera
 
-t_camera init_camera(t_tuple from, t_tuple forward, double fov);
-
+t_camera	init_camera(t_tuple from, t_tuple forward, double fov);
 
 // Mlx
 
-void ft_hook(void* param);
-
+void	ft_hook(void *param);
 
 // Scene
 
 void	ft_render_scene(void *param);
 t_ray	ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
 
-
 // Init
 
 t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern);
 t_light		init_light(t_tuple position, t_tuple color, double brightness);
-void init_scene_pixels(t_scene *scene, int height, int width);
-void	initialize_structs(char **argv, t_rt *rt);
-
+void		init_scene_pixels(t_scene *scene, int height, int width);
+void		initialize_structs(char **argv, t_rt *rt);
 
 /******************** UTILS FOLDER **********/
 // Libc
@@ -203,8 +192,8 @@ void	initialize_structs(char **argv, t_rt *rt);
 void	ft_lstclear_safe(t_list **lst);
 void	ft_lstremove(t_list **lst, void *content);
 
-int	validate_file_ext(t_rt *rt);
+int		validate_file_ext(t_rt *rt);
 /** Debug **/
-void print_shapes(t_scene *scene);
+void	print_shapes(t_scene *scene);
 
 #endif
