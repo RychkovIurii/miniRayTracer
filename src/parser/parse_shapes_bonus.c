@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 20:07:36 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:49:25 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 int	parse_sphere(char **element, t_rt *rt)
 {
 	char		**coordinates;
-	double		diameter;
 	char		**colors;
+	double		diameter;
 	size_t		arg_count;
 	t_shape		*sphere;
 

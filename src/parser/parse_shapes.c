@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:08:22 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 19:49:36 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:02:06 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 
 int	parse_sphere(char **element, t_rt *rt)
 {
@@ -93,6 +93,6 @@ int	parse_cylinder(char **element, t_rt *rt)
 	data = validate_element_data(element);
 	if (!data.coordinates || !data.normal || !data.colors)
 		return (1);
-	add_cylinder(rt, coordinates, normal, colors);
+	add_cylinder(rt, data);
 	return (0);
 }

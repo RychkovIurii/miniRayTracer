@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 18:51:47 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:54:05 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,11 @@ void	print_parsed_content(t_rt *rt)
 	}
 }
 
-char	**allocate_lines(int count)
+char	**read_file_lines(int fd, int count)
 {
 	char	**lines;
+	char	*line;
+	int		i;
 
 	lines = malloc(sizeof(char *) * (count + 1));
 	if (!lines)
@@ -101,35 +103,6 @@ char	**allocate_lines(int count)
 		print_error("Failed to allocate memory for lines");
 		return (NULL);
 	}
-	return (lines);
-}
-
-int	open_file(const char *filename)
-{
-	int	fd;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		print_error("Could not open file");
-	return (fd);
-}
-
-char	**read_file(t_rt *rt, int fd)
-{
-	char	**lines;
-	char	*line;
-	int		i;
-
-	rt->element_count = count_lines_in_file(fd);
-	close(fd);
-	if (rt->element_count <= 0)
-		return (NULL);
-	lines = allocate_lines(rt->element_count);
-	if (!lines)
-		return (NULL);
-	fd = open_file(rt->filename);
-	if (fd < 0)
-		return (NULL);
 	i = 0;
 	line = get_next_line(fd);
 	while (line)
@@ -141,14 +114,29 @@ char	**read_file(t_rt *rt, int fd)
 		line = get_next_line(fd);
 	}
 	lines[i] = NULL;
-	close(fd);
 	return (lines);
+}
+
+char	**read_file(t_rt *rt, int fd)
+{
+	rt->element_count = count_lines_in_file(fd);
+	close(fd);
+	if (rt->element_count <= 0)
+		return (NULL);
+	fd = open(rt->filename, O_RDONLY);
+	if (fd < 0)
+	{
+		print_error("Could not open file");
+		return (NULL);
+	}
+	return (read_file_lines(fd, rt->element_count));
 }
 
 int	parse_line(char *line, t_rt *rt)
 {
 	char	*trimmed;
 	char	**element;
+	int		status;
 
 	trimmed = trim_extra_spaces(line);
 	if (!trimmed)
@@ -159,17 +147,25 @@ int	parse_line(char *line, t_rt *rt)
 	element = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!element)
-	{
-		print_error("Failed to split line");
-		return (1);
-	}
-	if (parse_element(element, rt))
-	{
+		return (print_error("Failed to split line"), 1);
+	status = parse_element(element, rt);
+	if (status)
 		printf("Failed to parse line %s", line);
-		free_array(element);
-		return (1);
-	}
 	free_array(element);
+	return (status);
+}
+
+int	parse_file_lines(char **lines, t_rt *rt)
+{
+	int	i;
+
+	i = 0;
+	while (lines[i])
+	{
+		if (parse_line(lines[i], rt))
+			return (1);
+		i++;
+	}
 	return (0);
 }
 
@@ -177,32 +173,21 @@ int	parse_file(t_rt *rt)
 {
 	int		fd;
 	char	**lines;
-	int		i;
 
-	fd = open_file(rt->filename);
+	fd = open(rt->filename, O_RDONLY);
 	if (fd < 0)
-		return (error("Failed to open file", 1));
+	{
+		print_error("Could not open file");
+		return (1);
+	}
 	lines = read_file(rt, fd);
 	if (!lines)
 		return (error("Failed to read file", 1));
-	if (init_scene_structs(lines, rt))
-		return (free_and_return(rt, lines, 1));
-	i = 0;
-	while (lines[i])
-	{
-		if (parse_line(lines[i], rt))
-		{
-			free_array(lines);
-			return (1);
-		}
-		i++;
-	}
+	if (init_scene_structs(lines, rt) || parse_file_lines(lines, rt))
+		return (free_and_return(NULL, lines, 1));
 	free_array(lines);
 	if (invalid_file_content(rt))
-	{
-		printf("Invalid file content\n");
-		return (1);
-	}
+		return (printf("Invalid file content\n"), 1);
 	print_parsed_content(rt);
 	return (0);
 }
