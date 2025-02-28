@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/27 18:31:32 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/28 12:02:06 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ SRCS = main.c\
 		light_and_color/pattern.c\
 		light_and_color/refraction_and_reflection.c \
 		intersection/intersection.c\
+		intersection/intersection2.c\
 		intersection/normal.c\
 		intersection/cone.c\
 		intersection/cylinder.c\
@@ -44,6 +45,7 @@ SRCS = main.c\
 		keyboard/keyboard.c\
 		keyboard/keyboard2.c\
 		utils.c\
+		init.c\
 		scene.c\
 		camera.c\
 		mlx.c\

@@ -6,12 +6,15 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:23:20 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:06:34 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+/*
+** Frees the memory allocated for the intersections array
+*/
 void	free_intersects(t_intersects *xs)
 {
 	if (xs->array)
@@ -20,30 +23,15 @@ void	free_intersects(t_intersects *xs)
 	xs->count = 0;
 }
 
-t_intersects	intersect(t_shape *shape, t_ray ray)
-{
-	t_ray			local_ray;
-	t_intersects	empty;
-
-	ft_bzero(&empty, sizeof(t_intersects));
-	local_ray = transform_ray(ray, shape->transform_inv);
-	if (shape->type == SHAPE_SPHERE)
-		return (local_intersect_sphere(shape, local_ray));
-	else if (shape->type == SHAPE_PLANE)
-		return (local_intersect_plane(shape, local_ray));
-	else if (shape->type == SHAPE_CYLINDER)
-		return (local_intersect_cylinder(shape, local_ray));
-	else if (shape->type == SHAPE_CONE)
-		return (local_intersect_cone(shape, local_ray));
-	return (empty);
-}
-
+/*
+** Sorts the intersections array by the t value
+*/
 void	insertion_sort_intersections(t_intersection *array, int count)
 {
 	t_intersection	key;
 	int				i;
 	int				j;
-	
+
 	i = 1;
 	while (i < count)
 	{
@@ -52,7 +40,7 @@ void	insertion_sort_intersections(t_intersection *array, int count)
 		if (array[j].t <= key.t)
 		{
 			i++;
-			continue;
+			continue ;
 		}
 		while (j >= 0 && array[j].t > key.t)
 		{
@@ -64,74 +52,77 @@ void	insertion_sort_intersections(t_intersection *array, int count)
 	}
 }
 
-// Function to find the intersections in the world
-t_intersects	intersect_scene(t_scene *world, t_ray ray)
+/*
+** Counts the total number of intersections in the scene
+** We need this to allocate the right amount of memory
+** for the intersections array
+*/
+int	count_total_intersections(t_scene *world, t_ray ray)
 {
-	t_intersects	xs;
+	int				i;
+	int				total;
 	t_intersects	temp;
-	t_intersection	*xs_array;
-	t_intersection	*temp_array;
-	int total_intersections = 0;
-	int i;
-	int index;
-	temp_array = NULL;
 
-	// Allocate memory for intersections dynamically (in case there are more than 2 intersections)
-	xs_array = NULL;
-
-	// First pass: Count total intersections
 	i = 0;
+	total = 0;
 	while (i < world->shape_count)
 	{
 		temp = intersect(&world->shapes[i], ray);
-		total_intersections += temp.count;
+		total += temp.count;
 		free_intersects(&temp);
 		i++;
 	}
-	//printf("Total intersections: %d\n", total_intersections);
-	// Allocate memory once
-	if (total_intersections > 0)
-	{
-		xs_array = malloc(sizeof(t_intersection) * total_intersections);
-		if (!xs_array)
-		{
-			xs.count = 0;
-			xs.array = NULL;
-			return xs;
-		}
-	}
+	return (total);
+}
 
-	// Second pass: Store all intersections
-	index = 0;
+/*
+** Fills the intersections array with the intersections from
+** all the shapes in the scene
+*/
+void	fill_intersections(t_scene *world, t_ray ray,
+		t_intersection *xs_array, int total)
+{
+	int				i;
+	int				index;
+	t_intersects	temp;
+
 	i = 0;
+	index = 0;
 	while (i < world->shape_count)
 	{
 		temp = intersect(&world->shapes[i], ray);
 		if (temp.count > 0)
 		{
-			ft_memcpy(xs_array + index, temp.array, sizeof(t_intersection) * temp.count);
+			ft_memcpy(xs_array + index, temp.array,
+				sizeof(t_intersection) * temp.count);
 			index += temp.count;
 		}
 		free_intersects(&temp);
 		i++;
 	}
+}
 
-	insertion_sort_intersections(xs_array, total_intersections);
+/*
+** Returns the intersection of the ray with the scene
+*/
+t_intersects	intersect_scene(t_scene *world, t_ray ray)
+{
+	t_intersects	xs;
+	t_intersection	*xs_array;
+	int				total_intersections;
+
+	xs_array = NULL;
+	ft_bzero(&xs, sizeof(t_intersects));
+	total_intersections = count_total_intersections(world, ray);
+	if (total_intersections > 0)
+	{
+		xs_array = malloc(sizeof(t_intersection) * total_intersections);
+		if (!xs_array)
+			exit(1); //Think about error handling (free everything and exit)
+		fill_intersections(world, ray, xs_array, total_intersections);
+		insertion_sort_intersections(xs_array, total_intersections);
+	}
 	xs.count = total_intersections;
 	xs.array = xs_array;
 	return (xs);
-}
-
-t_intersection	*hit(t_intersects intersections)
-{
-	int	i;
-
-	i = 0;
-	while (i < intersections.count)
-	{
-		if (intersections.array[i].t > EPSILON)
-			return (&intersections.array[i]);
-		i++;
-	}
-	return (NULL);
 }

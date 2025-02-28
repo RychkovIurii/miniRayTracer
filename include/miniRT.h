@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 11:07:29 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:01:45 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void		set_matrices(t_scene *scene);
 void		update_matrices(t_shape *shape, t_matrix transform);
 t_matrix	combine_all_transforms(t_shape *shape);
 
+
 // Ray
 
 t_ray		create_ray(t_tuple origin, t_tuple direction);
@@ -157,6 +158,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray);
 t_intersects	local_intersect_cone(t_shape *cone, t_ray ray);
 t_intersects	intersect_scene(t_scene *world, t_ray ray);
 t_intersection 	prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs);
+t_intersects	intersect(t_shape *shape, t_ray ray);
 t_intersection	*hit(t_intersects intersections);
 
 /******************** KEYBOARD FOLDER **********/
@@ -174,18 +176,28 @@ void	handle_light_controls(t_scene *scene);
 
 t_camera init_camera(t_tuple from, t_tuple forward, double fov);
 
+
 // Mlx
 
 void ft_hook(void* param);
 
+
 // Scene
 
+void	ft_render_scene(void *param);
+t_ray	ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
+
+
+// Init
+
 t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern);
-t_ray		ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
 t_light		init_light(t_tuple position, t_tuple color, double brightness);
-void		render(t_camera camera, t_scene *scene);
+void init_scene_pixels(t_scene *scene, int height, int width);
+void	initialize_structs(char **argv, t_rt *rt);
 
 
+
+int	validate_file_ext(t_rt *rt);
 /** Debug **/
 void print_shapes(t_scene *scene);
 

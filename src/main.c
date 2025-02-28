@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 18:26:35 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 11:20:35 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,6 @@ int	validate_file_ext(t_rt *rt)
 	if (ft_strncmp(dot, ".rt\0", 4))
 		return (1);
 	return (0);
-}
-
-void	initialize_structs(char **argv, t_rt *rt)
-{
-	rt->filename = argv[1];
-	if (validate_file_ext(rt))
-	{
-		printf("Invalid file extension\n");
-		free(rt);
-		exit(EXIT_FAILURE);
-	}
-}
-
-void init_scene_pixels(t_scene *scene, int height, int width)
-{
-	scene->pixels = malloc(height * sizeof(t_tuple *));
-	for (int i = 0; i < height; i++)
-	{
-		scene->pixels[i] = malloc(width * sizeof(t_tuple));
-		for (int j = 0; j < width; j++)
-		{
-			scene->pixels[i][j] = create_color(0, 0, 0);
-		}
-	}
 }
 
 void free_pixels(t_tuple **pixels, int height)
