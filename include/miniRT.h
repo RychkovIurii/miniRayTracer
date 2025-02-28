@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 12:01:45 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:51:33 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,6 +196,11 @@ void init_scene_pixels(t_scene *scene, int height, int width);
 void	initialize_structs(char **argv, t_rt *rt);
 
 
+/******************** UTILS FOLDER **********/
+// Libc
+
+void	ft_lstclear_safe(t_list **lst);
+void	ft_lstremove(t_list **lst, void *content);
 
 int	validate_file_ext(t_rt *rt);
 /** Debug **/

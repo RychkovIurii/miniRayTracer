@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/28 12:02:06 by irychkov         ###   ########.fr        #
+#    Updated: 2025/02/28 12:56:41 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ SRCS = main.c\
 		intersection/prepare_computations.c\
 		keyboard/keyboard.c\
 		keyboard/keyboard2.c\
+		utils/libc.c\
 		utils.c\
 		init.c\
 		scene.c\

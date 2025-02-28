@@ -6,131 +6,100 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:39:01 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:21:41 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 12:57:16 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	ft_lstclear_safe(t_list **lst)
+/*
+** Initializes the computations structure with the necessary values.
+*/
+t_intersection	initialize_computations(t_intersection hit, t_ray ray)
 {
-	t_list	*ptr;
-	t_list	*tmp;
-
-	if (lst)
-	{
-		ptr = *lst;
-		while (ptr != NULL)
-		{
-			tmp = ptr->next;
-			free(ptr);
-			ptr = tmp;
-		}
-		*lst = NULL;
-	}
-}
-
-void	ft_lstremove(t_list **lst, void *content)
-{
-	t_list	*ptr;
-	t_list	*prev;
-
-	if (lst == NULL || *lst == NULL)
-		return ;
-	ptr = *lst;
-	prev = NULL;
-	while (ptr != NULL)
-	{
-		if (ptr->content == content)
-		{
-			if (prev == NULL)
-				*lst = ptr->next;
-			else
-				prev->next = ptr->next;
-			free(ptr);
-			return ;
-		}
-		prev = ptr;
-		ptr = ptr->next;
-	}
-}
-
-t_intersection prepare_computations(t_intersection hit, t_ray ray, t_intersects *xs)
-{
-	t_intersection comps;
-	t_list *containers = NULL;
-	t_list *temp;
-	int i;
+	t_intersection	comps;
 
 	comps.t = hit.t;
 	comps.object = hit.object;
 	comps.point = get_ray_position(ray, comps.t);
 	comps.eyev = negate_tuple(ray.direction);
 	comps.normalv = normal_at(comps.object, comps.point);
-	
 	if (dot(comps.normalv, comps.eyev) < 0)
 		comps.normalv = negate_tuple(comps.normalv);
-
-	comps.over_point = add_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
-	comps.under_point = substract_tuple(comps.point, multiply_tuple_scalar(comps.normalv, EPSILON));
+	comps.over_point = add_tuple(comps.point, multiply_tuple_scalar(
+				comps.normalv, EPSILON));
+	comps.under_point = substract_tuple(comps.point, multiply_tuple_scalar(
+				comps.normalv, EPSILON));
 	comps.reflectv = reflect(ray.direction, comps.normalv);
-	
 	comps.n1 = 1.0;
 	comps.n2 = 1.0;
+	return (comps);
+}
 
-	if (!xs || xs->count == 0)  // If `xs` is NULL or empty, just return comps
-		return comps;
-
-for (i = 0; i < xs->count; i++)
+/*
+** Finds the refractive index of the object in the containers list.
+*/
+double	find_n(t_list *containers)
 {
-		// If this intersection is the hit, record n1 (before processing)
-		if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
-		{
-			if (!containers || ft_lstlast(containers) == NULL)
-				comps.n1 = 1.0;
-			else
-			{
-				t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
-				if (shape) {
-					comps.n1 = shape->material.refractive_index;
-				} else {
-					comps.n1 = 1.0;
-				}
-			}
-		}
+	t_shape	*shape;
 
-		// Process this intersection: if the object is already in containers, remove it; otherwise, add it.
-		int removed = 0;
-		temp = containers;
-		while (temp)
-		{
-			if (temp->content == xs->array[i].object)
-			{
-				ft_lstremove(&containers, temp->content);
-				removed = 1;
-				break;
-			}
-			temp = temp->next;
-		}
-		if (!removed)
-			ft_lstadd_back(&containers, ft_lstnew(xs->array[i].object));
+	if (!containers || !ft_lstlast(containers))
+		return (1.0);
+	shape = (t_shape *)ft_lstlast(containers)->content;
+	if (shape)
+		return (shape->material.refractive_index);
+	return (1.0);
+}
 
-		// If this intersection is the hit, record n2 (after processing) and break.
-		if (xs->array[i].object == hit.object && fabs(xs->array[i].t - hit.t) < EPSILON)
+/*
+** Updates the containers list with the object.
+*/
+void	update_containers(t_list **containers, t_shape *object)
+{
+	t_list	*temp;
+
+	temp = *containers;
+	while (temp)
+	{
+		if (temp->content == object)
 		{
-			if (!containers || ft_lstlast(containers) == NULL)
-				comps.n2 = 1.0;
-			else
-			{
-				t_shape *shape = (t_shape *)ft_lstlast(containers)->content;
-				if (shape) {
-					comps.n2 = shape->material.refractive_index;
-				} else {
-					comps.n2 = 1.0;
-				}
-			}
-			break;
+			ft_lstremove(containers, temp->content);
+			return ;
 		}
+		temp = temp->next;
+	}
+	ft_lstadd_back(containers, ft_lstnew(object)); // Check return value
+}
+
+/*
+** Prepares the computations structure for the intersection.
+** Finds the refractive index of intersected object.
+*/
+t_intersection	prepare_computations(
+			t_intersection hit, t_ray ray, t_intersects *xs)
+{
+	int				i;
+	t_list			*containers;
+	t_intersection	comps;
+
+	containers = NULL;
+	comps = initialize_computations(hit, ray);
+	if (!xs || xs->count == 0)
+		return (comps);
+	i = 0;
+	while (i < xs->count)
+	{
+		if (xs->array[i].object == hit.object
+			&& fabs(xs->array[i].t - hit.t) < EPSILON)
+			comps.n1 = find_n(containers);
+		update_containers(&containers, xs->array[i].object);
+		if (xs->array[i].object == hit.object
+			&& fabs(xs->array[i].t - hit.t) < EPSILON)
+		{
+			comps.n2 = find_n(containers);
+			break ;
+		}
+		i++;
 	}
 	ft_lstclear_safe(&containers);
 	return (comps);
