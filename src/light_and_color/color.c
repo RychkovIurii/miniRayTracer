@@ -6,12 +6,19 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 16:46:51 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:56:15 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
+/*
+** This function sets the pattern for the object and identity matrix for the
+** transformation
+** @param a - color a
+** @param b - color b
+** @return pattern
+*/
 t_pattern	set_pattern(t_tuple a, t_tuple b)
 {
 	t_pattern	pattern;
@@ -22,6 +29,13 @@ t_pattern	set_pattern(t_tuple a, t_tuple b)
 	return (pattern);
 }
 
+/*
+** This function computes ambient light
+** @param material - material of the object
+** @param effective_color - color of the object
+** @param base_color - base color of the object
+** @return ambient light
+*/
 t_tuple	compute_ambient(
 	t_material material, t_tuple effective_color, t_tuple base_color)
 {
@@ -30,6 +44,14 @@ t_tuple	compute_ambient(
 	return (multiply_tuple_scalar(base_color, material.ambient));
 }
 
+/*
+** This function computes the specular light
+** @param material - material of the object
+** @param lightv - light vector
+** @param comps - intersection
+** @param light - light source
+** @return specular light
+*/
 t_tuple	compute_specular(
 	t_material material, t_tuple lightv, t_intersection comps, t_light light)
 {
@@ -45,6 +67,14 @@ t_tuple	compute_specular(
 	return (multiply_tuple_scalar(light.intensity, material.specular * factor));
 }
 
+/*
+** This function computes the lighting
+** @param comps - intersection
+** @param shape - shape
+** @param light - light source
+** @param in_shadow - is the object in shadow
+** @return color
+*/
 t_tuple	lighting(
 	t_intersection comps, t_shape shape, t_light light, int in_shadow)
 {
@@ -75,6 +105,13 @@ t_tuple	lighting(
 	return (add_tuple(add_tuple(this.ambient, this.diffuse), this.specular));
 }
 
+/*
+** This function computes the color of the object
+** @param world - scene
+** @param ray - ray
+** @param remaining - remaining reflections
+** @return color
+*/
 t_tuple	color_at(t_scene *world, t_ray ray, int remaining)
 {
 	t_intersects	xs;
