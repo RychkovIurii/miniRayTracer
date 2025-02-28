@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/28 17:22:37 by henbuska         ###   ########.fr        #
+#    Updated: 2025/02/28 17:41:52 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,16 +21,32 @@ SRCS = main.c\
 		parser/validations.c\
 		parser/conversions.c\
 		parser/trim_line.c\
+		math/tuple.c\
+		math/tuple2.c\
+		math/matrix.c\
+		math/matrix2.c\
+		math/matrix3.c\
+		math/matrix4.c\
+		math/vector.c\
+		math/ray.c\
+		light_and_color/color.c\
+		light_and_color/pattern.c\
+		light_and_color/refraction_and_reflection.c \
+		intersection/intersection.c\
+		intersection/intersection2.c\
+		intersection/normal.c\
+		intersection/cone.c\
+		intersection/cone2.c\
+		intersection/cylinder.c\
+		intersection/sphere_and_plane.c\
+		intersection/prepare_computations.c\
+		keyboard/keyboard.c\
+		keyboard/keyboard2.c\
+		utils/libc.c\
 		utils.c\
-		utils2.c\
-		color.c\
-		intersection.c\
-		matrix.c\
-		matrix2.c\
-		ray.c\
+		init.c\
 		scene.c\
-		tuple.c\
-		vector.c\
+		camera.c\
 		mlx.c\
 		keyboard.c\
 		parser/parse_element_bonus.c\
@@ -68,7 +84,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
 
-CFLAGS = -g -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
 CC = cc
 
 all: $(LIBFT) $(LIBMLX) $(NAME)
