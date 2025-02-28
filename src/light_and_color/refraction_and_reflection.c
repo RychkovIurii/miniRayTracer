@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:01:18 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:26:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:04:34 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,7 @@ t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining,
 	t_tuple	refracted;
 	double	reflectance;
 
-	surface = lighting(comps.object->material, *comps.object, world->light,
-			comps.over_point, comps.eyev, comps.normalv,
+	surface = lighting(comps, *comps.object, world->light,
 			is_shadowed(*world, comps.over_point));
 	reflected = reflected_color(world, comps, remaining);
 	refracted = refracted_color(world, comps, remaining);

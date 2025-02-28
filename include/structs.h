@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 14:54:20 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:43:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,13 @@ typedef struct s_material
 	t_tuple		color;
 	t_pattern	pattern;
 }			t_material;
+
+typedef struct s_color
+{
+	t_tuple		ambient;
+	t_tuple		diffuse;
+	t_tuple		specular;
+}	t_color;
 
 typedef struct s_light
 {
@@ -142,13 +149,6 @@ typedef struct s_intersects
 	int				count;
 	t_intersection	*array;
 }	t_intersects;
-
-typedef struct s_canvas
-{
-	int			width;
-	int			height;
-	t_tuple		**pixels;
-}	t_canvas;
 
 typedef struct s_scene
 {

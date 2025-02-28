@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 15:03:30 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:04:27 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@
 
 # define EPSILON 0.0001f
 
-# define WIDTH 400
-# define HEIGHT 400
+# define WIDTH 500
+# define HEIGHT 500
 
 # define DEFAULT_REMAINING 0
 
@@ -141,7 +141,7 @@ t_ray		transform_ray(t_ray ray, t_matrix matrix);
 t_pattern	set_pattern(t_tuple a, t_tuple b); // We don't use it for now
 t_tuple		pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
 t_tuple		shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
-t_tuple		lighting(t_material material, t_shape shape, t_light light, t_tuple position, t_tuple eyeview, t_tuple normalv, int in_shadow);
+t_tuple		lighting(t_intersection comps, t_shape shape, t_light light, int in_shadow);
 t_tuple		color_at(t_scene *world, t_ray ray, int remaining);
 
 /******************** INTERSECTION FOLDER **********/
