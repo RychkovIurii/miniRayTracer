@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 16:04:27 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 18:10:08 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define WIDTH 500
 # define HEIGHT 500
 
-# define DEFAULT_REMAINING 0
+# define DEFAULT_REMAINING 5
 
 # define PATTERN_NONE 0
 # define PATTERN_STRIPE 1
@@ -52,14 +52,18 @@
 // Parsing_bonus
 
 int		parse_cone(char **element, t_rt *rt);
-void	add_cone(t_rt *rt, char **coordinates, char **normal, char **colors);
+t_shape	*add_cone_b(t_rt *rt, t_element_data data);
+int		add_material(char **element, t_material *material, size_t size);
+t_shape	*add_sphere_b(t_rt *rt, char **coordinates, char **colors, double diameter);
+t_shape	*add_plane_b(t_rt *rt, char **coordinates, char **normal, char **colors);
+t_shape	*add_cylinder_b(t_rt *rt, t_element_data data);
 
 // Parsing
 
 int		parse_file(t_rt *rt);
 char	*trim_extra_spaces(char *line);
 int		count_lines_in_file(int fd);
-int		init_scene_structs(t_rt *rt);
+int		init_scene_structs(char **lines, t_rt *rt);
 int		parse_element(char **element, t_rt *rt);
 int		parse_ambient(char **element, t_rt *rt);
 int		parse_camera(char **element, t_rt *rt);
@@ -69,9 +73,11 @@ int		parse_plane(char **element, t_rt *rt);
 int		parse_cylinder(char **element, t_rt *rt);
 void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter);
 void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors);
-void	add_cylinder(t_rt *rt, char **coordinates, char **normal, char **colors);
+void	add_cylinder(t_rt *rt, t_element_data data);
+void	assign_default_material(t_material *material);
 int		invalid_file_content(t_rt *rt);
 int		validate_argument_count(char **array, int count);
+t_element_data	validate_element_data(char **element);
 char	**validate_color(char *str);
 char	**validate_coordinates(char *str);
 char	**validate_vector(char *str);
@@ -86,6 +92,8 @@ void	free_array(char **array);
 //void	print_elements(char **elements);
 void	free_rt(t_rt *rt);
 int		free_and_return(t_rt *rt, char **array, int ret);
+int		print_clean(t_rt *rt, char *message, int ret);
+void	free_arrays(char **array1, char **array2);
 void	print_error(char *message);
 int		error(char *message, int ret);
 int		ft_strcmp(char const *s1, char const *s2);

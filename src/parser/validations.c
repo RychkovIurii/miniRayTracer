@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 13:20:39 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:19:50 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	**validate_coordinates(char *str)
 	while (i < 3)
 	{
 		coordinate = ft_atof(coord_strings[i]);
-		if (coordinate < -DBL_MAX || coordinate > DBL_MAX) // which boundaries to set??
+		if (coordinate < -1000.0 || coordinate > 1000.0)
 		{
 			free_array(coord_strings);
 			return (NULL);
@@ -96,6 +96,34 @@ char	**validate_vector(char *str)
 	return (vector_strings);
 }
 
+t_element_data	validate_element_data(char **element)
+{
+	t_element_data	data;
+
+	ft_bzero(&data, sizeof(t_element_data));
+	data.coordinates = validate_coordinates(element[1]);
+	if (!data.coordinates)
+	{
+		print_error("Invalid coordinates for center");
+		return (data);
+	}
+	data.normal = validate_vector(element[2]);
+	if (!data.normal)
+	{
+		free_array(data.coordinates);
+		print_error("Invalid normal vector");
+		return (data);
+	}
+	data.colors = validate_color(element[5]);
+	if (!data.colors)
+	{
+		free_array(data.normal);
+		free_array(data.coordinates);
+		print_error("Invalid color");
+	}
+	return (data);
+}
+
 double	validate_ratio(char *str)
 {
 	double	ratio;
@@ -104,14 +132,4 @@ double	validate_ratio(char *str)
 	if (ratio < 0.0 || ratio > 1.0)
 		return (-1);
 	return (ratio);
-}
-
-double	validate_dimension(char *str)
-{
-	double	dimension;
-
-	dimension = ft_atof(str);
-	if (dimension < EPSILON) // should there be a max limit??
-		return (-1);
-	return (dimension);
 }

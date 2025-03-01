@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:09:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 11:16:08 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:06:45 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,14 @@ t_tuple	string_to_color(char **strings)
 	color.z = ft_atof(strings[2]) / 255.0;
 	free_array(strings);
 	return (color);
+}
+
+double	validate_dimension(char *str)
+{
+	double	dimension;
+
+	dimension = ft_atof(str);
+	if (dimension < EPSILON) // should there be a max limit??
+		return (-1);
+	return (dimension);
 }

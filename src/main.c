@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 11:20:35 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/02/28 17:41:26 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int main(int argc, char **argv)
 	initialize_structs(argv, rt);
 	if (parse_file(rt))
 	{
+		free_rt(rt);
 		printf("Parsing error\n");
 		return(EXIT_FAILURE);
 	}

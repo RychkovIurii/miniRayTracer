@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:45:07 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 11:45:40 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/02/28 16:59:18 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,19 @@ static int	count_new_length(char *line)
 	return (new_len);
 }
 
+char	*allocate_trimmed_string(char *line)
+{
+	char	*trimmed;
+
+	trimmed = malloc(sizeof(char) * (count_new_length(line) + 1));
+	if (!trimmed)
+	{
+		print_error("Memory allocation failed");
+		return (NULL);
+	}
+	return (trimmed);
+}
+
 char	*trim_extra_spaces(char *line)
 {
 	int		i;
@@ -46,7 +59,7 @@ char	*trim_extra_spaces(char *line)
 	char	*trimmed;
 
 	flag = 0;
-	trimmed = malloc(sizeof(char) * (count_new_length(line) + 1));
+	trimmed = allocate_trimmed_string(line);
 	if (!trimmed)
 		return (NULL);
 	i = 0;
@@ -69,5 +82,5 @@ char	*trim_extra_spaces(char *line)
 	}
 	trimmed[j] = '\0';
 	return (trimmed);
-	//should trailing space be removed??
+	//should trailing new line or spaces be removed?
 }
