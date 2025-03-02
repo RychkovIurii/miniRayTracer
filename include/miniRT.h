@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:19:40 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:47:48 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <math.h>
-# include <limits.h>
-# include <fcntl.h>
 # include <MLX42/MLX42.h>
 # include "structs.h"
 

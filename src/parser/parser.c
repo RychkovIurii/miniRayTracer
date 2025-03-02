@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 16:54:05 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:48:17 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+#include <fcntl.h>
 
 void	print_parsed_content(t_rt *rt)
 {
