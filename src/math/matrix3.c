@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 13:36:40 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 13:57:46 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:56:43 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** @param column: The column to remove.
 ** @returns a new 3x3 matrix.
 */
-t_matrix3x3	submatrix(t_matrix a, int row, int column)
+static t_matrix3x3	submatrix(t_matrix a, int row, int column)
 {
 	t_matrix3x3	sub;
 	int			i;
@@ -51,7 +51,7 @@ t_matrix3x3	submatrix(t_matrix a, int row, int column)
 ** @param m: The 3x3 matrix.
 ** @returns the determinant of the matrix.
 */
-double	determinant3x3(t_matrix3x3 m)
+static double	determinant3x3(t_matrix3x3 m)
 {
 	double	det;
 
@@ -69,7 +69,7 @@ double	determinant3x3(t_matrix3x3 m)
 ** @param column: The column to remove.
 ** @returns the minor of the matrix.
 */
-double	minor_matrix(t_matrix a, int row, int column)
+static double	minor_matrix(t_matrix a, int row, int column)
 {
 	t_matrix3x3	sub;
 

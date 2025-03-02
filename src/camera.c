@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 18:13:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 19:09:51 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 17:00:30 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 ** of forward and up.
 ** @return the view transformation matrix.
 */
-t_matrix	view_transform(t_tuple from, t_tuple up, t_tuple forward)
+static t_matrix	view_transform(t_tuple from, t_tuple up, t_tuple forward)
 {
 	t_tuple		left;
 	t_tuple		true_up;
@@ -52,7 +52,7 @@ t_matrix	view_transform(t_tuple from, t_tuple up, t_tuple forward)
 ** It calculates the half width and half height of the camera.
 ** It also calculates the size of a pixel.
 */
-void	set_camera_size(t_camera *camera)
+static void	set_camera_size(t_camera *camera)
 {
 	double	aspect;
 	double	half_view;

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 17:30:47 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 11:06:49 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:55:04 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 **	Move the selected object in the scene
 */
-void	move_object(t_scene *scene, double x, double y, double z)
+static void	move_object(t_scene *scene, double x, double y, double z)
 {
 	int	i;
 
@@ -37,7 +37,7 @@ void	move_object(t_scene *scene, double x, double y, double z)
 /*
 **	Scale the selected object in the scene
 */
-void	scale_object(t_scene *scene, double scale_factor)
+static void	scale_object(t_scene *scene, double scale_factor)
 {
 	int		i;
 	t_tuple	new_scale;
@@ -72,7 +72,7 @@ void	scale_object(t_scene *scene, double scale_factor)
 **	if 2 - around Y, if 3 - around X
 **	We don't rotate spheres
 */
-void	rotate_object(t_scene *scene, double angle, int flag)
+static void	rotate_object(t_scene *scene, double angle, int flag)
 {
 	int	i;
 

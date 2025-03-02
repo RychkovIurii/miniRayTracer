@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:47:48 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 17:19:58 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ t_matrix	rotation_z_matrix(double radian);
 t_matrix	inverse_matrix(t_matrix a);
 void		set_matrices(t_scene *scene);
 void		update_matrices(t_shape *shape, t_matrix transform);
-t_matrix	combine_all_transforms(t_shape *shape);
 
 // Ray
 
