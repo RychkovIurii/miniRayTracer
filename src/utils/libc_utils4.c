@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split.c                                         :+:      :+:    :+:   */
+/*   libc_utils4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/21 12:05:53 by irychkov          #+#    #+#             */
-/*   Updated: 2024/04/24 09:55:13 by irychkov         ###   ########.fr       */
+/*   Created: 2025/03/02 16:11:06 by irychkov          #+#    #+#             */
+/*   Updated: 2025/03/02 16:11:17 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "miniRT.h"
 
 static size_t	ft_strcounter(char const *s, char c)
 {
@@ -33,7 +33,7 @@ static size_t	ft_strcounter(char const *s, char c)
 	return (elements);
 }
 
-static void	free_array(char **array, size_t i)
+static void	free_back(char **array, size_t i)
 {
 	while (i > 0)
 	{
@@ -57,7 +57,7 @@ static char	**ft_helper(char const *s, char c, size_t i, char **result)
 			result[i] = (char *)malloc(sizeof(char) * (s - start + 1));
 			if (!result[i])
 			{
-				free_array(result, i);
+				free_back(result, i);
 				return (NULL);
 			}
 			ft_strlcpy(result[i], start, s - start + 1);

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:15:09 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 14:42:10 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 12:26:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,8 @@ t_intersects	intersect_cone_caps(
 		t = (cone->min - ray.origin.y) / ray.direction.y;
 		if (check_cone_cap(ray, t, *cone, cone->min))
 		{
-			result.array[2].t = t;
-			result.count = 3;
-			result.array[2].object = cone;
+			result.array[result.count].t = t;
+			result.array[result.count++].object = cone;
 		}
 	}
 	return (result);
