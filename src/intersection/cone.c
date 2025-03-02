@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:15:09 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 12:26:22 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:30:01 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ it calculates possible intersection with bottom cap.
 @param result: The intersection array that will store valid intersections.
 @returns The updated result containing any intersection with the cap.
 */
-t_intersects	intersect_cone_caps(
+static t_intersects	intersect_cone_caps(
 		t_shape *cone, t_ray ray, t_intersects result)
 {
 	double	t;
@@ -39,7 +39,7 @@ t_intersects	intersect_cone_caps(
 	return (result);
 }
 
-t_quadratic	compute_quadratic_cone(t_ray ray, t_shape *cone)
+static t_quadratic	compute_quadratic_cone(t_ray ray, t_shape *cone)
 {
 	t_quadratic	q;
 	double		slope;
@@ -56,7 +56,7 @@ t_quadratic	compute_quadratic_cone(t_ray ray, t_shape *cone)
 	return (q);
 }
 
-void	handle_quadratic_cone_intersection(t_ray ray, t_shape *cone,
+static void	handle_quadratic_cone_intersection(t_ray ray, t_shape *cone,
 	t_quadratic q, t_intersects *result)
 {
 	double	discriminant;
@@ -83,7 +83,7 @@ void	handle_quadratic_cone_intersection(t_ray ray, t_shape *cone,
 	}
 }
 
-void	handle_linear_cone_intersection(t_ray ray, t_shape *cone,
+static void	handle_linear_cone_intersection(t_ray ray, t_shape *cone,
 	t_quadratic q, t_intersects *result)
 {
 	double	t0;

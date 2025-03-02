@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/02 16:19:40 by irychkov         ###   ########.fr        #
+#    Updated: 2025/03/02 16:34:16 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,8 +50,8 @@ SRCS = main.c\
 		utils/libc_utils2.c\
 		utils/libc_utils3.c\
 		utils/libc_utils4.c\
-		utils/get_next_line_bonus.c\
-		utils/get_next_line_utils_bonus.c\
+		utils/gnl_utils.c\
+		utils/gnl.c\
 		utils.c\
 		init.c\
 		scene.c\
@@ -98,8 +98,8 @@ BONUS_SRCS = main.c\
 		utils/libc_utils2.c\
 		utils/libc_utils3.c\
 		utils/libc_utils4.c\
-		utils/get_next_line_bonus.c\
-		utils/get_next_line_utils_bonus.c\
+		utils/gnl_utils.c\
+		utils/gnl.c\
 		utils.c\
 		init.c\
 		scene.c\
