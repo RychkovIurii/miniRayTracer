@@ -1,6 +1,10 @@
 # miniRayTracer
 RayTracer with MLX42
 
+### Now
+![Scene](pngs/2025-03-01.png)
+- [Screenshots](#screenshots)
+
 ### Launch with Valgrind and Suppressions
 
 To run the program with Valgrind and suppressions, use the following command:
@@ -23,3 +27,12 @@ This document provides an overview of the key bindings used in the code.
 - **Left Shift and Control Keys:** Move the light in the Y direction (up or down).
 - **Home and End Keys, Page Down and Delete Keys:** Move the light forward and backward, left and right.
 - **Left Shift and Left Control Keys:** Move the light in the Z direction (forward or backward).
+
+## Screenshots
+## Screenshots
+Screenshots of rendered scenes are available in the `pngs/` directory. These illustrate:
+### Gold-like Spheres with patterns
+![Glass](pngs/gold_sphere_checker.png)
+
+### Red Sphere
+![Sphere](pngs/red_sphere_checker_floor.png)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
+#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/28 18:31:44 by henbuska         ###   ########.fr        #
+#    Updated: 2025/03/02 16:34:16 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,12 @@ SRCS = main.c\
 		intersection/prepare_computations.c\
 		keyboard/keyboard.c\
 		keyboard/keyboard2.c\
-		utils/libc.c\
+		utils/libc_utils.c\
+		utils/libc_utils2.c\
+		utils/libc_utils3.c\
+		utils/libc_utils4.c\
+		utils/gnl_utils.c\
+		utils/gnl.c\
 		utils.c\
 		init.c\
 		scene.c\
@@ -89,14 +94,18 @@ BONUS_SRCS = main.c\
 		intersection/prepare_computations.c\
 		keyboard/keyboard.c\
 		keyboard/keyboard2.c\
-		utils/libc.c\
+		utils/libc_utils.c\
+		utils/libc_utils2.c\
+		utils/libc_utils3.c\
+		utils/libc_utils4.c\
+		utils/gnl_utils.c\
+		utils/gnl.c\
 		utils.c\
 		init.c\
 		scene.c\
 		camera.c\
 		mlx.c\
 
-		
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 OBJ_BONUS_DIR = ./obj_bonus
@@ -112,14 +121,11 @@ MLX_HEADER = -I $(MLX_DIR)/include
 
 RT_HEADER = -I ./include
 
-HEADERS = $(RT_HEADER) $(MLX_HEADER) -I$(LIBFT_DIR)
+HEADERS = $(RT_HEADER) $(MLX_HEADER)
 
 LIBMLX = $(MLX_DIR)/build/libmlx42.a
 
 #LIBGLFW = /Users/irychkov/.brew/Cellar/glfw/3.4/lib/libglfw.3.dylib
-
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
 
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm
@@ -127,9 +133,9 @@ OSFLAGS = -ldl -lglfw -pthread -lm
 CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
 CC = cc
 
-all: $(LIBFT) $(LIBMLX) $(NAME)
+all: $(LIBMLX) $(NAME)
 
-bonus: $(LIBFT) $(LIBMLX) $(NAMEBONUS)
+bonus: $(LIBMLX) $(NAMEBONUS)
 
 $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 	@if [ ! -d "$(MLX_DIR)/build" ]; then \
@@ -137,14 +143,11 @@ $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 	fi
 	@make -C $(MLX_DIR)/build -j4
 
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
-
 $(NAME): $(OBJ_DIRS) $(OBJS)
-	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBMLX) $(OSFLAGS) -o $(NAME)
 
 $(NAMEBONUS): $(OBJ_BONUS_DIRS) $(BONUS_OBJS)
-	@$(CC) $(BONUS_OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAMEBONUS)
+	@$(CC) $(BONUS_OBJS) $(LIBMLX) $(OSFLAGS) -o $(NAMEBONUS)
 
 $(OBJ_DIRS):
 	@mkdir -p $@
@@ -165,12 +168,10 @@ $(OBJ_BONUS_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	@rm -rf $(OBJ_DIR) $(OBJ_BONUS_DIR)
 	@rm -rf $(MLX_DIR)/build
-	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -rf $(NAME) $(NAMEBONUS)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re libmlx libft bonus
+.PHONY: all clean fclean re libmlx bonus

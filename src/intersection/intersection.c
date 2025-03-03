@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 12:06:34 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:19:19 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** Frees the memory allocated for the intersections array
 */
-void	free_intersects(t_intersects *xs)
+static void	free_intersects(t_intersects *xs)
 {
 	if (xs->array)
 		free(xs->array);
@@ -26,7 +26,7 @@ void	free_intersects(t_intersects *xs)
 /*
 ** Sorts the intersections array by the t value
 */
-void	insertion_sort_intersections(t_intersection *array, int count)
+static void	insertion_sort_intersections(t_intersection *array, int count)
 {
 	t_intersection	key;
 	int				i;
@@ -53,34 +53,11 @@ void	insertion_sort_intersections(t_intersection *array, int count)
 }
 
 /*
-** Counts the total number of intersections in the scene
-** We need this to allocate the right amount of memory
-** for the intersections array
-*/
-int	count_total_intersections(t_scene *world, t_ray ray)
-{
-	int				i;
-	int				total;
-	t_intersects	temp;
-
-	i = 0;
-	total = 0;
-	while (i < world->shape_count)
-	{
-		temp = intersect(&world->shapes[i], ray);
-		total += temp.count;
-		free_intersects(&temp);
-		i++;
-	}
-	return (total);
-}
-
-/*
 ** Fills the intersections array with the intersections from
 ** all the shapes in the scene
 */
-void	fill_intersections(t_scene *world, t_ray ray,
-		t_intersection *xs_array, int total)
+static int	fill_intersections(
+	t_scene *world, t_ray ray, t_intersection *xs_array)
 {
 	int				i;
 	int				index;
@@ -100,6 +77,7 @@ void	fill_intersections(t_scene *world, t_ray ray,
 		free_intersects(&temp);
 		i++;
 	}
+	return (index);
 }
 
 /*
@@ -109,20 +87,16 @@ t_intersects	intersect_scene(t_scene *world, t_ray ray)
 {
 	t_intersects	xs;
 	t_intersection	*xs_array;
-	int				total_intersections;
+	int				index;
 
 	xs_array = NULL;
 	ft_bzero(&xs, sizeof(t_intersects));
-	total_intersections = count_total_intersections(world, ray);
-	if (total_intersections > 0)
-	{
-		xs_array = malloc(sizeof(t_intersection) * total_intersections);
-		if (!xs_array)
-			exit(1); //Think about error handling (free everything and exit)
-		fill_intersections(world, ray, xs_array, total_intersections);
-		insertion_sort_intersections(xs_array, total_intersections);
-	}
-	xs.count = total_intersections;
+	xs_array = malloc(sizeof(t_intersection) * world->shape_count * 4);
+	if (!xs_array)
+		exit(1); //Think about error handling (free everything and exit)
+	index = fill_intersections(world, ray, xs_array);
+	insertion_sort_intersections(xs_array, index);
+	xs.count = index;
 	xs.array = xs_array;
 	return (xs);
 }

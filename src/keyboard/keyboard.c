@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/25 16:04:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 17:58:00 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:54:06 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 **	Handles keyboard movement and rotation of the objects
 **	If angle is 0, moves the camera, otherwise rotates it
 */
-void	move_camera(t_scene *scene, t_tuple point, double angle)
+static void	move_camera(t_scene *scene, t_tuple point, double angle)
 {
 	if (angle != 0)
 	{
@@ -58,7 +58,7 @@ void	handle_camera_movement(t_scene *scene)
 **	Updates the light position and brightness
 **	Also checks if the brightness is within the limits
 */
-void	update_light(t_scene *scene, t_tuple new_vector, double brightness)
+static void	update_light(t_scene *scene, t_tuple new_vector, double brightness)
 {
 	double	new_brightness;
 

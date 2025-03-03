@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 11:21:32 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 17:01:57 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 ** @param max the maximum value.
 ** @return the clamped value.
 */
-int	round_value(int value, int min, int max)
+static int	round_value(int value, int min, int max)
 {
 	if (value < min)
 		return (min);
@@ -36,7 +36,7 @@ int	round_value(int value, int min, int max)
 ** @param a the alpha value.
 ** @return the pixel.
 */
-int	ft_pixel(int r, int g, int b, int a)
+static int	ft_pixel(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }
@@ -69,7 +69,7 @@ t_ray	ray_for_pixel(t_camera camera, int px, int py, t_tuple origin)
 ** @param camera the camera.
 ** @param scene the scene.
 */
-void	render(t_camera camera, t_scene *scene)
+static void	render(t_camera camera, t_scene *scene)
 {
 	int		x;
 	int		y;

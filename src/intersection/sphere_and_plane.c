@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:27:31 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 13:20:15 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:25:25 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 /*
 ** Calculates the quadratic coefficients for a ray and a sphere.
 */
-t_quadratic	compute_quadratic_sphere(t_ray transformed_ray, t_shape *shape)
+static t_quadratic	compute_quadratic_sphere(
+	t_ray transformed_ray, t_shape *shape)
 {
 	t_quadratic	q;
 	t_tuple		sphere_to_ray;

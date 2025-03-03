@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:39:01 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 12:57:16 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:26:40 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*
 ** Initializes the computations structure with the necessary values.
 */
-t_intersection	initialize_computations(t_intersection hit, t_ray ray)
+static t_intersection	initialize_computations(t_intersection hit, t_ray ray)
 {
 	t_intersection	comps;
 
@@ -39,7 +39,7 @@ t_intersection	initialize_computations(t_intersection hit, t_ray ray)
 /*
 ** Finds the refractive index of the object in the containers list.
 */
-double	find_n(t_list *containers)
+static double	find_n(t_list *containers)
 {
 	t_shape	*shape;
 
@@ -54,7 +54,7 @@ double	find_n(t_list *containers)
 /*
 ** Updates the containers list with the object.
 */
-void	update_containers(t_list **containers, t_shape *object)
+static void	update_containers(t_list **containers, t_shape *object)
 {
 	t_list	*temp;
 

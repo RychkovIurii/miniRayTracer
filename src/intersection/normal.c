@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:50:41 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 16:01:27 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:27:39 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** @param point: The point on the cylinder where the normal is calculated.
 ** @returns A t_tuple representing the normal vector at the given point.
 */
-t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
+static t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
 {
 	double	distance;
 
@@ -43,7 +43,7 @@ t_tuple	local_normal_at_cylinder(t_shape cylinder, t_tuple point)
 ** @param point: The point on the cone's surface where the normal is calculated.
 ** @returns A t_tuple representing the normal vector at the given point.
 */
-t_tuple	local_normal_at_cone(t_shape cone, t_tuple point)
+static t_tuple	local_normal_at_cone(t_shape cone, t_tuple point)
 {
 	double	distance;
 	double	y_factor;

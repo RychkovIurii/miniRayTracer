@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 18:10:08 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/02 17:19:58 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,10 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h>
 # include <unistd.h>
 # include <math.h>
-# include <stdint.h>
-# include <float.h>
-# include <limits.h>
-# include <fcntl.h>
 # include <MLX42/MLX42.h>
-# include <math.h>
 # include "structs.h"
-
-# include "libft.h"
 
 # define EPSILON 0.0001f
 
@@ -136,7 +128,6 @@ t_matrix	rotation_z_matrix(double radian);
 t_matrix	inverse_matrix(t_matrix a);
 void		set_matrices(t_scene *scene);
 void		update_matrices(t_shape *shape, t_matrix transform);
-t_matrix	combine_all_transforms(t_shape *shape);
 
 // Ray
 
@@ -195,10 +186,23 @@ void		init_scene_pixels(t_scene *scene, int height, int width);
 void		initialize_structs(char **argv, t_rt *rt);
 
 /******************** UTILS FOLDER **********/
-// Libc
 
 void	ft_lstclear_safe(t_list **lst);
 void	ft_lstremove(t_list **lst, void *content);
+t_list	*ft_lstnew(void *content);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+char	*ft_strrchr(const char *s, int c);
+char	**ft_split(char const *s, char c);
+char	*get_next_line(int fd);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void	ft_bzero(void *s, size_t n);
+int		ft_isdigit(int argument);
+void	*ft_calloc(size_t count, size_t size);
+void	ft_putendl_fd(char *s, int fd);
+size_t	ft_strlen(const char	*str);
 
 int		validate_file_ext(t_rt *rt);
 /** Debug **/

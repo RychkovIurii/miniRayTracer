@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   conversions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:07:53 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/20 13:46:07 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:45:42 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+#include <limits.h>
 
 int	rt_atoi(char *str)
 {
