@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 18:20:57 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:43:03 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,20 @@ int	main(int argc, char **argv)
 	
 	if (argc != 2)
 	{
-		printf("Invalid number of arguments\n");
+		ft_putendl_fd("Invalid number of arguments", 2);
 		return(EXIT_FAILURE);
 	}
 	rt = ft_calloc(1, sizeof(t_rt));
 	if (!rt)
 	{
-		printf("Could not allocate memory for rt\n");
+		ft_putendl_fd("Could not allocate memory for rt", 2);
 		return(EXIT_FAILURE);
 	}
 	initialize_structs(argv, rt);
 	if (parse_file(rt))
 	{
 		free_rt(rt);
-		printf("Parsing error\n");
+		ft_putendl_fd("Parsing error", 2);
 		return(EXIT_FAILURE);
 	}
 

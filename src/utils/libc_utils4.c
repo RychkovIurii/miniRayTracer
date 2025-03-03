@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libc_utils4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:11:06 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:11:17 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:50:24 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,4 +80,18 @@ char	**ft_split(char const *s, char c)
 	if (!result || !s)
 		return (NULL);
 	return (ft_helper(s, c, i, result));
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
 }

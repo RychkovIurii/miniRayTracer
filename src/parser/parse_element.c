@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:58:50 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 19:46:38 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:09:25 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	parse_element(char **element, t_rt *rt)
 		return (parse_cylinder(element, rt));
 	else
 	{
-		printf("Invalid element identifier\n");
+		ft_putendl_fd("Invalid element identifier", 2);
 		return (1);
 	}
 	return (0);

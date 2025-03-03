@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 17:30:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:22:43 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	assign_default_material(t_material *material)
 	material->reflective = 0.0;
 	material->transparency = 0.0;
 	material->refractive_index = 1.0;
+	material->has_pattern = 0;
 }
 
 void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter)
@@ -38,23 +39,23 @@ void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter)
 	rt->scene->shape_count++;
 }
 
-void	add_plane(t_rt *rt, char **coordinates, char **normal, char **colors)
+void	add_plane(t_rt *rt, t_file data)
 {
 	int	i;
 
 	i = rt->scene->shape_count;
 	rt->scene->shapes[i].type = SHAPE_PLANE;
-	rt->scene->shapes[i].center = string_to_point(coordinates);
-	rt->scene->shapes[i].normal = string_to_vector(normal);
+	rt->scene->shapes[i].center = string_to_point(data.coordinates);
+	rt->scene->shapes[i].normal = string_to_vector(data.normal);
 	assign_default_material(&rt->scene->shapes[i].material);
-	rt->scene->shapes[i].material.color = string_to_color(colors);
+	rt->scene->shapes[i].material.color = string_to_color(data.colors);
 	rt->scene->shapes[i].material.ambient = rt->scene->ambient.ratio;
 	rt->scene->shapes[i].transform = identity_matrix();
 	rt->scene->shapes[i].scale = vector(1, 1, 1);
 	rt->scene->shape_count++;
 }
 
-void	add_cylinder(t_rt *rt, t_element_data data)
+void	add_cylinder(t_rt *rt, t_file data)
 {
 	int	i;
 

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 17:33:07 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:42:52 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	initialize_structs(char **argv, t_rt *rt)
 	rt->filename = argv[1];
 	if (validate_file_ext(rt))
 	{
-		printf("Invalid file extension\n");
+		ft_putendl_fd("Invalid file extension", 2);
 		free(rt);
 		exit(EXIT_FAILURE);
 	}

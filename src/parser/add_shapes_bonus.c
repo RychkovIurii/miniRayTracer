@@ -6,13 +6,13 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 11:27:20 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 18:09:00 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:21:04 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-t_shape	*add_sphere_b(t_rt *rt, char **coord, char **colors, double diameter)
+t_shape	*add_sphere_bonus(t_rt *rt, char **coord, char **colors, double dia)
 {
 	int		i;
 	t_shape	*sphere;
@@ -21,7 +21,7 @@ t_shape	*add_sphere_b(t_rt *rt, char **coord, char **colors, double diameter)
 	sphere = &rt->scene->shapes[i];
 	sphere->type = SHAPE_SPHERE;
 	sphere->center = string_to_point(coord);
-	sphere->radius = diameter / 2;
+	sphere->radius = dia / 2;
 	sphere->material.color = string_to_color(colors);
 	sphere->material.ambient = rt->scene->ambient.ratio;
 	sphere->transform = identity_matrix();
@@ -30,7 +30,7 @@ t_shape	*add_sphere_b(t_rt *rt, char **coord, char **colors, double diameter)
 	return (sphere);
 }
 
-t_shape	*add_plane_b(t_rt *rt, char **coord, char **normal, char **colors)
+t_shape	*add_plane_bonus(t_rt *rt, t_file data)
 {
 	int		i;
 	t_shape	*plane;
@@ -38,9 +38,9 @@ t_shape	*add_plane_b(t_rt *rt, char **coord, char **normal, char **colors)
 	i = rt->scene->shape_count;
 	plane = &rt->scene->shapes[i];
 	plane->type = SHAPE_PLANE;
-	plane->center = string_to_point(coord);
-	plane->normal = string_to_vector(normal);
-	plane->material.color = string_to_color(colors);
+	plane->center = string_to_point(data.coordinates);
+	plane->normal = string_to_vector(data.normal);
+	plane->material.color = string_to_color(data.colors);
 	plane->material.ambient = rt->scene->ambient.ratio;
 	plane->transform = identity_matrix();
 	plane->scale = vector(1, 1, 1);
@@ -48,7 +48,7 @@ t_shape	*add_plane_b(t_rt *rt, char **coord, char **normal, char **colors)
 	return (plane);
 }
 
-t_shape	*add_cylinder_b(t_rt *rt, t_element_data data)
+t_shape	*add_cylinder_bonus(t_rt *rt, t_file data)
 {
 	int		i;
 	t_shape	*cylinder;
@@ -66,7 +66,7 @@ t_shape	*add_cylinder_b(t_rt *rt, t_element_data data)
 	return (cylinder);
 }
 
-t_shape	*add_cone_b(t_rt *rt, t_element_data data)
+t_shape	*add_cone_bonus(t_rt *rt, t_file data)
 {
 	int		i;
 	t_shape	*cone;

@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/03 16:15:22 by irychkov         ###   ########.fr        #
+#    Updated: 2025/03/03 18:41:25 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ COMMON_SRCS =	main.c\
 				scene.c\
 				camera.c\
 				mlx.c\
+				debug.c\
 
 # Program-specific sources
 SRCS = $(COMMON_SRCS)\
