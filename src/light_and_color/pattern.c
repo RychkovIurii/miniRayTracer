@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 14:51:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 14:59:28 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:31:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** @param point: The point.
 ** @return The color at the point.
 */
-t_tuple	stripe_at(t_pattern pattern, t_tuple point)
+static t_tuple	stripe_at(t_pattern pattern, t_tuple point)
 {
 	if ((int)floor(point.x) % 2 == 0)
 		return (pattern.color_a);
@@ -32,7 +32,7 @@ t_tuple	stripe_at(t_pattern pattern, t_tuple point)
 ** @param point: The point.
 ** @return The color at the point.
 */
-t_tuple	gradient_at(t_pattern pattern, t_tuple point)
+static t_tuple	gradient_at(t_pattern pattern, t_tuple point)
 {
 	t_tuple	distance;
 	double	fraction;
@@ -49,7 +49,7 @@ t_tuple	gradient_at(t_pattern pattern, t_tuple point)
 ** @param point: The point.
 ** @return The color at the point.
 */
-t_tuple	ring_at(t_pattern pattern, t_tuple point)
+static t_tuple	ring_at(t_pattern pattern, t_tuple point)
 {
 	int	floored_distance;
 
@@ -66,7 +66,7 @@ t_tuple	ring_at(t_pattern pattern, t_tuple point)
 ** @param point: The point.
 ** @return The color at the point.
 */
-t_tuple	checker_at(t_pattern pattern, t_tuple point)
+static t_tuple	checker_at(t_pattern pattern, t_tuple point)
 {
 	int	floored_sum;
 

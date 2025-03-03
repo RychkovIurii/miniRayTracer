@@ -6,132 +6,100 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/03 15:33:16 by henbuska         ###   ########.fr        #
+#    Updated: 2025/03/03 16:37:46 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = miniRT
 NAMEBONUS = miniRT_bonus
 
-SRCS = main.c\
-		parser/parser.c\
-		parser/parser_utils.c\
-		parser/parser_utils2.c\
-		parser/parse_element_utils.c\
-		parser/parse_non_shapes.c\
-		parser/validations.c\
-		parser/conversions.c\
-		parser/trim_line.c\
-		parser/parse_shapes.c\
-		parser/add_shapes.c\
-		parser/parse_element.c\
-		math/tuple.c\
-		math/tuple2.c\
-		math/matrix.c\
-		math/matrix2.c\
-		math/matrix3.c\
-		math/matrix4.c\
-		math/vector.c\
-		math/ray.c\
-		light_and_color/color.c\
-		light_and_color/pattern.c\
-		light_and_color/refraction_and_reflection.c \
-		intersection/intersection.c\
-		intersection/intersection2.c\
-		intersection/normal.c\
-		intersection/cone.c\
-		intersection/cone2.c\
-		intersection/cylinder.c\
-		intersection/sphere_and_plane.c\
-		intersection/prepare_computations.c\
-		keyboard/keyboard.c\
-		keyboard/keyboard2.c\
-		utils/libc.c\
-		utils.c\
-		init.c\
-		scene.c\
-		camera.c\
-		mlx.c\
-		debug.c\
+# Common sources between regular and bonus
+COMMON_SRCS =	main.c\
+				parser/parser.c\
+				parser/parser_utils.c\
+				parser/parser_utils2.c\
+				parser/parse_element_utils.c\
+				parser/parse_non_shapes.c\
+				parser/validations.c\
+				parser/conversions.c\
+				parser/trim_line.c\
+				math/tuple.c\
+				math/tuple2.c\
+				math/matrix.c\
+				math/matrix2.c\
+				math/matrix3.c\
+				math/matrix4.c\
+				math/vector.c\
+				math/ray.c\
+				light_and_color/color.c\
+				light_and_color/pattern.c\
+				light_and_color/refraction_and_reflection.c \
+				intersection/intersection.c\
+				intersection/intersection2.c\
+				intersection/normal.c\
+				intersection/cone.c\
+				intersection/cone2.c\
+				intersection/cylinder.c\
+				intersection/sphere_and_plane.c\
+				intersection/prepare_computations.c\
+				keyboard/keyboard.c\
+				keyboard/keyboard2.c\
+				utils/libc_utils.c\
+				utils/libc_utils2.c\
+				utils/libc_utils3.c\
+				utils/libc_utils4.c\
+				utils/gnl_utils.c\
+				utils/gnl.c\
+				utils.c\
+				init.c\
+				scene.c\
+				camera.c\
+				mlx.c\
+				debug.c\
+
+# Program-specific sources
+SRCS = $(COMMON_SRCS)\
+				parser/parse_shapes.c\
+				parser/add_shapes.c\
+				parser/parse_element.c\
+		
 
 		
-BONUS_SRCS = main.c\
-		parser/parser.c\
-		parser/parser_utils.c\
-		parser/parser_utils2.c\
-		parser/parse_element_utils.c\
-		parser/parse_non_shapes.c\
-		parser/validations.c\
-		parser/conversions.c\
-		parser/trim_line.c\
-		parser/parse_element_bonus.c\
-		parser/parse_shapes_bonus.c\
-		parser/add_shapes_bonus.c\
-		parser/parse_cone_bonus.c\
-		parser/parse_material_bonus.c\
-		math/tuple.c\
-		math/tuple2.c\
-		math/matrix.c\
-		math/matrix2.c\
-		math/matrix3.c\
-		math/matrix4.c\
-		math/vector.c\
-		math/ray.c\
-		light_and_color/color.c\
-		light_and_color/pattern.c\
-		light_and_color/refraction_and_reflection.c \
-		intersection/intersection.c\
-		intersection/intersection2.c\
-		intersection/normal.c\
-		intersection/cone.c\
-		intersection/cone2.c\
-		intersection/cylinder.c\
-		intersection/sphere_and_plane.c\
-		intersection/prepare_computations.c\
-		keyboard/keyboard.c\
-		keyboard/keyboard2.c\
-		utils/libc.c\
-		utils.c\
-		init.c\
-		scene.c\
-		camera.c\
-		mlx.c\
-		debug.c\
+BONUS_SRCS = $(COMMON_SRCS)\
+				parser/parse_element_bonus.c\
+				parser/parse_shapes_bonus.c\
+				parser/add_shapes_bonus.c\
+				parser/parse_cone_bonus.c\
+				parser/parse_material_bonus.c\
 
-		
+# Directories
 SRC_DIR = ./src
 OBJ_DIR = ./obj
 OBJ_BONUS_DIR = ./obj_bonus
+MLX_DIR = ./MLX42
 
+# Object files
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 BONUS_OBJS = $(BONUS_SRCS:%.c=$(OBJ_BONUS_DIR)/%.o)
+
+# Create directory lists
 OBJ_DIRS = $(sort $(dir $(OBJS)))
 BONUS_OBJ_DIRS = $(sort $(dir $(BONUS_OBJS)))
 
-MLX_DIR = ./MLX42
-
+# Compilation flags
 MLX_HEADER = -I $(MLX_DIR)/include
-
 RT_HEADER = -I ./include
-
-HEADERS = $(RT_HEADER) $(MLX_HEADER) -I$(LIBFT_DIR)
-
+HEADERS = $(RT_HEADER) $(MLX_HEADER)
 LIBMLX = $(MLX_DIR)/build/libmlx42.a
-
 #LIBGLFW = /Users/irychkov/.brew/Cellar/glfw/3.4/lib/libglfw.3.dylib
-
-LIBFT_DIR = ./libft
-LIBFT = $(LIBFT_DIR)/libft.a
-
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
-OSFLAGS = -ldl -lglfw -pthread -lm
-
-CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG #-flto #-Wall -Wextra -Werror
+OSFLAGS = -ldl -lglfw -pthread -lm -flto
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -Wall -Wextra -Werror -flto
 CC = cc
 
-all: $(LIBFT) $(LIBMLX) $(NAME)
+all: $(LIBMLX) $(NAME)
 
-bonus: $(LIBFT) $(LIBMLX) $(NAMEBONUS)
+bonus: $(LIBMLX) $(NAMEBONUS)
 
 $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 	@if [ ! -d "$(MLX_DIR)/build" ]; then \
@@ -139,15 +107,13 @@ $(LIBMLX): $(MLX_DIR)/CMakeLists.txt
 	fi
 	@make -C $(MLX_DIR)/build -j4
 
-$(LIBFT):
-	@$(MAKE) -C $(LIBFT_DIR)
-
 $(NAME): $(OBJ_DIRS) $(OBJS)
-	@$(CC) $(OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAME)
+	@$(CC) $(OBJS) $(LIBMLX) $(OSFLAGS) -o $(NAME)
 
 $(NAMEBONUS): $(OBJ_BONUS_DIRS) $(BONUS_OBJS)
-	@$(CC) $(BONUS_OBJS) $(LIBMLX) $(LIBFT) $(OSFLAGS) -o $(NAMEBONUS)
+	@$(CC) $(BONUS_OBJS) $(LIBMLX) $(OSFLAGS) -o $(NAMEBONUS)
 
+# Compilation rules
 $(OBJ_DIRS):
 	@mkdir -p $@
 
@@ -167,12 +133,10 @@ $(OBJ_BONUS_DIR)/%.o: $(SRC_DIR)/%.c
 clean:
 	@rm -rf $(OBJ_DIR) $(OBJ_BONUS_DIR)
 	@rm -rf $(MLX_DIR)/build
-	@$(MAKE) -C $(LIBFT_DIR) clean
 
 fclean: clean
 	rm -rf $(NAME) $(NAMEBONUS)
-	@$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re libmlx libft bonus
+.PHONY: all clean fclean re libmlx bonus

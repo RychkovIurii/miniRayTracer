@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 13:40:07 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/27 14:34:47 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:58:43 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	update_matrices(t_shape *shape, t_matrix transform)
 ** @param r_angle: The angle to rotate.
 ** @returns the rotation matrix.
 */
-t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
+static t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
 {
 	t_matrix	rotation_mx;
 	double		cosine;
@@ -57,7 +57,7 @@ t_matrix	rotation_matrix_sub(t_tuple r_ax, double r_angle)
 ** @param shape: The shape to rotate.
 ** @returns the rotation matrix.
 */
-t_matrix	get_rotation_matrix(t_shape *shape)
+static t_matrix	get_rotation_matrix(t_shape *shape)
 {
 	t_tuple	y_axis;
 	t_tuple	rot_axis;
@@ -83,7 +83,7 @@ t_matrix	get_rotation_matrix(t_shape *shape)
 ** @param shape: The shape to combine the transformations.
 ** @returns the combined transformation matrix.
 */
-t_matrix	combine_all_transforms(t_shape *shape)
+static t_matrix	combine_all_transforms(t_shape *shape)
 {
 	t_matrix	scaling_x_rotation;
 	t_matrix	result;

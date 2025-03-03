@@ -1,16 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlcpy.c                                       :+:      :+:    :+:   */
+/*   libc_utils3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/17 10:17:51 by irychkov          #+#    #+#             */
-/*   Updated: 2024/04/24 09:55:46 by irychkov         ###   ########.fr       */
+/*   Created: 2025/03/02 16:06:32 by irychkov          #+#    #+#             */
+/*   Updated: 2025/03/02 16:10:42 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "miniRT.h"
+
+size_t	ft_strlen(const char	*str)
+{
+	size_t	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	size_t	s_len;
+
+	s_len = ft_strlen(s) + 1;
+	while (s_len)
+	{
+		s_len--;
+		if (s[s_len] == (char)c)
+			return ((char *)(s + s_len));
+	}
+	return (NULL);
+}
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
@@ -28,4 +54,19 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	}
 	dst[i] = '\0';
 	return (src_len);
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		(void)write(fd, &s[i], 1);
+		i++;
+	}
+	(void)write(fd, "\n", 1);
 }

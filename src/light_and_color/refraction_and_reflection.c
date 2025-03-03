@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:01:18 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 16:04:34 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:05:39 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 ** of reflections as parameters.
 ** @returns t_tuple The color of the reflected ray at the intersection.
 */
-t_tuple	reflected_color(t_scene *world, t_intersection comps, int remaining)
+static t_tuple	reflected_color(t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	color;
 	t_tuple	reflect_color;
@@ -40,7 +40,7 @@ t_tuple	reflected_color(t_scene *world, t_intersection comps, int remaining)
 ** of reflections as parameters.
 ** @returns t_tuple The color of the refracted ray at the intersection.
 */
-t_tuple	refracted_color(t_scene *world, t_intersection comps, int remaining)
+static t_tuple	refracted_color(t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	refract_color;
 	double	n_ratio;
@@ -75,7 +75,7 @@ t_tuple	refracted_color(t_scene *world, t_intersection comps, int remaining)
 ** and 1 means full reflection.
 ** @returns double The reflectance at the intersection.
 */
-double	schlick(t_intersection comps)
+static double	schlick(t_intersection comps)
 {
 	double	cos;
 	double	n_ratio;
@@ -101,7 +101,7 @@ double	schlick(t_intersection comps)
 ** The function takes the world and the point as parameters.
 ** @returns int 1 if the point is in the shadow, 0 otherwise.
 */
-int	is_shadowed(t_scene world, t_tuple point)
+static int	is_shadowed(t_scene world, t_tuple point)
 {
 	t_ray			r;
 	t_tuple			v;
@@ -136,8 +136,7 @@ int	is_shadowed(t_scene world, t_tuple point)
 ** @param xs: t_intersects The intersections.
 ** @returns t_tuple The color at the intersection.
 */
-t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining,
-	t_intersects *xs)
+t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	color;
 	t_tuple	surface;

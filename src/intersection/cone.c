@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:15:09 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 14:42:10 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:08:47 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ it calculates possible intersection with bottom cap.
 @param result: The intersection array that will store valid intersections.
 @returns The updated result containing any intersection with the cap.
 */
-t_intersects	intersect_cone_caps(
+static t_intersects	intersect_cone_caps(
 		t_shape *cone, t_ray ray, t_intersects result)
 {
 	double	t;
@@ -32,15 +32,14 @@ t_intersects	intersect_cone_caps(
 		t = (cone->min - ray.origin.y) / ray.direction.y;
 		if (check_cone_cap(ray, t, *cone, cone->min))
 		{
-			result.array[2].t = t;
-			result.count = 3;
-			result.array[2].object = cone;
+			result.array[result.count].t = t;
+			result.array[result.count++].object = cone;
 		}
 	}
 	return (result);
 }
 
-t_quadratic	compute_quadratic_cone(t_ray ray, t_shape *cone)
+static t_quadratic	compute_quadratic_cone(t_ray ray, t_shape *cone)
 {
 	t_quadratic	q;
 	double		slope;
@@ -57,7 +56,7 @@ t_quadratic	compute_quadratic_cone(t_ray ray, t_shape *cone)
 	return (q);
 }
 
-void	handle_quadratic_cone_intersection(t_ray ray, t_shape *cone,
+static void	handle_quadratic_cone_intersection(t_ray ray, t_shape *cone,
 	t_quadratic q, t_intersects *result)
 {
 	double	discriminant;
@@ -84,7 +83,7 @@ void	handle_quadratic_cone_intersection(t_ray ray, t_shape *cone,
 	}
 }
 
-void	handle_linear_cone_intersection(t_ray ray, t_shape *cone,
+static void	handle_linear_cone_intersection(t_ray ray, t_shape *cone,
 	t_quadratic q, t_intersects *result)
 {
 	double	t0;
@@ -116,7 +115,6 @@ t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 {
 	t_intersects	result;
 	t_quadratic		q;
-	t_tuple			p;
 
 	result.count = 0;
 	result.array = ft_calloc(3, sizeof(t_intersection));

@@ -1,16 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   libc.c                                             :+:      :+:    :+:   */
+/*   libc_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:49:47 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 16:04:53 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:37:08 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+t_list	*ft_lstnew(void *content)
+{
+	t_list	*ptr;
+
+	ptr = (t_list *)malloc(sizeof(t_list));
+	if (!ptr)
+		return (NULL);
+	ptr->content = content;
+	ptr->next = NULL;
+	return (ptr);
+}
+
+t_list	*ft_lstlast(t_list *lst)
+{
+	t_list	*ptr;
+
+	ptr = lst;
+	while (ptr != NULL && ptr->next != NULL)
+		ptr = ptr->next;
+	return (ptr);
+}
+
+void	ft_lstadd_back(t_list **lst, t_list *new)
+{
+	t_list	*last;
+
+	if (lst == NULL || new == NULL)
+		return ;
+	if (*lst == NULL)
+		*lst = new;
+	else
+	{
+		last = ft_lstlast(*lst);
+		last->next = new;
+	}
+}
 
 void	ft_lstclear_safe(t_list **lst)
 {
@@ -53,19 +90,4 @@ void	ft_lstremove(t_list **lst, void *content)
 		prev = ptr;
 		ptr = ptr->next;
 	}
-}
-
-void	ft_putendl_fd(char *s, int fd)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s)
-		return ;
-	while (s[i])
-	{
-		write(fd, &s[i], 1);
-		i++;
-	}
-	write(fd, "\n", 1);
 }

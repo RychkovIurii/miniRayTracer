@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:20:14 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 13:57:40 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/02 16:29:12 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
  - @param t: The parametric distance along the ray to the intersection.
  - @returns 1 if the intersection is within the cap's radius, 0 otherwise.
  */
-int	check_cylinder_cap(t_shape cyl, t_ray ray, double t)
+static int	check_cylinder_cap(t_shape cyl, t_ray ray, double t)
 {
 	double	x;
 	double	z;
@@ -40,7 +40,7 @@ int	check_cylinder_cap(t_shape cyl, t_ray ray, double t)
  - @param result: The intersection array that will store valid intersections.
  - @returns The updated result containing any intersection with the caps.
  */
-t_intersects	intersect_cylinder_caps(
+static t_intersects	intersect_cylinder_caps(
 		t_shape *cyl, t_ray ray, t_intersects result)
 {
 	int		count;
@@ -66,7 +66,7 @@ t_intersects	intersect_cylinder_caps(
 /*
 ** Calculates the quadratic coefficients for the cylinder intersection.
 */
-t_quadratic	compute_quadratic_cylinder(t_ray ray, t_shape *cylinder)
+static t_quadratic	compute_quadratic_cylinder(t_ray ray, t_shape *cylinder)
 {
 	t_quadratic	q;
 
@@ -82,7 +82,7 @@ t_quadratic	compute_quadratic_cylinder(t_ray ray, t_shape *cylinder)
 /*
 ** Calculates the intersection points with the cylinder's curved surface.
 */
-int	compute_intersections_cyl(t_ray ray, t_shape *cylinder,
+static int	compute_intersections_cyl(t_ray ray, t_shape *cylinder,
 	t_quadratic q, t_intersects *result)
 {
 	int		count;

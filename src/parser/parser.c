@@ -6,11 +6,12 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:28:48 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:36:38 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
+#include <fcntl.h>
 
 char	**read_file_lines(int fd, int count)
 {

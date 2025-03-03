@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 16:22:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:35:24 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,18 +15,10 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include <stdbool.h>
 # include <unistd.h>
 # include <math.h>
-# include <stdint.h>
-# include <float.h>
-# include <limits.h>
-# include <fcntl.h>
 # include <MLX42/MLX42.h>
-# include <math.h>
 # include "structs.h"
-
-# include "libft.h"
 
 # define EPSILON 0.0001f
 
@@ -138,7 +130,6 @@ t_matrix	rotation_z_matrix(double radian);
 t_matrix	inverse_matrix(t_matrix a);
 void		set_matrices(t_scene *scene);
 void		update_matrices(t_shape *shape, t_matrix transform);
-t_matrix	combine_all_transforms(t_shape *shape);
 
 // Ray
 
@@ -150,7 +141,7 @@ t_ray		transform_ray(t_ray ray, t_matrix matrix);
 
 t_pattern	set_pattern(t_tuple a, t_tuple b); // We don't use it for now
 t_tuple		pattern_at_object(t_pattern pattern, t_shape shape, t_tuple world_point);
-t_tuple		shade_hit(t_scene *world, t_intersection comps, int remaining, t_intersects *xs);
+t_tuple		shade_hit(t_scene *world, t_intersection comps, int remaining);
 t_tuple		lighting(t_intersection comps, t_shape shape, t_light light, int in_shadow);
 t_tuple		color_at(t_scene *world, t_ray ray, int remaining);
 
@@ -197,11 +188,23 @@ void		init_scene_pixels(t_scene *scene, int height, int width);
 void		initialize_structs(char **argv, t_rt *rt);
 
 /******************** UTILS FOLDER **********/
-// Libc
 
 void	ft_lstclear_safe(t_list **lst);
 void	ft_lstremove(t_list **lst, void *content);
+t_list	*ft_lstnew(void *content);
+t_list	*ft_lstlast(t_list *lst);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+char	*ft_strrchr(const char *s, int c);
+char	**ft_split(char const *s, char c);
+char	*get_next_line(int fd);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void	ft_bzero(void *s, size_t n);
+int		ft_isdigit(int argument);
+void	*ft_calloc(size_t count, size_t size);
 void	ft_putendl_fd(char *s, int fd);
+size_t	ft_strlen(const char	*str);
 
 int		validate_file_ext(t_rt *rt);
 /** Debug **/

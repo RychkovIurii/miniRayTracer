@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 14:28:00 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:36:09 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,12 @@
 # define STRUCTS_H
 
 # include "miniRT.h"
+
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}	t_list;
 
 typedef struct s_quadratic
 {
@@ -154,17 +160,16 @@ typedef struct s_scene
 {
 	int				shape_count;
 	int				num_objects;
-	//int			max_objects;;
+	int				needs_render;
+	int				mouse_x;
+	int				mouse_y;
 	mlx_t			*mlx;
 	mlx_image_t		*image;
 	t_ambient		ambient;
 	t_camera		camera;
 	t_light			light;
 	t_shape			*shapes;
-	int				needs_render;
 	t_tuple			**pixels;
-	int				mouse_x;
-	int				mouse_y;
 }	t_scene;
 
 typedef struct s_file
@@ -174,13 +179,11 @@ typedef struct s_file
 	char	**colors;
 }	t_file;
 
-typedef struct	s_rt
+typedef struct s_rt
 {
-	//mlx_t	*mlx;
-	//t_image	*image;
 	char		*filename;
-	char		**elements;
 	int			element_count;
+	char		**elements;
 	t_scene		*scene;
 }	t_rt;
 
