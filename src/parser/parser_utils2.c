@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:16 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 16:53:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:04:20 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	free_and_return(t_rt *rt, char **array, int ret)
 
 int	print_clean(t_rt *rt, char *message, int ret)
 {
+	(void)message; //do we need this? unused
 	free_rt(rt);
 	print_error("Invalid file content");
 	return (ret);

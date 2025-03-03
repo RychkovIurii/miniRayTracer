@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:50:41 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:27:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:08:04 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,12 +82,12 @@ t_tuple	normal_at(t_shape *shape, t_tuple world_point)
 	local_point = multiply_matrix_by_tuple(shape->transform_inv, world_point);
 	if (shape->type == SHAPE_SPHERE)
 		local_normal = substract_tuple(local_point, shape->center);
-	else if (shape->type == SHAPE_PLANE)
-		local_normal = vector(0, 1, 0);
 	else if (shape->type == SHAPE_CYLINDER)
 		local_normal = local_normal_at_cylinder(*shape, local_point);
 	else if (shape->type == SHAPE_CONE)
 		local_normal = local_normal_at_cone(*shape, local_point);
+	else
+		local_normal = vector(0, 1, 0);
 	world_normal = multiply_matrix_by_tuple(shape->transpose_inv, local_normal);
 	world_normal.w = 0;
 	surface_normal = normalize(world_normal);

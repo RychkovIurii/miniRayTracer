@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:01:18 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:32:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:05:39 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,8 +136,7 @@ static int	is_shadowed(t_scene world, t_tuple point)
 ** @param xs: t_intersects The intersections.
 ** @returns t_tuple The color at the intersection.
 */
-t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining,
-	t_intersects *xs)
+t_tuple	shade_hit(t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	color;
 	t_tuple	surface;

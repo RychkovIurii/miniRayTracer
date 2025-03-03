@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:30:21 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:31:01 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:05:48 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ t_tuple	color_at(t_scene *world, t_ray ray, int remaining)
 		return (create_color(0, 0, 0));
 	}
 	comps = prepare_computations(*hits, ray, &xs);
-	color = shade_hit(world, comps, remaining, &xs);
+	color = shade_hit(world, comps, remaining);
 	free(xs.array);
 	return (color);
 }
