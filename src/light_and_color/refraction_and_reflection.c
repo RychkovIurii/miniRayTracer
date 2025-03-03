@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 15:01:18 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 14:05:39 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:26:56 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
 ** of reflections as parameters.
 ** @returns t_tuple The color of the reflected ray at the intersection.
 */
-static t_tuple	reflected_color(t_scene *world, t_intersection comps, int remaining)
+static t_tuple	reflected_color(
+		t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	color;
 	t_tuple	reflect_color;
@@ -40,7 +41,8 @@ static t_tuple	reflected_color(t_scene *world, t_intersection comps, int remaini
 ** of reflections as parameters.
 ** @returns t_tuple The color of the refracted ray at the intersection.
 */
-static t_tuple	refracted_color(t_scene *world, t_intersection comps, int remaining)
+static t_tuple	refracted_color(
+		t_scene *world, t_intersection comps, int remaining)
 {
 	t_tuple	refract_color;
 	double	n_ratio;

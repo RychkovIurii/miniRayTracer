@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:05:50 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:24:09 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@ static int	validate_file_ext(t_rt *rt)
 
 	filename = rt->filename;
 	dot = ft_strrchr(filename, '.');
-	if(!dot)
-		return(1);
+	if (!dot)
+		return (1);
 	if (ft_strncmp(dot, ".rt\0", 4))
 		return (1);
 	return (0);

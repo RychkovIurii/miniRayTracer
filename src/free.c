@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:52:11 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 18:52:53 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:25:17 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,20 @@
 
 void	free_pixels(t_tuple **pixels, int height)
 {
+	int	i;
+
+	i = 0;
 	if (!pixels)
-		return;
-	for (int i = 0; i < height; i++)
-	{
-		free(pixels[i]);
-	}
+		return ;
+	while (i < height)
+		free(pixels[i++]);
 	free(pixels);
 }
 
 void	free_rt(t_rt *rt)
 {
 	if (!rt)
-		return;
+		return ;
 	if (rt->scene)
 	{
 		if (rt->scene->shapes)

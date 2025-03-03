@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:16 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 19:07:31 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:26:14 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	free_and_return(t_rt *rt, char **array, int ret)
 void	free_array(char **array)
 {
 	int	i;
-	
+
 	i = 0;
 	while (array[i])
 	{
