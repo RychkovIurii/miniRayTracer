@@ -6,7 +6,7 @@
 #    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/03 14:12:35 by irychkov         ###   ########.fr        #
+#    Updated: 2025/03/03 14:44:08 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -92,8 +92,8 @@ HEADERS = $(RT_HEADER) $(MLX_HEADER)
 LIBMLX = $(MLX_DIR)/build/libmlx42.a
 #LIBGLFW = /Users/irychkov/.brew/Cellar/glfw/3.4/lib/libglfw.3.dylib
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
-OSFLAGS = -ldl -lglfw -pthread -lm
-CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -Wall -Wextra -Werror
+OSFLAGS = -ldl -lglfw -pthread -lm -flto
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -Wall -Wextra -Werror -flto
 CC = cc
 
 all: $(LIBMLX) $(NAME)
