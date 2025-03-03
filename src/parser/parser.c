@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 16:54:05 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:19:08 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Sphere reflective: %f\n", shape.material.reflective);
 			printf("Sphere transparency: %f\n", shape.material.transparency);
 			printf("Sphere refractive index: %f\n", shape.material.refractive_index);
+			printf("Sphere pattern: %d\n", shape.material.has_pattern);
+			printf("Sphere pattern color a: %f, %f, %f\n", shape.material.pattern.color_a.x, shape.material.pattern.color_a.y, shape.material.pattern.color_a.z);
+			printf("Sphere pattern color b: %f, %f, %f\n", shape.material.pattern.color_b.x, shape.material.pattern.color_b.y, shape.material.pattern.color_b.z);
 		}
 		else if (shape.type == SHAPE_PLANE)
 		{
@@ -56,6 +59,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Plane reflective: %f\n", shape.material.reflective);
 			printf("Plane refractive index: %f\n", shape.material.refractive_index);
 			printf("Plane transparency: %f\n", shape.material.transparency);
+			printf("Plane pattern: %d\n", shape.material.has_pattern);
+			printf("Plane pattern color a: %f, %f, %f\n", shape.material.pattern.color_a.x, shape.material.pattern.color_a.y, shape.material.pattern.color_a.z);
+			printf("Plane pattern color b: %f, %f, %f\n", shape.material.pattern.color_b.x, shape.material.pattern.color_b.y, shape.material.pattern.color_b.z);
 		}
 		else if (shape.type == SHAPE_CYLINDER)
 		{
@@ -71,6 +77,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Cylinder reflective: %f\n", shape.material.reflective);
 			printf("Cylinder transparency: %f\n", shape.material.transparency);
 			printf("Cylinder refractive index: %f\n", shape.material.refractive_index);
+			printf("Cylinder pattern: %d\n", shape.material.has_pattern);
+			printf("Cylinder pattern color a: %f, %f, %f\n", shape.material.pattern.color_a.x, shape.material.pattern.color_a.y, shape.material.pattern.color_a.z);
+			printf("Cylinder pattern color b: %f, %f, %f\n", shape.material.pattern.color_b.x, shape.material.pattern.color_b.y, shape.material.pattern.color_b.z);
 		}
 		else if (shape.type == SHAPE_CONE)
 		{
@@ -86,6 +95,9 @@ void	print_parsed_content(t_rt *rt)
 			printf("Cone reflective: %f\n", shape.material.reflective);
 			printf("Cone transparency: %f\n", shape.material.transparency);
 			printf("Cone refractive index: %f\n", shape.material.refractive_index);
+			printf("Cone pattern: %d\n", shape.material.has_pattern);
+			printf("Cone pattern color a: %f, %f, %f\n", shape.material.pattern.color_a.x, shape.material.pattern.color_a.y, shape.material.pattern.color_a.z);
+			printf("Cone pattern color b: %f, %f, %f\n", shape.material.pattern.color_b.x, shape.material.pattern.color_b.y, shape.material.pattern.color_b.z);
 		}
 		i++;
 	}
@@ -147,7 +159,10 @@ int	parse_line(char *line, t_rt *rt)
 	element = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!element)
-		return (print_error("Failed to split line"), 1);
+	{
+		print_error("Failed to split line");
+		return(1);
+	}
 	status = parse_element(element, rt);
 	if (status)
 		printf("Failed to parse line %s", line);

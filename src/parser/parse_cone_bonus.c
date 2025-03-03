@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:27:49 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 18:09:41 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:22:04 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	parse_cone(char **element, t_rt *rt)
 	t_shape			*cone;
 	size_t			arg_count;
 
-	arg_count = 12;
+	arg_count = 16;
 	if (validate_argument_count(element, arg_count))
 		return (error("Invalid number of arguments for cone", 1));
 	if (validate_cone_dimensions(element, rt))

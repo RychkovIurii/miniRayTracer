@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 17:30:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:03:18 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	assign_default_material(t_material *material)
 	material->reflective = 0.0;
 	material->transparency = 0.0;
 	material->refractive_index = 1.0;
+	material->has_pattern = 0;
 }
 
 void	add_sphere(t_rt *rt, char **coordinates, char **colors, double diameter)

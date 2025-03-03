@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 18:09:29 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 11:21:56 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	parse_sphere(char **element, t_rt *rt)
 	size_t		arg_count;
 	t_shape		*sphere;
 
-	arg_count = 10;
+	arg_count = 14;
 	if (validate_argument_count(element, arg_count))
 		return (error("Invalid number of arguments for sphere", 1));
 	diameter = validate_dimension(element[2]);
@@ -48,7 +48,7 @@ int	parse_plane(char **element, t_rt *rt)
 	size_t		arg_count;
 	t_shape		*plane;
 
-	arg_count = 10;
+	arg_count = 14;
 	if (validate_argument_count(element, arg_count))
 		return (error("Invalid number of arguments for plane", 1));
 	coordinates = validate_coordinates(element[1]);
@@ -94,7 +94,7 @@ int	parse_cylinder(char **element, t_rt *rt)
 	size_t			arg_count;
 	t_shape			*cylinder;
 
-	arg_count = 12;
+	arg_count = 16;
 	if (validate_argument_count(element, arg_count))
 		return (error("Invalid number of arguments for cylinder", 1));
 	if (validate_cylinder_dimensions(element, rt))
