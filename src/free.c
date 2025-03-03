@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:52:11 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:25:17 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:40:18 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void	free_rt(t_rt *rt)
 		free(rt->scene);
 	}
 	free(rt);
+}
+
+int	free_pixels_and_rt(t_rt *rt, int ret)
+{
+	free_pixels(rt->scene->pixels, rt->scene->height);
+	free_rt(rt);
+	return (ret);
 }

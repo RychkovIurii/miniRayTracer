@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:22:06 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:42:46 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ t_ray			ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
 void			ft_hook(void *param);
 void			resize_window(int width, int height, void *param);
 void			ft_render_scene(void *param);
+int				free_pixels_and_rt(t_rt *rt, int ret);
 void			free_pixels(t_tuple **pixels, int height);
 void			free_rt(t_rt *rt);
 
