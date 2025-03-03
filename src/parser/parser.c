@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:36:38 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:57:08 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ int	parse_line(char *line, t_rt *rt)
 	status = parse_element(element, rt);
 	if (status)
 	{
-		ft_putendl_fd("Failed to parse line", 2);
-		ft_putendl_fd(line, 2);
+		ft_putstr_fd("Failed to parse line ", 2);
+		ft_putstr_fd(line, 2);
 		len = ft_strlen(line);
-		if (len > 0 && line[len - 1] != '\n')
+		if (line[ft_strlen(line) - 1] != '\n')
 			write(2, "\n", 1);
 	}
 	free_array(element);

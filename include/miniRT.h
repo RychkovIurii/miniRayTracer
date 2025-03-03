@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 16:35:24 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:50:45 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,7 @@ int		ft_isdigit(int argument);
 void	*ft_calloc(size_t count, size_t size);
 void	ft_putendl_fd(char *s, int fd);
 size_t	ft_strlen(const char	*str);
+void	ft_putstr_fd(char *s, int fd);
 
 int		validate_file_ext(t_rt *rt);
 /** Debug **/
