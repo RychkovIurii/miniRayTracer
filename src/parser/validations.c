@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 17:19:50 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:53:05 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,35 @@ char	**validate_vector(char *str)
 	return (vector_strings);
 }
 
+t_file	validate_args(char **element, int coord_i, int normal_i, int color_i)
+{
+	t_file	data;
+
+	ft_bzero(&data, sizeof(t_file));
+	data.coordinates = validate_coordinates(element[coord_i]);
+	if (!data.coordinates)
+	{
+		print_error("Invalid coordinates");
+		return (data);
+	}
+	data.normal = validate_vector(element[normal_i]);
+	if (!data.normal)
+	{
+		free_array(data.coordinates);
+		print_error("Invalid normal vector");
+		return (data);
+	}
+	data.colors = validate_color(element[color_i]);
+	if (!data.colors)
+	{
+		free_array(data.normal);
+		free_array(data.coordinates);
+		print_error("Invalid color");
+	}
+	return (data);
+}
+
+/*
 t_element_data	validate_element_data(char **element)
 {
 	t_element_data	data;
@@ -122,14 +151,14 @@ t_element_data	validate_element_data(char **element)
 		print_error("Invalid color");
 	}
 	return (data);
-}
+}*/
 
-double	validate_ratio(char *str)
+int	validate_double(char *str, double min, double max)
 {
-	double	ratio;
+	double	value;
 
-	ratio = ft_atof(str);
-	if (ratio < 0.0 || ratio > 1.0)
-		return (-1);
-	return (ratio);
+	value = ft_atof(str);
+	if (value < min || value > max)
+		return (1);
+	return (0);
 }

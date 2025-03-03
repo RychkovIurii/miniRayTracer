@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:08:22 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 17:02:06 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:22:28 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,29 +38,14 @@ int	parse_sphere(char **element, t_rt *rt)
 
 int	parse_plane(char **element, t_rt *rt)
 {
-	char	**coordinates;
-	char	**normal;
-	char	**colors;
+	t_file	data;
 
 	if (validate_argument_count(element, 4))
 		return (error("Invalid number of arguments for plane", 1));
-	coordinates = validate_coordinates(element[1]);
-	if (!coordinates)
-		return (error("Invalid coordinates for point in plane", 1));
-	normal = validate_vector(element[2]);
-	if (!normal)
-	{
-		free_array(coordinates);
-		return (error("Invalid normal vector for plane", 1));
-	}
-	colors = validate_color(element[3]);
-	if (!colors)
-	{
-		free_array(coordinates);
-		free_array(colors);
-		return (error("Invalid plane color", 1));
-	}
-	add_plane(rt, coordinates, normal, colors);
+	data = validate_args(element, 1, 2, 3);
+	if (!data.coordinates || !data.normal || !data.colors)
+		return (1);
+	add_plane(rt, data);
 	return (0);
 }
 
@@ -84,13 +69,13 @@ int	validate_cylinder_dimensions(char **element, t_rt *rt)
 
 int	parse_cylinder(char **element, t_rt *rt)
 {
-	t_element_data	data;
+	t_file	data;
 
 	if (validate_argument_count(element, 6))
 		return (error("Invalid number of arguments for cylinder", 1));
 	if (validate_cylinder_dimensions(element, rt))
 		return (1);
-	data = validate_element_data(element);
+	data = validate_args(element, 1, 2, 5);
 	if (!data.coordinates || !data.normal || !data.colors)
 		return (1);
 	add_cylinder(rt, data);

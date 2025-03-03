@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:42:23 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/24 18:42:55 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:39:46 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,18 @@
 
 int	parse_ambient(char **element, t_rt *rt)
 {
-	double	ambient;
 	char	**colors;
 
 	if (rt->scene->ambient.id != 0)
 		return (error("Too many ambient lights in file", 1));
 	if (validate_argument_count(element, 3))
 		return (error("Invalid number of arguments for ambient", 1));
-	ambient = validate_ratio(element[1]);
-	if (ambient == -1)
+	if (validate_double(element[1], 0, 1))
 		return (error("Invalid ambient lighting ratio [0.0-1.0]", 1));
 	colors = validate_color(element[2]);
 	if (!colors)
 		return (error("Invalid color for ambient", 1));
-	rt->scene->ambient.ratio = ambient;
+	rt->scene->ambient.ratio = ft_atof(element[1]);
 	rt->scene->ambient.color = string_to_color(colors);
 	rt->scene->ambient.id = 1;
 	return (0);
@@ -63,7 +61,6 @@ int	parse_light(char **element, t_rt *rt)
 {
 	char	**coordinates;
 	char	**colors;
-	double	brightness;
 
 	if (rt->scene->light.id != 0)
 		return (error("Too many lights in file", 1));
@@ -73,10 +70,9 @@ int	parse_light(char **element, t_rt *rt)
 	if (!coordinates)
 		return (error("Invalid coordinates for light point", 1));
 	rt->scene->light.position = string_to_point(coordinates);
-	brightness = validate_ratio(element[2]);
-	if (brightness == -1)
+	if (validate_double(element[2], 0, 1))
 		return (error("Invalid brightness for light [0.0-1.0]", 1));
-	rt->scene->light.brightness = brightness;
+	rt->scene->light.brightness = ft_atof(element[2]);
 	colors = validate_color(element[3]);
 	if (!colors)
 		return (error("Invalid color for light", 1));

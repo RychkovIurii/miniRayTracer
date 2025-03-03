@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 17:15:19 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:36:09 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,12 +172,12 @@ typedef struct s_scene
 	t_tuple			**pixels;
 }	t_scene;
 
-typedef struct s_element_data
+typedef struct s_file
 {
 	char	**coordinates;
 	char	**normal;
 	char	**colors;
-}	t_element_data;
+}	t_file;
 
 typedef struct s_rt
 {

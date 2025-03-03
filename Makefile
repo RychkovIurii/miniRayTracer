@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
+#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/03 14:44:08 by irychkov         ###   ########.fr        #
+#    Updated: 2025/03/03 16:37:46 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,6 +55,7 @@ COMMON_SRCS =	main.c\
 				scene.c\
 				camera.c\
 				mlx.c\
+				debug.c\
 
 # Program-specific sources
 SRCS = $(COMMON_SRCS)\
