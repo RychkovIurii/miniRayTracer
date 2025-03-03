@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:45:07 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/28 16:59:18 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 15:19:58 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	count_new_length(char *line)
 	return (new_len);
 }
 
-char	*allocate_trimmed_string(char *line)
+static char	*allocate_trimmed_string(char *line)
 {
 	char	*trimmed;
 
@@ -51,6 +51,23 @@ char	*allocate_trimmed_string(char *line)
 	return (trimmed);
 }
 
+static int	should_copy(char c, int *flag)
+{
+	if (c == '\n')
+		return (0);
+	if (c != ' ')
+	{
+		*flag = 0;
+		return (1);
+	}
+	if (*flag == 0)
+	{
+		*flag = 1;
+		return (1);
+	}
+	return (0);
+}
+
 char	*trim_extra_spaces(char *line)
 {
 	int		i;
@@ -58,29 +75,20 @@ char	*trim_extra_spaces(char *line)
 	int		flag;
 	char	*trimmed;
 
+	i = 0;
+	j = 0;
 	flag = 0;
 	trimmed = allocate_trimmed_string(line);
 	if (!trimmed)
 		return (NULL);
-	i = 0;
-	j = 0;
 	while (line[i])
 	{
-		if (line[i] == '\n' && line[i + 1] == '\0')
-			break ;
-		if (line[i] != ' ')
-		{
+		if (should_copy(line[i], &flag))
 			trimmed[j++] = line[i];
-			flag = 0;
-		}
-		else if (line[i] == ' ' && flag == 0)
-		{
-			trimmed[j++] = line[i];
-			flag = 1;
-		}
 		i++;
 	}
+	while (j > 0 && trimmed[j - 1] == ' ')
+		j--;
 	trimmed[j] = '\0';
 	return (trimmed);
-	//should trailing new line or spaces be removed?
 }

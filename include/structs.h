@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 17:41:18 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:28:00 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,12 +167,12 @@ typedef struct s_scene
 	int				mouse_y;
 }	t_scene;
 
-typedef struct s_element_data
+typedef struct s_file
 {
 	char	**coordinates;
 	char	**normal;
 	char	**colors;
-}	t_element_data;
+}	t_file;
 
 typedef struct	s_rt
 {

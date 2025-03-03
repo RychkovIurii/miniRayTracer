@@ -6,13 +6,13 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 11:21:56 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 14:54:15 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/miniRT.h"
 
-int	parse_sphere(char **element, t_rt *rt)
+int	parse_sphere_bonus(char **element, t_rt *rt)
 {
 	char		**coordinates;
 	char		**colors;
@@ -36,41 +36,27 @@ int	parse_sphere(char **element, t_rt *rt)
 		free_array(coordinates);
 		return (error("Invalid sphere color", 1));
 	}
-	sphere = add_sphere_b(rt, coordinates, colors, diameter);
+	sphere = add_sphere_bonus(rt, coordinates, colors, diameter);
 	return (add_material(element, &(sphere->material), arg_count));
 }
 
-int	parse_plane(char **element, t_rt *rt)
+int	parse_plane_bonus(char **element, t_rt *rt)
 {
-	char		**coordinates;
-	char		**normal;
-	char		**colors;
+	t_file		data;
 	size_t		arg_count;
 	t_shape		*plane;
 
 	arg_count = 14;
 	if (validate_argument_count(element, arg_count))
 		return (error("Invalid number of arguments for plane", 1));
-	coordinates = validate_coordinates(element[1]);
-	if (!coordinates)
-		return (error("Invalid coordinates for point in plane", 1));
-	normal = validate_vector(element[2]);
-	if (!normal)
-	{
-		free_array(coordinates);
-		return (error("Invalid normal vector for plane", 1));
-	}
-	colors = validate_color(element[3]);
-	if (!colors)
-	{
-		free_arrays(normal, coordinates);
-		return (error("Invalid plane color", 1));
-	}
-	plane = add_plane_b(rt, coordinates, normal, colors);
+	data = validate_args(element, 1, 2, 3);
+	if (!data.coordinates || !data.normal || !data.colors)
+		return (1);
+	plane = add_plane_bonus(rt, data);
 	return (add_material(element, &(plane->material), arg_count));
 }
 
-int	validate_cylinder_dimensions(char **element, t_rt *rt)
+int	validate_cylinder_dimensions_bonus(char **element, t_rt *rt)
 {
 	double	diameter;
 	double	cylinder_height;
@@ -88,20 +74,20 @@ int	validate_cylinder_dimensions(char **element, t_rt *rt)
 	return (0);
 }
 
-int	parse_cylinder(char **element, t_rt *rt)
+int	parse_cylinder_bonus(char **element, t_rt *rt)
 {
-	t_element_data	data;
-	size_t			arg_count;
-	t_shape			*cylinder;
+	t_file	data;
+	size_t	arg_count;
+	t_shape	*cylinder;
 
 	arg_count = 16;
 	if (validate_argument_count(element, arg_count))
 		return (error("Invalid number of arguments for cylinder", 1));
-	if (validate_cylinder_dimensions(element, rt))
+	if (validate_cylinder_dimensions_bonus(element, rt))
 		return (1);
-	data = validate_element_data(element);
+	data = validate_args(element, 1, 2, 5);
 	if (!data.coordinates || !data.normal || !data.colors)
 		return (1);
-	cylinder = add_cylinder_b(rt, data);
+	cylinder = add_cylinder_bonus(rt, data);
 	return (add_material(element, &(cylinder->material), arg_count));
 }

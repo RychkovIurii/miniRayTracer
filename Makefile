@@ -6,7 +6,7 @@
 #    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/02/28 18:31:44 by henbuska         ###   ########.fr        #
+#    Updated: 2025/03/03 15:33:16 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -52,6 +52,7 @@ SRCS = main.c\
 		scene.c\
 		camera.c\
 		mlx.c\
+		debug.c\
 
 		
 BONUS_SRCS = main.c\
@@ -95,6 +96,7 @@ BONUS_SRCS = main.c\
 		scene.c\
 		camera.c\
 		mlx.c\
+		debug.c\
 
 		
 SRC_DIR = ./src

@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:43:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/02/27 16:15:10 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:08:48 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,16 @@ int	parse_element(char **element, t_rt *rt)
 	else if (ft_strcmp(element[0], "L") == 0)
 		return (parse_light(element, rt));
 	else if (ft_strcmp(element[0], "sp") == 0)
-		return (parse_sphere(element, rt));
+		return (parse_sphere_bonus(element, rt));
 	else if (ft_strcmp(element[0], "pl") == 0)
-		return (parse_plane(element, rt));
+		return (parse_plane_bonus(element, rt));
 	else if (ft_strcmp(element[0], "cy") == 0)
-		return (parse_cylinder(element, rt));
+		return (parse_cylinder_bonus(element, rt));
 	else if (ft_strcmp(element[0], "co") == 0)
-		return (parse_cone(element, rt));
+		return (parse_cone_bonus(element, rt));
 	else
 	{
-		printf("Invalid element identifier\n");
+		ft_putendl_fd("Invalid element identifier", 2);
 		return (1);
 	}
 	return (0);

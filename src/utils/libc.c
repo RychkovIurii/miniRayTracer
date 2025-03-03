@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libc.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 12:49:47 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 12:50:58 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:04:53 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,19 @@ void	ft_lstremove(t_list **lst, void *content)
 		prev = ptr;
 		ptr = ptr->next;
 	}
+}
+
+void	ft_putendl_fd(char *s, int fd)
+{
+	size_t	i;
+
+	i = 0;
+	if (!s)
+		return ;
+	while (s[i])
+	{
+		write(fd, &s[i], 1);
+		i++;
+	}
+	write(fd, "\n", 1);
 }
