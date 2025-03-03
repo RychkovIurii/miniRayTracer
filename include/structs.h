@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 17:15:19 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:28:03 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ typedef struct s_scene
 	int				needs_render;
 	int				mouse_x;
 	int				mouse_y;
+	int				width;
+	int				height;
 	mlx_t			*mlx;
 	mlx_image_t		*image;
 	t_ambient		ambient;

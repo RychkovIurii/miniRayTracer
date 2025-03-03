@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 17:41:26 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:20:57 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	validate_file_ext(t_rt *rt)
 	return (0);
 }
 
-void free_pixels(t_tuple **pixels, int height)
+void	free_pixels(t_tuple **pixels, int height)
 {
 	if (!pixels)
 		return;
@@ -37,7 +37,7 @@ void free_pixels(t_tuple **pixels, int height)
 	free(pixels);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	t_rt	*rt;
 	
@@ -78,6 +78,7 @@ int main(int argc, char **argv)
 	{
 		puts(mlx_strerror(mlx_errno));
 		free_pixels(rt->scene->pixels, HEIGHT);
+		free_rt(rt);
 		return(EXIT_FAILURE);
 	}
 	if (!(rt->scene->image = mlx_new_image(rt->scene->mlx, WIDTH, HEIGHT)))
@@ -85,6 +86,7 @@ int main(int argc, char **argv)
 		mlx_close_window(rt->scene->mlx);
 		puts(mlx_strerror(mlx_errno));
 		free_pixels(rt->scene->pixels, HEIGHT);
+		free_rt(rt);
 		return(EXIT_FAILURE);
 	}
 	if (mlx_image_to_window(rt->scene->mlx, rt->scene->image, 0, 0) == -1)
@@ -92,14 +94,15 @@ int main(int argc, char **argv)
 		mlx_close_window(rt->scene->mlx);
 		puts(mlx_strerror(mlx_errno));
 		free_pixels(rt->scene->pixels, HEIGHT);
+		free_rt(rt);
 		return(EXIT_FAILURE);
 	}
 	
 	mlx_loop_hook(rt->scene->mlx, ft_hook, rt->scene);
-
+	mlx_resize_hook(rt->scene->mlx, &resize_window, rt->scene);
 	mlx_loop(rt->scene->mlx);
 	mlx_terminate(rt->scene->mlx);
-	free_pixels(rt->scene->pixels, HEIGHT);
+	free_pixels(rt->scene->pixels, rt->scene->height);
 	free_rt(rt);
 	return (EXIT_SUCCESS);
 }

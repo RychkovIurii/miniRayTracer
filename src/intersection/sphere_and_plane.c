@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:27:31 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:25:25 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:41:05 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
 		return (result);
 	sqrt_d = sqrt(discriminant);
 	result.count = 2;
-	result.array = malloc(sizeof(t_intersection) * 2);
+	result.array = malloc(sizeof(t_intersection) * 2); // Error handling
 	result.array[0].t = (-q.b - sqrt_d) / (2 * q.a);
 	result.array[0].object = sphere;
 	result.array[1].t = (-q.b + sqrt_d) / (2 * q.a);
@@ -74,7 +74,7 @@ t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray)
 	if (fabs(transformed_ray.direction.y) < EPSILON)
 		return (result);
 	result.count = 1;
-	result.array = malloc(sizeof(t_intersection));
+	result.array = malloc(sizeof(t_intersection)); // Error handling
 	result.array[0].t = -transformed_ray.origin.y / transformed_ray.direction.y;
 	result.array[0].object = plane;
 	return (result);

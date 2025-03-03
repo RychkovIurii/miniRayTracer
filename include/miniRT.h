@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 14:05:57 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:21:26 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ t_camera	init_camera(t_tuple from, t_tuple forward, double fov);
 // Mlx
 
 void	ft_hook(void *param);
+void	resize_window(int width, int height, void *param);
 
 // Scene
 
@@ -208,4 +209,5 @@ int		validate_file_ext(t_rt *rt);
 /** Debug **/
 void	print_shapes(t_scene *scene);
 
+void	free_pixels(t_tuple **pixels, int height);
 #endif

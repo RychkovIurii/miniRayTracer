@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 13:07:47 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:33:07 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	init_scene_pixels(t_scene *scene, int height, int width)
 	int	j;
 
 	i = 0;
+	scene->height = height;
+	scene->width = width;
 	scene->pixels = malloc(height * sizeof(t_tuple *));
 	if (!scene->pixels)
 		exit(EXIT_FAILURE); // TODO: handle error

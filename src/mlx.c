@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/02/28 11:27:36 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:19:16 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,38 @@ void	ft_hook(void *param)
 		ft_render_scene(scene);
 		scene->needs_render = 0;
 	}
+}
+
+/*
+**	Resizes the window
+**	Resizes the image
+**	Initializes the pixels
+**	Recalculates the camera parameters
+**	Triggers the render
+*/
+void	resize_window(int width, int height, void *param)
+{
+	double	aspect;
+	double	half_view;
+	t_scene	*scene;
+
+	scene = param;
+	mlx_resize_image(scene->image, width, height);
+	free_pixels(scene->pixels, scene->height);
+	scene->pixels = NULL;
+	init_scene_pixels(scene, height, width);
+	half_view = tan(scene->camera.field_of_view * (M_PI / 180.0) * 0.5);
+	aspect = (double)width / (double)height;
+	if (aspect >= 1)
+	{
+		scene->camera.half_width = half_view;
+		scene->camera.half_height = half_view / aspect;
+	}
+	else
+	{
+		scene->camera.half_width = half_view * aspect;
+		scene->camera.half_height = half_view;
+	}
+	scene->camera.pixel_size = (scene->camera.half_width * 2) / width;
+	scene->needs_render = 1;
 }
