@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 18:41:37 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:12:17 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,10 @@ t_tuple	string_to_point(char **strings);
 t_tuple	string_to_vector(char **strings);
 t_tuple	string_to_color(char **strings);
 void	free_array(char **array);
-void	free_rt(t_rt *rt);
 int		free_and_return(t_rt *rt, char **array, int ret);
-int		print_clean(t_rt *rt, char *message, int ret);
 void	free_arrays(char **array1, char **array2);
 void	print_error(char *message);
 int		error(char *message, int ret);
-int		ft_strcmp(char const *s1, char const *s2);
 
 /******************** MATH FOLDER **********/
 // Tuple
@@ -160,58 +157,51 @@ int				check_cone_cap(t_ray ray, double t, t_shape cone, double y);
 
 /******************** KEYBOARD FOLDER **********/
 
-void	handle_mouse_and_exit(t_scene *scene);
-void	handle_camera_movement(t_scene *scene);
-void	handle_object_movement(t_scene *scene);
-void	handle_object_transformation(t_scene *scene);
-void	handle_light_controls(t_scene *scene);
+void			handle_mouse_and_exit(t_scene *scene);
+void			handle_camera_movement(t_scene *scene);
+void			handle_object_movement(t_scene *scene);
+void			handle_object_transformation(t_scene *scene);
+void			handle_light_controls(t_scene *scene);
 
 /******************** ROOT FOLDER **********/
-// Camera
 
-t_camera	init_camera(t_tuple from, t_tuple forward, double fov);
-
-// Mlx
-
-void	ft_hook(void *param);
-void	resize_window(int width, int height, void *param);
-
-// Scene
-
-void	ft_render_scene(void *param);
-t_ray	ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
-
-// Init
-
-t_material	material(t_tuple color, double ambient, double diffuse, double specular, double shininess, int has_pattern);
-t_light		init_light(t_tuple position, t_tuple color, double brightness);
-void		init_scene_pixels(t_scene *scene, int height, int width);
-void		initialize_structs(char **argv, t_rt *rt);
+t_light			init_light(t_tuple position, t_tuple color, double brightness);
+t_camera		init_camera(t_tuple from, t_tuple forward, double fov);
+void			init_scene_pixels(t_scene *scene, int height, int width);
+void			initialize_structs(char **argv, t_rt *rt);
+t_ray			ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
+void			ft_hook(void *param);
+void			resize_window(int width, int height, void *param);
+void			ft_render_scene(void *param);
+void			free_pixels(t_tuple **pixels, int height);
+void			free_rt(t_rt *rt);
 
 /******************** UTILS FOLDER **********/
 
-void	ft_lstclear_safe(t_list **lst);
-void	ft_lstremove(t_list **lst, void *content);
-t_list	*ft_lstnew(void *content);
-t_list	*ft_lstlast(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-char	*ft_strrchr(const char *s, int c);
-char	**ft_split(char const *s, char c);
-char	*get_next_line(int fd);
-void	*ft_memcpy(void *dst, const void *src, size_t n);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-void	ft_bzero(void *s, size_t n);
-int		ft_isdigit(int argument);
-void	*ft_calloc(size_t count, size_t size);
-void	ft_putendl_fd(char *s, int fd);
-size_t	ft_strlen(const char	*str);
-void	ft_putstr_fd(char *s, int fd);
+void			ft_lstclear_safe(t_list **lst);
+void			ft_lstremove(t_list **lst, void *content);
+t_list			*ft_lstnew(void *content);
+t_list			*ft_lstlast(t_list *lst);
+void			ft_lstadd_back(t_list **lst, t_list *new);
+char			*ft_strrchr(const char *s, int c);
+char			**ft_split(char const *s, char c);
+char			*get_next_line(int fd);
+void			*ft_memcpy(void *dst, const void *src, size_t n);
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
+int				ft_strcmp(char const *s1, char const *s2);
+size_t			ft_strlcpy(char *dst, const char *src, size_t dstsize);
+void			ft_bzero(void *s, size_t n);
+int				ft_isdigit(int argument);
+void			*ft_calloc(size_t count, size_t size);
+void			ft_putendl_fd(char *s, int fd);
+size_t			ft_strlen(const char	*str);
+void			ft_putstr_fd(char *s, int fd);
 
-int		validate_file_ext(t_rt *rt);
+
+
 /** Debug **/
 void	print_shapes(t_scene *scene);
 void	print_parsed_content(t_rt *rt);
 
-void	free_pixels(t_tuple **pixels, int height);
+
 #endif

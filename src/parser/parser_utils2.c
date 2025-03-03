@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:16 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:39:09 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:07:31 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,17 @@ int	free_and_return(t_rt *rt, char **array, int ret)
 	return (ret);
 }
 
-int	print_clean(t_rt *rt, char *message, int ret)
+void	free_array(char **array)
 {
-	(void)message; //do we need this? unused
-	free_rt(rt);
-	print_error("Invalid file content");
-	return (ret);
+	int	i;
+	
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }
 
 void	free_arrays(char **array1, char **array2)

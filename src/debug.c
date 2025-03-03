@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 22:08:11 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 15:27:22 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:15:15 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+void	print_elements(char **elements) // We don't use it for now
+{
+	int	i;
+
+	i = 0;
+	while (elements[i])
+	{
+		printf("%s\n", elements[i]);
+		i++;
+	}
+}
 
 void	print_material(t_material material)
 {

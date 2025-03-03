@@ -6,36 +6,11 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:19:12 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 18:43:03 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 19:06:10 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
-
-int	validate_file_ext(t_rt *rt)
-{
-	const char	*filename;
-	const char	*dot;
-
-	filename = rt->filename;
-	dot = ft_strrchr(filename, '.');
-	if(!dot)
-		return(1);
-	if (ft_strncmp(dot, ".rt\0", 4))
-		return (1);
-	return (0);
-}
-
-void	free_pixels(t_tuple **pixels, int height)
-{
-	if (!pixels)
-		return;
-	for (int i = 0; i < height; i++)
-	{
-		free(pixels[i]);
-	}
-	free(pixels);
-}
 
 int	main(int argc, char **argv)
 {
