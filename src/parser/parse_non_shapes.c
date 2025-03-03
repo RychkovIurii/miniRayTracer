@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:42:23 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 14:21:14 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:39:46 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,6 @@ int	parse_light(char **element, t_rt *rt)
 {
 	char	**coordinates;
 	char	**colors;
-	double	brightness;
 
 	if (rt->scene->light.id != 0)
 		return (error("Too many lights in file", 1));

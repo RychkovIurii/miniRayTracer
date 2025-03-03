@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:16 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:36:26 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:39:09 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_error(char *message)
 {
 	ft_putendl_fd("Error", 2);
-	ft_putendl_fd("message", 2);
+	ft_putendl_fd(message, 2);
 }
 
 int	free_and_return(t_rt *rt, char **array, int ret)
