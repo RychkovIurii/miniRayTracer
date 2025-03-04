@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 09:34:21 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:59:48 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,23 @@ char	**read_file_lines(int fd, int count)
 	return (lines);
 }
 
+int	counter(char **s)
+{
+	int	i;
+
+	i = 0;
+	while(s[i])
+		i++;
+	return (i);
+}
+
 char	**read_file(t_rt *rt, int fd)
 {
+	char	**lines;
+	
 	rt->element_count = count_lines_in_file(fd);
 	close(fd);
-	if (rt->element_count <= 0)
+	if (rt->element_count == 0)
 		return (NULL);
 	fd = open(rt->filename, O_RDONLY);
 	if (fd < 0)
@@ -51,7 +63,13 @@ char	**read_file(t_rt *rt, int fd)
 		print_error("Could not open file");
 		return (NULL);
 	}
-	return (read_file_lines(fd, rt->element_count));
+	lines = read_file_lines(fd, rt->element_count);
+	if (lines && counter(lines) != rt->element_count)
+	{
+		free_array(lines);
+		lines = NULL;
+	}
+	return (lines);
 }
 
 int	parse_line(char *line, t_rt *rt)
@@ -62,11 +80,11 @@ int	parse_line(char *line, t_rt *rt)
 
 	trimmed = trim_extra_spaces(line);
 	if (!trimmed)
-		error("Failed to trim line", 1);
+		return (error("Failed to trim line", 1));
 	element = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!element)
-		error("Failed to split line", 1);
+		return (error("Failed to split line", 1));
 	status = parse_element(element, rt);
 	if (status)
 	{

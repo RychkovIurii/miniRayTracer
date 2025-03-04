@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:24:09 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 10:47:04 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,6 @@ void	initialize_structs(char **argv, t_rt *rt)
 	{
 		ft_putendl_fd("Invalid file extension", 2);
 		free(rt);
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 }
