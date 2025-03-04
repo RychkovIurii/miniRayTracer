@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   structs.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 16:36:09 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:42:26 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,8 @@ typedef struct s_shape
 	double			min;
 	double			max;
 	double			height;
-	bool			closed;
+	int				closed;
+	int				selected;
 	t_tuple			scale;
 	t_tuple			center;
 	t_tuple			point_on_plane;
@@ -133,7 +134,6 @@ typedef struct s_shape
 	t_matrix		transpose_inv;
 	t_material		material;
 	t_shape_type	type;
-	int				selected;
 }	t_shape;
 
 typedef struct s_intersection
@@ -163,6 +163,8 @@ typedef struct s_scene
 	int				needs_render;
 	int				mouse_x;
 	int				mouse_y;
+	int				width;
+	int				height;
 	mlx_t			*mlx;
 	mlx_image_t		*image;
 	t_ambient		ambient;

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:15:09 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 14:08:47 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 16:44:13 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
 	t_quadratic		q;
 
 	result.count = 0;
-	result.array = ft_calloc(3, sizeof(t_intersection));
+	result.array = ft_calloc(3, sizeof(t_intersection)); // Error handling
 	if (!result.array)
 		return (result);
 	q = compute_quadratic_cone(ray, cone);

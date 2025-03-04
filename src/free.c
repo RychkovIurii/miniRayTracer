@@ -1,0 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/03 18:52:11 by irychkov          #+#    #+#             */
+/*   Updated: 2025/03/03 19:40:18 by irychkov         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "miniRT.h"
+
+void	free_pixels(t_tuple **pixels, int height)
+{
+	int	i;
+
+	i = 0;
+	if (!pixels)
+		return ;
+	while (i < height)
+		free(pixels[i++]);
+	free(pixels);
+}
+
+void	free_rt(t_rt *rt)
+{
+	if (!rt)
+		return ;
+	if (rt->scene)
+	{
+		if (rt->scene->shapes)
+		{
+			free(rt->scene->shapes);
+		}
+		free(rt->scene);
+	}
+	free(rt);
+}
+
+int	free_pixels_and_rt(t_rt *rt, int ret)
+{
+	free_pixels(rt->scene->pixels, rt->scene->height);
+	free_rt(rt);
+	return (ret);
+}

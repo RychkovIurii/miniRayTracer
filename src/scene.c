@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:20:58 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 17:01:57 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:36:24 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,10 +79,10 @@ static void	render(t_camera camera, t_scene *scene)
 	camera.transform_inv = inverse_matrix(camera.transform);
 	origin = multiply_matrix_by_tuple(camera.transform_inv, point(0, 0, 0));
 	y = 0;
-	while (y < HEIGHT)
+	while (y < scene->height)
 	{
 		x = 0;
-		while (x < WIDTH)
+		while (x < scene->width)
 		{
 			ray = ray_for_pixel(camera, x, y, origin);
 			scene->pixels[y][x] = color_at(scene, ray, DEFAULT_REMAINING);
@@ -108,10 +108,10 @@ void	ft_render_scene(void *param)
 	scene = (t_scene *)param;
 	y = 0;
 	render(scene->camera, scene);
-	while (y < HEIGHT)
+	while (y < scene->height)
 	{
 		x = 0;
-		while (x < WIDTH)
+		while (x < scene->width)
 		{
 			color = scene->pixels[y][x];
 			mlx_put_pixel(scene->image, x, y, ft_pixel(

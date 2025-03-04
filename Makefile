@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
+#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/03 16:37:46 by henbuska         ###   ########.fr        #
+#    Updated: 2025/03/03 19:12:55 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,12 +50,12 @@ COMMON_SRCS =	main.c\
 				utils/libc_utils4.c\
 				utils/gnl_utils.c\
 				utils/gnl.c\
-				utils.c\
 				init.c\
 				scene.c\
 				camera.c\
 				mlx.c\
 				debug.c\
+				free.c\
 
 # Program-specific sources
 SRCS = $(COMMON_SRCS)\
@@ -82,6 +82,9 @@ MLX_DIR = ./MLX42
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 BONUS_OBJS = $(BONUS_SRCS:%.c=$(OBJ_BONUS_DIR)/%.o)
 
+# Dependency files
+DEP_FILES = $(OBJS:.o=.d) $(BONUS_OBJS:.o=.d)
+
 # Create directory lists
 OBJ_DIRS = $(sort $(dir $(OBJS)))
 BONUS_OBJ_DIRS = $(sort $(dir $(BONUS_OBJS)))
@@ -94,7 +97,7 @@ LIBMLX = $(MLX_DIR)/build/libmlx42.a
 #LIBGLFW = /Users/irychkov/.brew/Cellar/glfw/3.4/lib/libglfw.3.dylib
 #OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm -flto
-CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -Wall -Wextra -Werror -flto
+CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -MMD -MP -MT $@ -Wall -Wextra -Werror -flto
 CC = cc
 
 all: $(LIBMLX) $(NAME)
@@ -138,5 +141,7 @@ fclean: clean
 	rm -rf $(NAME) $(NAMEBONUS)
 
 re: fclean all
+
+-include $(DEP_FILES)
 
 .PHONY: all clean fclean re libmlx bonus

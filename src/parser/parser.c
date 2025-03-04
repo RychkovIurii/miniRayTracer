@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:57:08 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/04 09:34:21 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	parse_line(char *line, t_rt *rt)
 	char	*trimmed;
 	char	**element;
 	int		status;
-	size_t	len;
 
 	trimmed = trim_extra_spaces(line);
 	if (!trimmed)
@@ -73,9 +72,8 @@ int	parse_line(char *line, t_rt *rt)
 	{
 		ft_putstr_fd("Failed to parse line ", 2);
 		ft_putstr_fd(line, 2);
-		len = ft_strlen(line);
 		if (line[ft_strlen(line) - 1] != '\n')
-			write(2, "\n", 1);
+			(void)write(2, "\n", 1);
 	}
 	free_array(element);
 	return (status);

@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:06:32 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:10:42 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/03 18:47:08 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,4 +69,17 @@ void	ft_putendl_fd(char *s, int fd)
 		i++;
 	}
 	(void)write(fd, "\n", 1);
+}
+
+int	ft_strcmp(char const *s1, char const *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (s1[i] != '\0' && s2[i] != '\0' && (s1[i] == s2[i]))
+		i++;
+	if (s1[i] == s2[i])
+		return (0);
+	else
+		return ((unsigned char)s1[i] - (unsigned char)s2[i]);
 }
