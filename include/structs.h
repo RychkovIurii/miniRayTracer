@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:46:44 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 18:42:26 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:06:48 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define STRUCTS_H
 
 # include "miniRT.h"
+
+typedef struct s_rt	t_rt;
 
 typedef struct s_list
 {
@@ -172,6 +174,7 @@ typedef struct s_scene
 	t_light			light;
 	t_shape			*shapes;
 	t_tuple			**pixels;
+	t_rt			*rt;
 }	t_scene;
 
 typedef struct s_file

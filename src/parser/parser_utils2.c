@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:16 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 19:26:14 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:29:23 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	print_error(char *message)
 
 int	free_and_return(t_rt *rt, char **array, int ret)
 {
-	free_array(array);
+	if (array)
+		free_array(array);
 	free_rt(rt);
 	return (ret);
 }

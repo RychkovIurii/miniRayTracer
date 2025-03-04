@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:15:09 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 16:44:13 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:53:55 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,15 +111,16 @@ Finally, it checks for intersections with the cone's cap.
 @param ray: The ray being tested for intersection.
 @returns A t_intersects struct containing up to three valid intersection points.
 */
-t_intersects	local_intersect_cone(t_shape *cone, t_ray ray)
+t_intersects	local_intersect_cone(t_shape *cone, t_ray ray,
+		t_intersection *xs_array, t_scene *world)
 {
 	t_intersects	result;
 	t_quadratic		q;
 
 	result.count = 0;
-	result.array = ft_calloc(3, sizeof(t_intersection)); // Error handling
+	result.array = ft_calloc(3, sizeof(t_intersection));
 	if (!result.array)
-		return (result);
+		exit_and_cleanup_with_xs(world->rt, xs_array);
 	q = compute_quadratic_cone(ray, cone);
 	if (fabs(q.a) < EPSILON)
 	{

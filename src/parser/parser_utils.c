@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:43:18 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 19:25:58 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:59:30 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	init_scene_structs(char **lines, t_rt *rt)
 		return (1);
 	}
 	non_shape = count_non_shape_elements(lines);
+	rt->scene->rt = rt;
 	rt->scene->shape_count = 0;
 	rt->scene->needs_render = 1;
 	rt->scene->shapes = ft_calloc(

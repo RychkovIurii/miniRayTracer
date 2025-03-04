@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:39:01 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:26:40 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:44:47 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,11 @@ static double	find_n(t_list *containers)
 /*
 ** Updates the containers list with the object.
 */
-static void	update_containers(t_list **containers, t_shape *object)
+static void	update_containers(t_list **containers, t_shape *object,
+			t_intersects *xs, t_scene *world)
 {
 	t_list	*temp;
+	t_list	*new;
 
 	temp = *containers;
 	while (temp)
@@ -68,7 +70,13 @@ static void	update_containers(t_list **containers, t_shape *object)
 		}
 		temp = temp->next;
 	}
-	ft_lstadd_back(containers, ft_lstnew(object)); // Check return value
+	new = ft_lstnew(object);
+	if (!new)
+	{
+		ft_lstclear_safe(containers);
+		exit_and_cleanup_with_xs(world->rt, xs->array);
+	}
+	ft_lstadd_back(containers, new);
 }
 
 /*
@@ -76,7 +84,7 @@ static void	update_containers(t_list **containers, t_shape *object)
 ** Finds the refractive index of intersected object.
 */
 t_intersection	prepare_computations(
-			t_intersection hit, t_ray ray, t_intersects *xs)
+			t_intersection hit, t_ray ray, t_intersects *xs, t_scene *world)
 {
 	int				i;
 	t_list			*containers;
@@ -92,7 +100,7 @@ t_intersection	prepare_computations(
 		if (xs->array[i].object == hit.object
 			&& fabs(xs->array[i].t - hit.t) < EPSILON)
 			comps.n1 = find_n(containers);
-		update_containers(&containers, xs->array[i].object);
+		update_containers(&containers, xs->array[i].object, xs, world);
 		if (xs->array[i].object == hit.object
 			&& fabs(xs->array[i].t - hit.t) < EPSILON)
 		{

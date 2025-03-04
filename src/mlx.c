@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 17:15:51 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 18:19:16 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:26:10 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,8 @@ void	resize_window(int width, int height, void *param)
 	mlx_resize_image(scene->image, width, height);
 	free_pixels(scene->pixels, scene->height);
 	scene->pixels = NULL;
-	init_scene_pixels(scene, height, width);
+	if (init_scene_pixels(scene, height, width))
+		exit_and_cleanup(scene->rt);
 	half_view = tan(scene->camera.field_of_view * (M_PI / 180.0) * 0.5);
 	aspect = (double)width / (double)height;
 	if (aspect >= 1)

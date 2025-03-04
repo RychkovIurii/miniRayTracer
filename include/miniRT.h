@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:42:46 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:55:45 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 
 # define EPSILON 0.0001f
 
-# define WIDTH 500
-# define HEIGHT 500
+# define WIDTH 300
+# define HEIGHT 300
 
-# define DEFAULT_REMAINING 5
+# define DEFAULT_REMAINING 3
 
 # define PATTERN_NONE 0
 # define PATTERN_STRIPE 1
@@ -44,15 +44,18 @@
 
 t_light			init_light(t_tuple position, t_tuple color, double brightness);
 t_camera		init_camera(t_tuple from, t_tuple forward, double fov);
-void			init_scene_pixels(t_scene *scene, int height, int width);
+int				init_scene_pixels(t_scene *scene, int height, int width);
 void			initialize_structs(char **argv, t_rt *rt);
 t_ray			ray_for_pixel(t_camera camera, int px, int py, t_tuple origin);
 void			ft_hook(void *param);
 void			resize_window(int width, int height, void *param);
 void			ft_render_scene(void *param);
-int				free_pixels_and_rt(t_rt *rt, int ret);
+int				free_pixels_and_rt(t_rt *rt, int ret, char *message);
 void			free_pixels(t_tuple **pixels, int height);
+int				free_pixels_back(t_tuple **pixels, int i);
 void			free_rt(t_rt *rt);
+void			exit_and_cleanup(t_rt *rt);
+void			exit_and_cleanup_with_xs(t_rt *rt, t_intersection *xs_array);
 
 /******************** PARSER FOLDER **********/
 // Parsing_bonus
@@ -163,14 +166,19 @@ t_tuple			color_at(t_scene *world, t_ray ray, int remaining);
 /******************** INTERSECTION FOLDER **********/
 
 t_tuple			normal_at(t_shape *shape, t_tuple world_point);
-t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray);
-t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray);
-t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray);
-t_intersects	local_intersect_cone(t_shape *cone, t_ray ray);
+t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray,
+					t_intersection *xs_array, t_scene *world);
+t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray,
+					t_intersection *xs_array, t_scene *world);
+t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray,
+					t_intersection *xs_array, t_scene *world);
+t_intersects	local_intersect_cone(t_shape *cone, t_ray ray,
+					t_intersection *xs_array, t_scene *world);
 t_intersects	intersect_scene(t_scene *world, t_ray ray);
-t_intersection	prepare_computations(
-					t_intersection hit, t_ray ray, t_intersects *xs);
-t_intersects	intersect(t_shape *shape, t_ray ray);
+t_intersection	prepare_computations(t_intersection hit, t_ray ray,
+					t_intersects *xs, t_scene *world);
+t_intersects	intersect(t_shape *shape, t_ray ray,
+					t_intersection *xs_array, t_scene *world);
 t_intersection	*hit(t_intersects intersections);
 int				check_cone_cap(t_ray ray, double t, t_shape cone, double y);
 

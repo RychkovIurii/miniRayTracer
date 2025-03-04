@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:24:09 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:29:45 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_light	init_light(t_tuple position, t_tuple color, double brightness)
 	return (light);
 }
 
-void	init_scene_pixels(t_scene *scene, int height, int width)
+int	init_scene_pixels(t_scene *scene, int height, int width)
 {
 	int	i;
 	int	j;
@@ -33,13 +33,13 @@ void	init_scene_pixels(t_scene *scene, int height, int width)
 	scene->width = width;
 	scene->pixels = malloc(height * sizeof(t_tuple *));
 	if (!scene->pixels)
-		exit(EXIT_FAILURE); // TODO: handle error
+		return (1);
 	while (i < height)
 	{
 		j = 0;
 		scene->pixels[i] = malloc(width * sizeof(t_tuple));
 		if (!scene->pixels[i])
-			exit(EXIT_FAILURE); // TODO: handle error
+			return (free_pixels_back(scene->pixels, i));
 		while (j < width)
 		{
 			scene->pixels[i][j] = create_color(0, 0, 0);
@@ -47,6 +47,7 @@ void	init_scene_pixels(t_scene *scene, int height, int width)
 		}
 		i++;
 	}
+	return (0);
 }
 
 static int	validate_file_ext(t_rt *rt)
@@ -70,6 +71,6 @@ void	initialize_structs(char **argv, t_rt *rt)
 	{
 		ft_putendl_fd("Invalid file extension", 2);
 		free(rt);
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 }
