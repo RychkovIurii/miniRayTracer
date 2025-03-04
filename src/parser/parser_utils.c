@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:43:18 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 13:59:30 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:13:01 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int	count_lines_in_file(int fd)
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (line[0] != '\0' && ft_strlen(line) > 0 && line[0] != '\n')
+		if (line[0] != '\0' && ft_strlen(line) > 0 && line[0] != '\n' && line[0] != '#')
 			line_count++;
 		free(line);
 		line = get_next_line(fd);

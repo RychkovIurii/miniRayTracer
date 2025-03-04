@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 14:53:05 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/04 21:56:34 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 
 char	**validate_color(char *str)
 {
@@ -45,6 +45,7 @@ char	**validate_coordinates(char *str)
 	double	coordinate;
 	char	**coord_strings;
 	int		i;
+	int		error;
 
 	coord_strings = ft_split(str, ',');
 	if (!coord_strings)
@@ -57,8 +58,8 @@ char	**validate_coordinates(char *str)
 	i = 0;
 	while (i < 3)
 	{
-		coordinate = ft_atof(coord_strings[i]);
-		if (coordinate < -1000.0 || coordinate > 1000.0)
+		coordinate = ft_atof_error(coord_strings[i], &error);
+		if (error || coordinate < -1000.0 || coordinate > 1000.0)
 		{
 			free_array(coord_strings);
 			return (NULL);
@@ -73,6 +74,7 @@ char	**validate_vector(char *str)
 	double	vector_element;
 	char	**vector_strings;
 	int		i;
+	int		error;
 
 	vector_strings = ft_split(str, ',');
 	if (!vector_strings)
@@ -85,8 +87,8 @@ char	**validate_vector(char *str)
 	i = 0;
 	while (i < 3)
 	{
-		vector_element = ft_atof(vector_strings[i]);
-		if (vector_element < -1.0 || vector_element > 1.0)
+		vector_element = ft_atof_error(vector_strings[i], &error);
+		if (error || vector_element < -1.0 || vector_element > 1.0)
 		{
 			free_array(vector_strings);
 			return (NULL);
@@ -124,41 +126,13 @@ t_file	validate_args(char **element, int coord_i, int normal_i, int color_i)
 	return (data);
 }
 
-/*
-t_element_data	validate_element_data(char **element)
-{
-	t_element_data	data;
-
-	ft_bzero(&data, sizeof(t_element_data));
-	data.coordinates = validate_coordinates(element[1]);
-	if (!data.coordinates)
-	{
-		print_error("Invalid coordinates for center");
-		return (data);
-	}
-	data.normal = validate_vector(element[2]);
-	if (!data.normal)
-	{
-		free_array(data.coordinates);
-		print_error("Invalid normal vector");
-		return (data);
-	}
-	data.colors = validate_color(element[5]);
-	if (!data.colors)
-	{
-		free_array(data.normal);
-		free_array(data.coordinates);
-		print_error("Invalid color");
-	}
-	return (data);
-}*/
-
 int	validate_double(char *str, double min, double max)
 {
 	double	value;
+	int		error;
 
-	value = ft_atof(str);
-	if (value < min || value > max)
+	value = ft_atof_error(str, &error);
+	if (error || value < min || value > max)
 		return (1);
 	return (0);
 }

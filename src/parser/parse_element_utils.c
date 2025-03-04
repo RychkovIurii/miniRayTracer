@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:09:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 15:46:51 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:47:20 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 
 int	validate_argument_count(char **array, int count)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 15:52:35 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:47:45 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 #include <fcntl.h>
 
 char	**read_file_lines(int fd, int count)
@@ -29,7 +29,7 @@ char	**read_file_lines(int fd, int count)
 	line = get_next_line(fd);
 	while (line)
 	{
-		if (line[0] != '\0' && line[0] != '\n')
+		if (line[0] != '\0' && line[0] != '\n' && line[0] != '#')
 			lines[i++] = line;
 		else
 			free(line);
@@ -127,7 +127,7 @@ int	parse_file(t_rt *rt)
 	free_array(lines);
 	if (invalid_file_content(rt))
 	{
-		ft_putendl_fd("Invalid file content", 2);
+		print_error("Invalid file content");
 		return (1);
 	}
 	print_parsed_content(rt);
