@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:27:31 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 16:41:05 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:54:55 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static t_quadratic	compute_quadratic_sphere(
 ** @param ray: The ray being tested for intersection.
 ** @returns A t_intersects struct containing up to two valid intersection points.
 */
-t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
+t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray,
+		t_intersection *xs_array, t_scene *world)
 {
 	t_intersects	result;
 	t_quadratic		q;
@@ -51,7 +52,9 @@ t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
 		return (result);
 	sqrt_d = sqrt(discriminant);
 	result.count = 2;
-	result.array = malloc(sizeof(t_intersection) * 2); // Error handling
+	result.array = malloc(sizeof(t_intersection) * 2);
+	if (!result.array)
+		exit_and_cleanup_with_xs(world->rt, xs_array);
 	result.array[0].t = (-q.b - sqrt_d) / (2 * q.a);
 	result.array[0].object = sphere;
 	result.array[1].t = (-q.b + sqrt_d) / (2 * q.a);
@@ -66,7 +69,8 @@ t_intersects	local_intersect_sphere(t_shape *sphere, t_ray transformed_ray)
 ** @param ray: The ray being tested for intersection.
 ** @returns A t_intersects struct containing one valid intersection point.
 */
-t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray)
+t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray,
+		t_intersection *xs_array, t_scene *world)
 {
 	t_intersects	result;
 
@@ -74,7 +78,9 @@ t_intersects	local_intersect_plane(t_shape *plane, t_ray transformed_ray)
 	if (fabs(transformed_ray.direction.y) < EPSILON)
 		return (result);
 	result.count = 1;
-	result.array = malloc(sizeof(t_intersection)); // Error handling
+	result.array = malloc(sizeof(t_intersection));
+	if (!result.array)
+		exit_and_cleanup_with_xs(world->rt, xs_array);
 	result.array[0].t = -transformed_ray.origin.y / transformed_ray.direction.y;
 	result.array[0].object = plane;
 	return (result);

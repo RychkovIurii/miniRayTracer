@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:25:42 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:19:19 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:12:27 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static int	fill_intersections(
 	index = 0;
 	while (i < world->shape_count)
 	{
-		temp = intersect(&world->shapes[i], ray);
+		temp = intersect(&world->shapes[i], ray, xs_array, world);
 		if (temp.count > 0)
 		{
 			ft_memcpy(xs_array + index, temp.array,
@@ -93,7 +93,7 @@ t_intersects	intersect_scene(t_scene *world, t_ray ray)
 	ft_bzero(&xs, sizeof(t_intersects));
 	xs_array = malloc(sizeof(t_intersection) * world->shape_count * 4);
 	if (!xs_array)
-		exit(1); //Think about error handling (free everything and exit)
+		exit_and_cleanup(world->rt);
 	index = fill_intersections(world, ray, xs_array);
 	insertion_sort_intersections(xs_array, index);
 	xs.count = index;

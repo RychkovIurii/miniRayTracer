@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 11:59:48 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:52:35 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	counter(char **s)
 	int	i;
 
 	i = 0;
-	while(s[i])
+	while (s[i])
 		i++;
 	return (i);
 }
@@ -52,7 +52,7 @@ int	counter(char **s)
 char	**read_file(t_rt *rt, int fd)
 {
 	char	**lines;
-	
+
 	rt->element_count = count_lines_in_file(fd);
 	close(fd);
 	if (rt->element_count == 0)

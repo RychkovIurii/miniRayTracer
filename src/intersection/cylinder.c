@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/27 16:20:14 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/02 16:29:12 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:54:10 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,8 @@ static int	compute_intersections_cyl(t_ray ray, t_shape *cylinder,
 ** @returns A t_intersects struct containing up to four valid
 ** intersection points.
 */
-t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
+t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray,
+		t_intersection *xs_array, t_scene *world)
 {
 	t_intersects	result;
 	t_quadratic		q;
@@ -129,7 +130,7 @@ t_intersects	local_intersect_cylinder(t_shape *cylinder, t_ray ray)
 	result.count = 0;
 	result.array = ft_calloc(4, sizeof(t_intersection));
 	if (!result.array)
-		return (result); // Error handling
+		exit_and_cleanup_with_xs(world->rt, xs_array);
 	q = compute_quadratic_cylinder(ray, cylinder);
 	if (fabs(q.a) > EPSILON)
 	{

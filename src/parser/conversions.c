@@ -6,7 +6,7 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:07:53 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 09:41:33 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 15:52:02 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,10 @@
 int	rt_atoi(char *str)
 {
 	long long int	result;
-	int				sign; // We don't use it
 
 	result = 0;
-	sign = 1;
-	if (*str != '-' && *str != '+' && !ft_isdigit(*str))
+	if (!ft_isdigit(*str))
 		return (-1);
-	if (*str == '-' || *str == '+') // Check it please
-	{
-		if (*str == '-')
-			return (-1);
-		str++;
-	}
 	while (*str && ft_isdigit(*str))
 	{
 		result = result * 10 + *str - '0';

@@ -6,11 +6,22 @@
 /*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:52:11 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/03 19:40:18 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/04 14:29:13 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+int	free_pixels_back(t_tuple **pixels, int i)
+{
+	while (i > 0)
+	{
+		i--;
+		free(pixels[i]);
+	}
+	free(pixels);
+	return (1);
+}
 
 void	free_pixels(t_tuple **pixels, int height)
 {
@@ -39,9 +50,32 @@ void	free_rt(t_rt *rt)
 	free(rt);
 }
 
-int	free_pixels_and_rt(t_rt *rt, int ret)
+int	free_pixels_and_rt(t_rt *rt, int ret, char *message)
 {
+	if (message)
+		ft_putendl_fd(message, 2);
 	free_pixels(rt->scene->pixels, rt->scene->height);
 	free_rt(rt);
 	return (ret);
+}
+
+void	exit_and_cleanup(t_rt *rt)
+{
+	ft_putendl_fd("Rendering error", 2);
+	mlx_close_window(rt->scene->mlx);
+	mlx_terminate(rt->scene->mlx);
+	free_pixels(rt->scene->pixels, rt->scene->height);
+	free_rt(rt);
+	exit(1);
+}
+
+void	exit_and_cleanup_with_xs(t_rt *rt, t_intersection *xs_array)
+{
+	ft_putendl_fd("Rendering error", 2);
+	free(xs_array);
+	mlx_close_window(rt->scene->mlx);
+	mlx_terminate(rt->scene->mlx);
+	free_pixels(rt->scene->pixels, rt->scene->height);
+	free_rt(rt);
+	exit(1);
 }
