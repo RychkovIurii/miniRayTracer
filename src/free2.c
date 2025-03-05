@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_utils2.c                                    :+:      :+:    :+:   */
+/*   free2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/28 16:52:16 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 13:29:23 by irychkov         ###   ########.fr       */
+/*   Created: 2025/03/05 13:38:58 by henbuska          #+#    #+#             */
+/*   Updated: 2025/03/05 13:41:21 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	print_error(char *message)
+void	exit_and_cleanup(t_rt *rt)
 {
-	ft_putendl_fd("Error", 2);
-	ft_putendl_fd(message, 2);
+	ft_putendl_fd("Rendering error", 2);
+	mlx_close_window(rt->scene->mlx);
+	mlx_terminate(rt->scene->mlx);
+	free_pixels(rt->scene->pixels, rt->scene->height);
+	free_rt(rt);
+	exit(1);
+}
+
+void	exit_and_cleanup_with_xs(t_rt *rt, t_intersection *xs_array)
+{
+	ft_putendl_fd("Rendering error", 2);
+	free(xs_array);
+	mlx_close_window(rt->scene->mlx);
+	mlx_terminate(rt->scene->mlx);
+	free_pixels(rt->scene->pixels, rt->scene->height);
+	free_rt(rt);
+	exit(1);
 }
 
 int	free_and_return(t_rt *rt, char **array, int ret)
@@ -24,19 +39,6 @@ int	free_and_return(t_rt *rt, char **array, int ret)
 		free_array(array);
 	free_rt(rt);
 	return (ret);
-}
-
-void	free_array(char **array)
-{
-	int	i;
-
-	i = 0;
-	while (array[i])
-	{
-		free(array[i]);
-		i++;
-	}
-	free(array);
 }
 
 void	free_arrays(char **array1, char **array2)

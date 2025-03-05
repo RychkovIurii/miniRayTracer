@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:42:23 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:39:46 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:47:30 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 
 int	parse_ambient(char **element, t_rt *rt)
 {

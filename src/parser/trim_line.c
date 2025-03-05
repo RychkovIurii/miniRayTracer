@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:45:07 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 15:19:58 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:55:53 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 
 static int	count_new_length(char *line)
 {
@@ -78,6 +78,8 @@ char	*trim_extra_spaces(char *line)
 	i = 0;
 	j = 0;
 	flag = 0;
+	if (line && line[i] == ' ')
+		return (NULL);
 	trimmed = allocate_trimmed_string(line);
 	if (!trimmed)
 		return (NULL);

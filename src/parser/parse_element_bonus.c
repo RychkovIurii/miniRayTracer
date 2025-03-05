@@ -6,11 +6,11 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:43:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:08:48 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:15:01 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 
 int	parse_element(char **element, t_rt *rt)
 {
@@ -30,7 +30,7 @@ int	parse_element(char **element, t_rt *rt)
 		return (parse_cone_bonus(element, rt));
 	else
 	{
-		ft_putendl_fd("Invalid element identifier", 2);
+		print_error("Invalid element identifier");
 		return (1);
 	}
 	return (0);

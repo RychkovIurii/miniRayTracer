@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:52:11 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/04 14:29:13 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:40:22 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,23 +59,15 @@ int	free_pixels_and_rt(t_rt *rt, int ret, char *message)
 	return (ret);
 }
 
-void	exit_and_cleanup(t_rt *rt)
+void	free_array(char **array)
 {
-	ft_putendl_fd("Rendering error", 2);
-	mlx_close_window(rt->scene->mlx);
-	mlx_terminate(rt->scene->mlx);
-	free_pixels(rt->scene->pixels, rt->scene->height);
-	free_rt(rt);
-	exit(1);
-}
+	int	i;
 
-void	exit_and_cleanup_with_xs(t_rt *rt, t_intersection *xs_array)
-{
-	ft_putendl_fd("Rendering error", 2);
-	free(xs_array);
-	mlx_close_window(rt->scene->mlx);
-	mlx_terminate(rt->scene->mlx);
-	free_pixels(rt->scene->pixels, rt->scene->height);
-	free_rt(rt);
-	exit(1);
+	i = 0;
+	while (array[i])
+	{
+		free(array[i]);
+		i++;
+	}
+	free(array);
 }

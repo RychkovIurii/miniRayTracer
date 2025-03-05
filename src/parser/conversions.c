@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   conversions.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:07:53 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 15:52:02 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:34:27 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/miniRT.h"
+#include "miniRT.h"
 #include <limits.h>
 
 int	rt_atoi(char *str)
@@ -18,7 +18,11 @@ int	rt_atoi(char *str)
 	long long int	result;
 
 	result = 0;
+	if (*str == '+')
+		str++;
 	if (!ft_isdigit(*str))
+		return (-1);
+	if (*str == '0' && *(str + 1) != '\0')
 		return (-1);
 	while (*str && ft_isdigit(*str))
 	{
@@ -32,25 +36,7 @@ int	rt_atoi(char *str)
 	return ((int)result);
 }
 
-static double	handle_fraction(char *str)
-{
-	double	fraction;
-	double	divisor;
-
-	divisor = 10.0;
-	fraction = 0;
-	while (*str && ft_isdigit(*str))
-	{
-		fraction = fraction + (*str - '0') / divisor;
-		divisor *= 10.0;
-		str++;
-	}
-	if (*str != '\0')
-		return (-1);
-	return (fraction);
-}
-
-static int	handle_sign(char **str)
+int	handle_sign(char **str)
 {
 	int	sign;
 
@@ -68,24 +54,23 @@ double	ft_atof(char *str)
 {
 	double	result;
 	double	fraction;
+	double	divisor;
 	int		sign;
 
-	result = 0;
-	fraction = 0;
-	if (*str != '-' && *str != '+' && !ft_isdigit(*str))
-		return (-1);
+	result = 0.0;
+	fraction = 0.0;
+	divisor = 10.0;
 	sign = handle_sign(&str);
-	while (*str && ft_isdigit(*str))
-	{
-		result = result * 10.0 + (*str - '0');
-		str++;
-	}
+	while (ft_isdigit(*str))
+		result = result * 10.0 + (*str++ - '0');
 	if (*str == '.')
 	{
 		str++;
-		fraction = handle_fraction(str);
+		while (ft_isdigit(*str))
+		{
+			fraction += (*str++ - '0') / divisor;
+			divisor *= 10.0;
+		}
 	}
-	if (fraction == -1)
-		return (-1);
 	return (sign * (result + fraction));
 }

@@ -1,0 +1,29 @@
+### AMBIENT LIGHTING
+## (intensity [0.0,1.0] | colour in RGB [0,255])
+## ratio   color
+A  0.5     255,255,255
+
+### CAMERA
+## (origin point | orientation [-1.0,1.0] | field-of-view in degrees [0,180])
+## coord            normal           fov
+C  0,2,10           0,0,-1           100
+
+### LIGHTING
+## (origin point | brightness [0.0,1.0] | color in RGB [0,255])
+## coord            ratio           color
+L  0,10,10          0.6             255,255,255
+
+### SPHERE
+## (origin point | diameter [>0] | color in RGB [0,255])
+## coord            diam            color
+sp 1.5,2,0           4.0             178,145,242
+
+### PLANE
+## (origin point | orientation [-1.0,1.0] | color in RGB [0,255])
+## coord            normal          color
+pl 0,0,0            0,1,0           213,237,225
+
+### CYLINDER
+## (origin point | orientation [-1.0,1.0] | diameter [>0] | height [>0] | color in RGB [0,255]
+## coord        normal     diam   height   color
+cy -2,2.3,1     0,1,0      2      4.6      227,84,129

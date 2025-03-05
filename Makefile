@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
+#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/03 19:12:55 by irychkov         ###   ########.fr        #
+#    Updated: 2025/03/05 13:45:05 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,11 +17,12 @@ NAMEBONUS = miniRT_bonus
 COMMON_SRCS =	main.c\
 				parser/parser.c\
 				parser/parser_utils.c\
-				parser/parser_utils2.c\
 				parser/parse_element_utils.c\
 				parser/parse_non_shapes.c\
 				parser/validations.c\
+				parser/validations2.c\
 				parser/conversions.c\
+				parser/conversions2.c\
 				parser/trim_line.c\
 				math/tuple.c\
 				math/tuple2.c\
@@ -56,6 +57,7 @@ COMMON_SRCS =	main.c\
 				mlx.c\
 				debug.c\
 				free.c\
+				free2.c\
 
 # Program-specific sources
 SRCS = $(COMMON_SRCS)\

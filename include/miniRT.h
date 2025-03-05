@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/04 15:55:45 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:52:23 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,9 @@ char			**validate_vector(char *str);
 int				validate_double(char *str, double min, double max);
 double			validate_dimension(char *str);
 double			ft_atof(char *str);
+double			ft_atof_error(char *str, int *error);
 int				rt_atoi(char *str);
+int				handle_sign(char **str);
 t_tuple			string_to_point(char **strings);
 t_tuple			string_to_vector(char **strings);
 t_tuple			string_to_color(char **strings);
@@ -108,6 +110,8 @@ int				free_and_return(t_rt *rt, char **array, int ret);
 void			free_arrays(char **array1, char **array2);
 void			print_error(char *message);
 int				error(char *message, int ret);
+int				counter(char **s);
+int				count_non_shape_elements(char **lines);
 
 /******************** MATH FOLDER **********/
 // Tuple
