@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 20:47:45 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 12:01:22 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	parse_line(char *line, t_rt *rt)
 	trimmed = trim_extra_spaces(line);
 	if (!trimmed)
 		return (error("Failed to trim line", 1));
+	printf("{%s}", trimmed);
 	element = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!element)
@@ -118,7 +119,7 @@ int	parse_file(t_rt *rt)
 
 	fd = open(rt->filename, O_RDONLY);
 	if (fd < 0)
-		error("Could not open file", 1);
+		return(error("Could not open file", 1));
 	lines = read_file(rt, fd);
 	if (!lines)
 		return (error("Failed to read file", 1));
