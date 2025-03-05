@@ -1,0 +1,39 @@
+### AMBIENT LIGHTING
+## (intensity [0.0,1.0] | color in RGB [0,255])
+## ratio   color
+A 0.3     255,255,255 
+
+### LIGHT SOURCE
+## (origin point | brightness [0.0,1.0] | color in RGB [0,255])
+## coord        ratio      color
+L 0,6,-14  0.8  255,255,255
+
+### CAMERA
+## (origin point | orientation [-1.0,1.0] | field-of-view in degrees [0,180])
+## coord        normal     fov
+C 10,10,-10 -1,-1,1 70
+
+### SPHERE (No pattern)
+## (coord | diameter | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
+sp 0,0,0    2.0     255,139,50  0.7      0.3       75         0.1    0.0        1.0         ring     0,0,0      255,255,255      0.1
+# Sphere at (0,0,0), diameter 2.0, color 255,139,50 (orange), no pattern.
+
+### PLANE (Checker pattern)
+## (coord | normal | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
+pl 0,-3,0    0,1,0     220,220,220  0.5       0.8        400.0       0.8     0.0       1.0         none   0,0,0      255,255,255   8.0
+# Plane at (0,-3,0), normal (0,1,0), color 136,39,39 (dark red), with checker pattern.
+
+### PLANE (Gradient pattern)
+## (coord | normal | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
+pl 0,0,5  0,0,1   220,220,220  0.6       0.2       100.0       0.5     0.0       1.0         none  255,255,255  0,0,0  8.0
+# Plane at (0,0,5), normal (0,0,1), color 30,99,89 (greenish), with gradient pattern.
+
+### CYLINDER (No pattern)
+## (coord | normal | diameter | height | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
+cy -2.3,-2,-6  0.4,1,0.6   2    8  100,187,240  0.5       0.8        400.0       0.7     0.0       1.5         gradient     0,0,0      255,255,255   2.0
+# Cylinder at (-2.3,-2,-6), diameter 2, height 8, color 100,187,240 (light blue), no pattern.
+
+### CYLINDER (Checker pattern)
+## (coord | normal | diameter | height | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
+cy -1.2,1,-7  -1,0,0.2  2    8  213,192,255  0.6       0.9       400.0       0.8     0.0       1.5         checker   0,0,0      255,255,255   2.0
+# Cylinder at (-1.2,1,-7), diameter 2, height 8, color 213,192,255 (light purple), with checker pattern.
