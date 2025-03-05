@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/05 12:01:22 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:19:53 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,6 @@ char	**read_file_lines(int fd, int count)
 	}
 	lines[i] = NULL;
 	return (lines);
-}
-
-int	counter(char **s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-		i++;
-	return (i);
 }
 
 char	**read_file(t_rt *rt, int fd)
@@ -81,7 +71,6 @@ int	parse_line(char *line, t_rt *rt)
 	trimmed = trim_extra_spaces(line);
 	if (!trimmed)
 		return (error("Failed to trim line", 1));
-	printf("{%s}", trimmed);
 	element = ft_split(trimmed, ' ');
 	free(trimmed);
 	if (!element)
@@ -119,7 +108,7 @@ int	parse_file(t_rt *rt)
 
 	fd = open(rt->filename, O_RDONLY);
 	if (fd < 0)
-		return(error("Could not open file", 1));
+		return (error("Could not open file", 1));
 	lines = read_file(rt, fd);
 	if (!lines)
 		return (error("Failed to read file", 1));
@@ -128,7 +117,7 @@ int	parse_file(t_rt *rt)
 	free_array(lines);
 	if (invalid_file_content(rt))
 	{
-		print_error("Invalid file content");
+		ft_putendl_fd("Invalid file content", 2);
 		return (1);
 	}
 	print_parsed_content(rt);

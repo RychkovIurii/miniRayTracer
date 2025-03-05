@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/04 15:29:45 by irychkov         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:44:07 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,28 @@ void	initialize_structs(char **argv, t_rt *rt)
 		free(rt);
 		exit(1);
 	}
+}
+
+int	init_scene_structs(char **lines, t_rt *rt)
+{
+	int	non_shape;
+
+	rt->scene = ft_calloc(1, sizeof(t_scene));
+	if (!rt->scene)
+	{
+		print_error("Failed to allocate t_scene");
+		return (1);
+	}
+	non_shape = count_non_shape_elements(lines);
+	rt->scene->rt = rt;
+	rt->scene->shape_count = 0;
+	rt->scene->needs_render = 1;
+	rt->scene->shapes = ft_calloc(
+			rt->element_count - non_shape, sizeof(t_shape));
+	if (!rt->scene->shapes)
+	{
+		print_error("Failed to allocate shapes array");
+		return (1);
+	}
+	return (0);
 }
