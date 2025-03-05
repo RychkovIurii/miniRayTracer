@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   miniRT.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
+/*   By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:23 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:19:22 by irychkov         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@
 
 # define EPSILON 0.0001f
 
-# define WIDTH 300
-# define HEIGHT 300
+# define WIDTH 600
+# define HEIGHT 600
 
-# define DEFAULT_REMAINING 3
+# define DEFAULT_REMAINING 5
 
 # define PATTERN_NONE 0
 # define PATTERN_STRIPE 1
