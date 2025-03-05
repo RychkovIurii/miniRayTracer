@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 10:43:18 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/05 13:44:25 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:51:40 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_lines_in_file(int fd)
 	return (line_count);
 }
 
-static int	count_non_shape_elements(char **lines)
+int	count_non_shape_elements(char **lines)
 {
 	int	count;
 	int	i;

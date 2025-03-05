@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/05 12:55:49 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:52:23 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void			free_arrays(char **array1, char **array2);
 void			print_error(char *message);
 int				error(char *message, int ret);
 int				counter(char **s);
+int				count_non_shape_elements(char **lines);
 
 /******************** MATH FOLDER **********/
 // Tuple
