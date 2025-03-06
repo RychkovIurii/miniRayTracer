@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
+#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/05 13:45:05 by henbuska         ###   ########.fr        #
+#    Updated: 2025/03/05 15:34:57 by irychkov         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,7 +55,6 @@ COMMON_SRCS =	main.c\
 				scene.c\
 				camera.c\
 				mlx.c\
-				debug.c\
 				free.c\
 				free2.c\
 
@@ -96,8 +95,6 @@ MLX_HEADER = -I $(MLX_DIR)/include
 RT_HEADER = -I ./include
 HEADERS = $(RT_HEADER) $(MLX_HEADER)
 LIBMLX = $(MLX_DIR)/build/libmlx42.a
-#LIBGLFW = /Users/irychkov/.brew/Cellar/glfw/3.4/lib/libglfw.3.dylib
-#OSFLAGS = $(LIBGLFW) -framework Cocoa -framework OpenGL -framework IOKit
 OSFLAGS = -ldl -lglfw -pthread -lm -flto
 CFLAGS = -O3 -march=native -mtune=native -fomit-frame-pointer -DNDEBUG -MMD -MP -MT $@ -Wall -Wextra -Werror -flto
 CC = cc
@@ -106,11 +103,15 @@ all: $(LIBMLX) $(NAME)
 
 bonus: $(LIBMLX) $(NAMEBONUS)
 
-$(LIBMLX): $(MLX_DIR)/CMakeLists.txt
-	@if [ ! -d "$(MLX_DIR)/build" ]; then \
-		cmake $(MLX_DIR) -B $(MLX_DIR)/build; \
+$(LIBMLX): 
+	@if [ ! -d $(MLX_DIR) ]; then \
+		git clone https://github.com/codam-coding-college/MLX42.git \
+		$(MLX_DIR); \
 	fi
-	@make -C $(MLX_DIR)/build -j4
+	@if [ ! -f $(MLX_DIR)/build/libmlx42.a ]; then \
+		cmake $(MLX_DIR) -B $(MLX_DIR)/build && \
+		cmake --build $(MLX_DIR)/build -j4; \
+	fi
 
 $(NAME): $(OBJ_DIRS) $(OBJS)
 	@$(CC) $(OBJS) $(LIBMLX) $(OSFLAGS) -o $(NAME)
@@ -141,6 +142,7 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME) $(NAMEBONUS)
+	@rm -rf $(MLX_DIR)
 
 re: fclean all
 

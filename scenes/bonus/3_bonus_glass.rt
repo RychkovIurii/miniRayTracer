@@ -1,0 +1,29 @@
+### AMBIENT LIGHTING
+A 0.2 255,255,255  
+# Ambient light with a low intensity (dim white light).
+
+### CAMERA
+C 0,5,14 0,0,-1 100  
+# Camera positioned at (0.0, 5.0, 14.0), looking towards the origin with a 100° field of view.
+
+### LIGHT SOURCE
+L 0,50,34 0.9 255,255,255  
+# Light source at (0.0, 50.0, 34.0), full brightness white light.
+
+### PLANE
+pl 0,0,0 0,1,0 255,255,255 0.7 0.3 75.0 0.1 0.0 1.0 none 80,80,80 220,220,220 5.0  
+
+### Plane
+pl 0,0,-50 0,0,1 162,228,250 0.7 0.3 75.0 0.1 0.0 1.0 none 0,0,0 255,255,255 10.0 
+
+### SPHERE (Blue Glass Sphere)
+sp 1,5,-10 5 0,0,50 0.4 0.9 300.0 0.9 0.9 1.5 none 0,0,0 255,255,255 0  
+
+
+### CONE
+co 8,10,-10 0,1,0 5.0 7.5 194,51,119 0.2 0.9 200.0 0.9 0.9 1.5 none 0,0,0 255,255,255 0  
+
+
+### CYLINDER
+cy -7,5,-10 0,1,0 5.0 7.5 240,236,53 0.2 0.9 200.0 0.9 0.9 1.5 none 0,0,0 255,255,255 0  
+
