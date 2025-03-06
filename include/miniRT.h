@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 14:10:16 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/06 13:42:41 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:17:00 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,6 @@ void			add_sphere(t_rt *rt,
 					char **coordinates, char **colors, double diameter);
 void			add_plane(t_rt *rt, t_file data);
 void			add_cylinder(t_rt *rt, t_file data);
-void			assign_default_material(t_material *material);
 int				invalid_file_content(t_rt *rt);
 int				validate_argument_count(char **array, int count);
 t_file			validate_args(

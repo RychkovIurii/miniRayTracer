@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:08:22 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 16:22:28 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:14:22 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	parse_plane(char **element, t_rt *rt)
 	return (0);
 }
 
-int	validate_cylinder_dimensions(char **element, t_rt *rt)
+static int	validate_cylinder_dimensions(char **element, t_rt *rt)
 {
 	double	diameter;
 	double	cylinder_height;

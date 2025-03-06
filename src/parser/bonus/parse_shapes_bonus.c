@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/06 15:08:42 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:16:03 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	parse_plane_bonus(char **element, t_rt *rt)
 	return (add_material(element, &(plane->material), arg_count));
 }
 
-int	validate_cylinder_dimensions_bonus(char **element, t_rt *rt)
+static int	validate_cylinder_dimensions_bonus(char **element, t_rt *rt)
 {
 	double	diameter;
 	double	cylinder_height;

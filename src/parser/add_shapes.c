@@ -6,13 +6,13 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:01:33 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 20:47:01 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:12:49 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 
-void	assign_default_material(t_material *material)
+static void	assign_default_material(t_material *material)
 {
 	material->diffuse = 0.9;
 	material->specular = 0.9;

@@ -6,14 +6,14 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/13 10:25:25 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/06 12:18:32 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:14:49 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
 #include <fcntl.h>
 
-char	**read_file_lines(int fd, int count)
+static char	**read_file_lines(int fd, int count)
 {
 	char	**lines;
 	char	*line;
@@ -40,7 +40,7 @@ char	**read_file_lines(int fd, int count)
 	return (lines);
 }
 
-char	**read_file(t_rt *rt, int fd)
+static char	**read_file(t_rt *rt, int fd)
 {
 	char	**lines;
 
@@ -63,7 +63,7 @@ char	**read_file(t_rt *rt, int fd)
 	return (lines);
 }
 
-int	parse_line(char *line, t_rt *rt)
+static int	parse_line(char *line, t_rt *rt)
 {
 	char	*trimmed;
 	char	**element;
@@ -88,7 +88,7 @@ int	parse_line(char *line, t_rt *rt)
 	return (status);
 }
 
-int	parse_file_lines(char **lines, t_rt *rt)
+static int	parse_file_lines(char **lines, t_rt *rt)
 {
 	int	i;
 
