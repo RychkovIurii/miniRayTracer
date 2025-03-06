@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: irychkov <irychkov@student.hive.fi>        +#+  +:+       +#+         #
+#    By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/02/13 13:55:25 by irychkov          #+#    #+#              #
-#    Updated: 2025/03/05 15:34:57 by irychkov         ###   ########.fr        #
+#    Updated: 2025/03/06 14:46:45 by henbuska         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,11 +67,11 @@ SRCS = $(COMMON_SRCS)\
 
 		
 BONUS_SRCS = $(COMMON_SRCS)\
-				parser/parse_element_bonus.c\
-				parser/parse_shapes_bonus.c\
-				parser/add_shapes_bonus.c\
-				parser/parse_cone_bonus.c\
-				parser/parse_material_bonus.c\
+				parser/bonus/parse_element_bonus.c\
+				parser/bonus/parse_shapes_bonus.c\
+				parser/bonus/add_shapes_bonus.c\
+				parser/bonus/parse_cone_bonus.c\
+				parser/bonus/parse_material_bonus.c\
 
 # Directories
 SRC_DIR = ./src

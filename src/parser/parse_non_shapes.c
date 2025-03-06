@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:42:23 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 20:47:30 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 15:07:44 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	parse_ambient(char **element, t_rt *rt)
 		return (error("Invalid ambient lighting ratio [0.0-1.0]", 1));
 	colors = validate_color(element[2]);
 	if (!colors)
-		return (error("Invalid color for ambient", 1));
+		return (error("Invalid color for ambient [0-255]", 1));
 	rt->scene->ambient.ratio = ft_atof(element[1]);
 	rt->scene->ambient.color = string_to_color(colors);
 	rt->scene->ambient.id = 1;
@@ -51,7 +51,7 @@ int	parse_camera(char **element, t_rt *rt)
 	rt->scene->camera.normal = string_to_vector(normal);
 	fov = rt_atoi(element[3]);
 	if (fov < 0 || fov > 180)
-		return (error("Invalid field of view for camera", 1));
+		return (error("Invalid field of view for camera [0-180]", 1));
 	rt->scene->camera.field_of_view = fov;
 	rt->scene->camera.id = 1;
 	return (0);
@@ -75,7 +75,7 @@ int	parse_light(char **element, t_rt *rt)
 	rt->scene->light.brightness = ft_atof(element[2]);
 	colors = validate_color(element[3]);
 	if (!colors)
-		return (error("Invalid color for light", 1));
+		return (error("Invalid color for light [0-255]", 1));
 	rt->scene->light.color = string_to_color(colors);
 	rt->scene->light.id = 1;
 	return (0);
