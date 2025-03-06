@@ -6,11 +6,33 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 21:56:34 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:15:16 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "miniRT.h"
+
+static int	has_invalid_commas(char *str, char delimiter)
+{
+	size_t	len;
+	int		commas;
+
+	commas = 0;
+	if (!str || *str == '\0')
+		return (1);
+	len = ft_strlen(str);
+	if (str[0] == delimiter || str[len - 1] == delimiter)
+		return (1);
+	while (*str)
+	{
+		if (*str == delimiter)
+			commas++;
+		str++;
+	}
+	if (commas != 2)
+		return (1);
+	return (0);
+}
 
 char	**validate_color(char *str)
 {
@@ -18,10 +40,10 @@ char	**validate_color(char *str)
 	char	**color_strings;
 	int		i;
 
-	color_strings = ft_split(str, ',');
-	if (!color_strings)
+	if (has_invalid_commas(str, ','))
 		return (NULL);
-	if (validate_argument_count(color_strings, 3))
+	color_strings = ft_split(str, ',');
+	if (!color_strings || validate_argument_count(color_strings, 3))
 	{
 		free_array(color_strings);
 		return (NULL);
@@ -47,10 +69,10 @@ char	**validate_coordinates(char *str)
 	int		i;
 	int		error;
 
-	coord_strings = ft_split(str, ',');
-	if (!coord_strings)
+	if (has_invalid_commas(str, ','))
 		return (NULL);
-	if (validate_argument_count(coord_strings, 3))
+	coord_strings = ft_split(str, ',');
+	if (!coord_strings || validate_argument_count(coord_strings, 3))
 	{
 		free_array(coord_strings);
 		return (NULL);
@@ -69,13 +91,32 @@ char	**validate_coordinates(char *str)
 	return (coord_strings);
 }
 
-char	**validate_vector(char *str)
+static int	validate_vector_components(char **vector_strings)
 {
 	double	vector_element;
-	char	**vector_strings;
-	int		i;
+	double	sum_of_squares;
 	int		error;
+	int		i;
 
+	sum_of_squares = 0;
+	i = 0;
+	while (i < 3)
+	{
+		vector_element = ft_atof_error(vector_strings[i], &error);
+		if (error || vector_element < -1.0 || vector_element > 1.0)
+			return (0);
+		sum_of_squares += vector_element * vector_element;
+		i++;
+	}
+	return (fabs(sum_of_squares - 1.0) <= EPSILON);
+}
+
+char	**validate_vector(char *str)
+{
+	char	**vector_strings;
+
+	if (has_invalid_commas(str, ','))
+		return (NULL);
 	vector_strings = ft_split(str, ',');
 	if (!vector_strings)
 		return (NULL);
@@ -84,55 +125,10 @@ char	**validate_vector(char *str)
 		free_array(vector_strings);
 		return (NULL);
 	}
-	i = 0;
-	while (i < 3)
+	if (!validate_vector_components(vector_strings))
 	{
-		vector_element = ft_atof_error(vector_strings[i], &error);
-		if (error || vector_element < -1.0 || vector_element > 1.0)
-		{
-			free_array(vector_strings);
-			return (NULL);
-		}
-		i++;
+		free_array(vector_strings);
+		return (NULL);
 	}
 	return (vector_strings);
-}
-
-t_file	validate_args(char **element, int coord_i, int normal_i, int color_i)
-{
-	t_file	data;
-
-	ft_bzero(&data, sizeof(t_file));
-	data.coordinates = validate_coordinates(element[coord_i]);
-	if (!data.coordinates)
-	{
-		print_error("Invalid coordinates");
-		return (data);
-	}
-	data.normal = validate_vector(element[normal_i]);
-	if (!data.normal)
-	{
-		free_array(data.coordinates);
-		print_error("Invalid normal vector");
-		return (data);
-	}
-	data.colors = validate_color(element[color_i]);
-	if (!data.colors)
-	{
-		free_array(data.normal);
-		free_array(data.coordinates);
-		print_error("Invalid color");
-	}
-	return (data);
-}
-
-int	validate_double(char *str, double min, double max)
-{
-	double	value;
-	int		error;
-
-	value = ft_atof_error(str, &error);
-	if (error || value < min || value > max)
-		return (1);
-	return (0);
 }
