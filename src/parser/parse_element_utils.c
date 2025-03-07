@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 19:09:05 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/05 11:14:12 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:13:53 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,4 @@ t_tuple	string_to_color(char **strings)
 	color.z = ft_atof(strings[2]) / 255.0;
 	free_array(strings);
 	return (color);
-}
-
-double	validate_dimension(char *str)
-{
-	double	dimension;
-	int		error;
-
-	dimension = ft_atof_error(str, &error);
-	if (error || dimension < EPSILON || dimension > 1000)
-		return (-1);
-	return (dimension);
 }

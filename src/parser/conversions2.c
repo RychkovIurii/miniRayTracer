@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 12:47:18 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/05 13:30:06 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 13:52:50 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,11 @@ static int	parse_number(char **str, double *result, double *frac, int *error)
 	int		has_digits;
 
 	has_digits = 0;
+	if (ft_strlen(*str) > MAX_NUMBER_LEN)
+	{
+		*error = 1;
+		return (0);
+	}
 	while (**str && ft_isdigit(**str))
 	{
 		has_digits = 1;

@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:03:24 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/03 15:31:13 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:06:50 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ static int	parse_pattern(char **element, t_material *material, size_t size)
 		return (1);
 	color_a = validate_color(element[size - 3]);
 	if (!color_a)
-		return (error("Invalid pattern color", 1));
+		return (error("Invalid pattern color [0-255]", 1));
 	color_b = validate_color(element[size - 2]);
 	if (!color_b)
 	{
 		free_array(color_a);
-		return (error("Invalid pattern colors", 1));
+		return (error("Invalid pattern color [0-255]", 1));
 	}
 	material->pattern.color_a = string_to_color(color_a);
 	material->pattern.color_b = string_to_color(color_b);
 	if (validate_double(element[size - 1], 0, 10))
-		return (error("Invalid pattern scale", 1));
+		return (error("Invalid pattern scale [0.0-10.0]", 1));
 	scale = (ft_atof(element[size - 1]));
 	material->pattern.transform = scaling_matrix(scale, scale, scale);
 	if (material->has_pattern == PATTERN_NONE)
@@ -67,22 +67,22 @@ static int	parse_pattern(char **element, t_material *material, size_t size)
 int	add_material(char **element, t_material *material, size_t size)
 {
 	if (validate_double(element[size - 5], 0, 2.42))
-		return (error("Invalid value for refractive_index", 1));
+		return (error("Invalid value for refractive_index [0.0-2.42]", 1));
 	material->refractive_index = ft_atof(element[size - 5]);
 	if (validate_double(element[size - 6], 0, 1))
-		return (error("Invalid value for transparency", 1));
+		return (error("Invalid value for transparency [0.0-1.0]", 1));
 	material->transparency = ft_atof(element[size - 6]);
 	if (validate_double(element[size - 7], 0, 1))
-		return (error("Invalid value for reflective", 1));
+		return (error("Invalid value for reflective [0.0-1.0]", 1));
 	material->reflective = ft_atof(element[size - 7]);
-	if (validate_double(element[size - 8], 0, 500))
-		return (error("Invalid value for shininess", 1));
+	if (validate_double(element[size - 8], 0, 700))
+		return (error("Invalid value for shininess [0.0-700]", 1));
 	material->shininess = ft_atof(element[size - 8]);
 	if (validate_double(element[size - 9], 0, 1))
-		return (error("Invalid value for specular", 1));
+		return (error("Invalid value for specular [0.0-1.0]", 1));
 	material->specular = ft_atof(element[size - 9]);
 	if (validate_double(element[size - 10], 0, 1))
-		return (error("Invalid value for diffuse", 1));
+		return (error("Invalid value for diffuse [0.0-1.0]", 1));
 	material->diffuse = ft_atof(element[size - 10]);
 	if (parse_pattern(element, material, size))
 		return (1);

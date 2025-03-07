@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 11:17:37 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/05 13:44:07 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:42:46 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ void	initialize_structs(char **argv, t_rt *rt)
 	rt->filename = argv[1];
 	if (validate_file_ext(rt))
 	{
-		ft_putendl_fd("Invalid file extension", 2);
+		print_error("Invalid file extension");
 		free(rt);
 		exit(1);
 	}

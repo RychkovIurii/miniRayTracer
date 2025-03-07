@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 18:36:13 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/04 20:47:34 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:16:03 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	parse_sphere_bonus(char **element, t_rt *rt)
 		return (error("Invalid number of arguments for sphere", 1));
 	diameter = validate_dimension(element[2]);
 	if (diameter == -1)
-		return (error("Invalid sphere diameter", 1));
+		return (error("Invalid sphere diameter [> 0 & < ]", 1));
 	rt->scene->shapes[rt->scene->shape_count].radius = diameter / 2.0;
 	coordinates = validate_coordinates(element[1]);
 	if (!coordinates)
@@ -56,7 +56,7 @@ int	parse_plane_bonus(char **element, t_rt *rt)
 	return (add_material(element, &(plane->material), arg_count));
 }
 
-int	validate_cylinder_dimensions_bonus(char **element, t_rt *rt)
+static int	validate_cylinder_dimensions_bonus(char **element, t_rt *rt)
 {
 	double	diameter;
 	double	cylinder_height;

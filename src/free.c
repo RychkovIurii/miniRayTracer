@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:52:11 by irychkov          #+#    #+#             */
-/*   Updated: 2025/03/05 13:40:22 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/06 20:58:43 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	free_array(char **array)
 {
 	int	i;
 
+	if (!array)
+		return ;
 	i = 0;
 	while (array[i])
 	{
@@ -70,4 +72,5 @@ void	free_array(char **array)
 		i++;
 	}
 	free(array);
+	array = NULL;
 }
