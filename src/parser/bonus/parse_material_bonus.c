@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:03:24 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/06 15:39:10 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:06:50 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,8 @@ int	add_material(char **element, t_material *material, size_t size)
 	if (validate_double(element[size - 7], 0, 1))
 		return (error("Invalid value for reflective [0.0-1.0]", 1));
 	material->reflective = ft_atof(element[size - 7]);
-	if (validate_double(element[size - 8], 0, 500))
-		return (error("Invalid value for shininess [0.0-500]", 1));
+	if (validate_double(element[size - 8], 0, 700))
+		return (error("Invalid value for shininess [0.0-700]", 1));
 	material->shininess = ft_atof(element[size - 8]);
 	if (validate_double(element[size - 9], 0, 1))
 		return (error("Invalid value for specular [0.0-1.0]", 1));

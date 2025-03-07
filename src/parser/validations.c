@@ -6,7 +6,7 @@
 /*   By: henbuska <henbuska@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 11:02:35 by henbuska          #+#    #+#             */
-/*   Updated: 2025/03/06 21:15:16 by henbuska         ###   ########.fr       */
+/*   Updated: 2025/03/07 10:01:00 by henbuska         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ static int	validate_vector_components(char **vector_strings)
 		sum_of_squares += vector_element * vector_element;
 		i++;
 	}
-	return (fabs(sum_of_squares - 1.0) <= EPSILON);
+	return (fabs(sum_of_squares - 1.0) < 0.01);
 }
 
 char	**validate_vector(char *str)
