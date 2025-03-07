@@ -11,7 +11,7 @@ L 0,6,-14  0.8  255,255,255
 ### CAMERA
 ## (origin point | orientation [-1.0,1.0] | field-of-view in degrees [0,180])
 ## coord        normal     fov
-C 10,10,-10 -1,-1,1 70
+C 10,10,-10 -0.577,-0.577,0.577 70
 
 ### SPHERE (No pattern)
 ## (coord | diameter | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
@@ -30,10 +30,10 @@ pl 0,0,5  0,0,1   220,220,220  0.6       0.2       100.0       0.5     0.0      
 
 ### CYLINDER (No pattern)
 ## (coord | normal | diameter | height | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
-cy -2.3,-2,-6  0.4,1,0.6   2    8  100,187,240  0.5       0.8        400.0       0.7     0.0       1.5         gradient     0,0,0      255,255,255   2.0
+cy -2.3,-2,-4  0,1,0   2    8  100,187,240  0.5       0.8        400.0       0.7     0.0       1.5         gradient     0,0,0      255,255,255   2.0
 # Cylinder at (-2.3,-2,-6), diameter 2, height 8, color 100,187,240 (light blue), no pattern.
 
 ### CYLINDER (Checker pattern)
 ## (coord | normal | diameter | height | color | diffuse | specular | shininess | reflective | transparency | refractive index | pattern | color a | color b | scale)
-cy -1.2,1,-7  -1,0,0.2  2    8  213,192,255  0.6       0.9       400.0       0.8     0.0       1.5         checker   0,0,0      255,255,255   2.0
+cy -1.2,1,-7  -1,0,0  2    8  213,192,255  0.6       0.9       400.0       0.8     0.0       1.5         checker   0,0,0      255,255,255   2.0
 # Cylinder at (-1.2,1,-7), diameter 2, height 8, color 213,192,255 (light purple), with checker pattern.
