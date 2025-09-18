@@ -3,7 +3,7 @@ RayTracer with MLX42
 
 ![Scene](pngs/hive.png)
 
-Description
+## Description
 This is a ray tracing project built with the MLX42 graphics library. It simulates 3D scenes using basic shapes, light, camera, and materials to create realistic images with reflection, refraction, shadows, and more.
 
 ## Table of Contents
